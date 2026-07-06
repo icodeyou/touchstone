@@ -1,5 +1,9 @@
 common:
   error: Error
+  retry: Réessayer
 
 homeScreen:
   hello: Bonjour
+  todosTitle: Liste de tâches
+  loadError: Échec du chargement des tâches
+  emptyTodos: Aucune tâche

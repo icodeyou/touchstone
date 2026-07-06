@@ -1,5 +1,9 @@
 common:
   error: Error
+  retry: Riprova
 
 homeScreen:
   hello: Ciao
+  todosTitle: Elenco attività
+  loadError: Impossibile caricare le attività
+  emptyTodos: Nessuna attività

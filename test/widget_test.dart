@@ -1,29 +1,45 @@
-// This is a basic Flutter widget test.
-//
-// To perform an interaction with a widget in your test, use the WidgetTester
-// utility in the flutter_test package. For example, you can send tap and scroll
-// gestures. You can also use WidgetTester to find child widgets in the widget
-// tree, read text, and verify that the values of widget properties are correct.
-
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
-import 'package:touchstone/core/app/app.dart';
+import 'package:touchstone/core/app/i18n/translations.g.dart';
+import 'package:touchstone/data/repository/todo_repository.dart';
+import 'package:touchstone/domain/model/todo.dart';
+import 'package:touchstone/ui/home/view/home_screen.dart';
+
+class _FakeTodoRepository implements TodoRepository {
+  _FakeTodoRepository(this.todos);
+
+  final List<Todo> todos;
+
+  @override
+  Future<List<Todo>> getTodos() async => todos;
+}
 
 void main() {
-  testWidgets('Counter increments smoke test', (tester) async {
-    // Build our app and trigger a frame.
-    await tester.pumpWidget(const MyApp());
+  testWidgets('HomeScreen shows a loader then the todo list', (tester) async {
+    const todos = [
+      Todo(id: 1, userId: 42, title: 'Buy milk', status: TodoStatus.pending),
+      Todo(id: 2, userId: 42, title: 'Ship app', status: TodoStatus.completed),
+    ];
 
-    // Verify that our counter starts at 0.
-    expect(find.text('0'), findsOneWidget);
-    expect(find.text('1'), findsNothing);
+    await tester.pumpWidget(
+      ProviderScope(
+        overrides: [
+          todoRepositoryProvider.overrideWithValue(_FakeTodoRepository(todos)),
+        ],
+        child: TranslationProvider(
+          child: const MaterialApp(home: HomeScreen()),
+        ),
+      ),
+    );
 
-    // Tap the '+' icon and trigger a frame.
-    await tester.tap(find.byIcon(Icons.add));
+    expect(find.byType(CircularProgressIndicator), findsOneWidget);
+
+    await tester.pump();
     await tester.pump();
 
-    // Verify that our counter has incremented.
-    expect(find.text('0'), findsNothing);
-    expect(find.text('1'), findsOneWidget);
+    expect(find.text('Buy milk'), findsOneWidget);
+    expect(find.text('Ship app'), findsOneWidget);
+    expect(find.byType(CircularProgressIndicator), findsNothing);
   });
 }
