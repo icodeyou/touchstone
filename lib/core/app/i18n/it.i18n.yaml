@@ -1,0 +1,5 @@
+common:
+  error: Error
+
+homeScreen:
+  hello: Ciao

@@ -1,0 +1,16 @@
+{
+    "version": "0.1.0",
+    "configurations": [
+        {
+            "name": "touchstone",
+            "request": "launch",
+            "type": "dart"
+        },
+        {
+            "name": "touchstone (release mode)",
+            "request": "launch",
+            "type": "dart",
+            "flutterMode": "release"
+        }
+    ]
+}

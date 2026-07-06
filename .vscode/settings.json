@@ -1,0 +1,48 @@
+{
+    "workbench.colorCustomizations": {
+        "titleBar.activeBackground": "#1b1e24",
+        "titleBar.activeForeground": "#e6d056",
+        "titleBar.inactiveBackground": "#1b1e24",
+        "titleBar.inactiveForeground": "#e6d056",
+        "activityBar.activeBackground": "#1b1e24",
+        "activityBar.foreground": "#e6d056",
+        "editor.background": "#1b1e24"
+    },
+    "cSpell.diagnosticLevel": "Hint",
+    "cSpell.words": [
+        "touchstone"
+    ],
+    "cSpell.overrides": [
+        {
+            "filename": "**/*.i18n.yaml"
+        },
+        {
+            "language": "fr,en",
+            "filename": "**/fr.i18n.yaml"
+        },
+        {
+            "language": "es,en",
+            "filename": "**/es.i18n.yaml"
+        },
+        {
+            "language": "it,en",
+            "filename": "**/it.i18n.yaml"
+        }
+    ],
+    // Get rid of Markdown warning in settings.json at reload
+    "json.schemas": [
+        {
+            "fileMatch": [
+                "markdownlint.json",
+                ".markdownlint.json"
+            ],
+            "url": "https://raw.githubusercontent.com/DavidAnson/markdownlint/v0.40.0/schema/markdownlint-config-schema.json"
+        }
+    ],
+    "dart.flutterSdkPath": ".fvm/versions/3.35.5",
+    "markdownlint.config": {
+        "MD033": false,
+        "MD026": false,
+        "MD024": false
+    },
+}
