@@ -1,5 +1,9 @@
 common:
   error: Error
+  retry: Retry
 
 homeScreen:
   hello: Hello
+  todosTitle: To-Do List
+  loadError: Failed to load todos
+  emptyTodos: No todos found

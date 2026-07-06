@@ -7,6 +7,9 @@
 *.freezed.dart
 *.g.dart
 
+# Dart Mappable
+*.mapper.dart
+
 #Firebase
 firepit-log.txt
 /ios/Runner/GoogleService-Info.plist
