@@ -9,23 +9,22 @@ class HomeScreen extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final todosState = ref.watch(homeControllerProvider);
+    final todosState = ref.watch(HomeController.provider);
 
     return Scaffold(
       appBar: AppBar(
         backgroundColor: Theme.of(context).colorScheme.inversePrimary,
         title: Text(t.homeScreen.todosTitle),
       ),
-      body: switch (todosState) {
-        AsyncData(:final value) when value.isEmpty => Center(
-          child: Text(t.homeScreen.emptyTodos),
+      body: todosState.when(
+        data: (todos) => todos.isEmpty
+            ? Center(child: Text(t.homeScreen.emptyTodos))
+            : _TodoList(todos: todos),
+        error: (error, stackTrace) => _ErrorView(
+          onRetry: () => ref.read(HomeController.provider.notifier).refresh(),
         ),
-        AsyncData(:final value) => _TodoList(todos: value),
-        AsyncError() => _ErrorView(
-          onRetry: () => ref.read(homeControllerProvider.notifier).refresh(),
-        ),
-        _ => const Center(child: CircularProgressIndicator()),
-      },
+        loading: () => const Center(child: CircularProgressIndicator()),
+      ),
     );
   }
 }
@@ -68,10 +67,7 @@ class _ErrorView extends StatelessWidget {
         children: [
           Text(t.homeScreen.loadError),
           const SizedBox(height: 16),
-          FilledButton(
-            onPressed: onRetry,
-            child: Text(t.common.retry),
-          ),
+          FilledButton(onPressed: onRetry, child: Text(t.common.retry)),
         ],
       ),
     );

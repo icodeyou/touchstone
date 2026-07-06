@@ -30,7 +30,7 @@ void main() {
 
   ProviderContainer makeContainer(TodoRepository repository) {
     final container = ProviderContainer(
-      overrides: [todoRepositoryProvider.overrideWithValue(repository)],
+      overrides: [TodoRepository.provider.overrideWithValue(repository)],
       // Riverpod 3 retries failed providers with backoff by default, which
       // would keep the error-path futures pending forever in tests.
       retry: (retryCount, error) => null,
@@ -44,14 +44,14 @@ void main() {
       final container = makeContainer(_FakeTodoRepository(todos: [todo]));
 
       expect(
-        container.read(homeControllerProvider),
+        container.read(HomeController.provider),
         isA<AsyncLoading<List<Todo>>>(),
       );
 
-      final todos = await container.read(homeControllerProvider.future);
+      final todos = await container.read(HomeController.provider.future);
 
       expect(todos, [todo]);
-      expect(container.read(homeControllerProvider).value, [todo]);
+      expect(container.read(HomeController.provider).value, [todo]);
     });
 
     test('exposes error state when fetching fails', () async {
@@ -60,10 +60,10 @@ void main() {
       );
 
       await expectLater(
-        container.read(homeControllerProvider.future),
+        container.read(HomeController.provider.future),
         throwsException,
       );
-      expect(container.read(homeControllerProvider).hasError, isTrue);
+      expect(container.read(HomeController.provider).hasError, isTrue);
     });
 
     test('refresh recovers after a failure', () async {
@@ -71,16 +71,16 @@ void main() {
       final container = makeContainer(repository);
 
       await expectLater(
-        container.read(homeControllerProvider.future),
+        container.read(HomeController.provider.future),
         throwsException,
       );
 
       repository
         ..error = null
         ..todos = [todo];
-      await container.read(homeControllerProvider.notifier).refresh();
+      await container.read(HomeController.provider.notifier).refresh();
 
-      expect(container.read(homeControllerProvider).value, [todo]);
+      expect(container.read(HomeController.provider).value, [todo]);
     });
   });
 }

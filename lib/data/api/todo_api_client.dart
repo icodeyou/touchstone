@@ -6,14 +6,14 @@ import 'package:http/http.dart' as http;
 import 'package:touchstone/core/constants/app_constants.dart';
 import 'package:touchstone/domain/model/todo.dart';
 
-final todoApiClientProvider = Provider<TodoApiClient>((ref) {
-  final client = http.Client();
-  ref.onDispose(client.close);
-  return TodoApiClient(client: client);
-});
-
 class TodoApiClient {
   TodoApiClient({required http.Client client}) : _client = client;
+
+  static final provider = Provider<TodoApiClient>((ref) {
+    final client = http.Client();
+    ref.onDispose(client.close);
+    return TodoApiClient(client: client);
+  });
 
   final http.Client _client;
 
@@ -26,9 +26,7 @@ class TodoApiClient {
         uri: uri,
       );
     }
-    final body = jsonDecode(response.body) as List<dynamic>;
-    return body
-        .map((item) => Todo.fromMap(item as Map<String, dynamic>))
-        .toList();
+    final body = jsonDecode(response.body) as List<Object?>;
+    return body.whereType<Map<String, Object?>>().map(Todo.fromMap).toList();
   }
 }

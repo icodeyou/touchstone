@@ -25,7 +25,9 @@ void main() {
     await tester.pumpWidget(
       ProviderScope(
         overrides: [
-          todoRepositoryProvider.overrideWithValue(_FakeTodoRepository(todos)),
+          TodoRepository.provider.overrideWithValue(
+            _FakeTodoRepository(todos),
+          ),
         ],
         child: TranslationProvider(
           child: const MaterialApp(home: HomeScreen()),

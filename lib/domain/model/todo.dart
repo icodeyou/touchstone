@@ -21,6 +21,7 @@ class Todo with TodoMappable {
   final TodoStatus status;
   final DateTime? dueOn;
 
-  static const fromMap = TodoMapper.fromMap;
+  static Todo fromMap(Map<String, Object?> map) => TodoMapper.fromMap(map);
+
   static const fromJson = TodoMapper.fromJson;
 }
