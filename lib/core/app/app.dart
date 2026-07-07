@@ -16,7 +16,6 @@ class MyApp extends StatelessWidget {
       child: TranslationProvider(
         child: MaterialApp.router(
           debugShowCheckedModeBanner: false,
-          themeMode: ThemeMode.light,
           theme: getSnowflakeThemeData(
             mode: ThemeMode.light,
             appColors: lightColors,

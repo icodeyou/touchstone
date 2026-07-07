@@ -9,7 +9,6 @@ void main() {
 
     final app = tester.widget<MaterialApp>(find.byType(MaterialApp));
 
-    expect(app.themeMode, ThemeMode.light);
     // getSnowflakeThemeData wires appColors.background into the AppBar theme;
     // asserting on it proves the theme came from snowflake, not fromSeed.
     expect(app.theme!.appBarTheme.backgroundColor, lightColors.background);
