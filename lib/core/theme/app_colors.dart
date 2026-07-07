@@ -9,3 +9,7 @@ const lightColors = (
   background: Color(0xFFF7F7F7),
   onBackground: Color(0xFF1D1C1C),
 );
+
+class AppColors {
+  static const grey = Color(0xFFA79794);
+}
