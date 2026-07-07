@@ -65,3 +65,6 @@ app.*.map.json
 
 # Test related
 /test/build
+
+# Claude Code local settings
+.claude/settings.local.json
