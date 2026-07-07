@@ -31,3 +31,7 @@ flutter build web --release   # debug mode renders blank in headless capture
   app-level `appBarTheme`.
 - build_runner failing with "must have a 'main' function"? Stale cache:
   `rm -rf .dart_tool && flutter pub get`, retry.
+- Headless Chrome enforces a ~500px minimum window width: a capture at
+  `--window-size=430,...` renders the layout at ~500px but crops the PNG to
+  430, clipping the right edge (missing trailing icons). Use >=500px width;
+  snowflake's `Scale` makes text huge at desktop widths (nominal width 430).
