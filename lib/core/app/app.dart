@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:snowflake_flutter_theme/snowflake_flutter_theme.dart';
 import 'package:touchstone/core/app/i18n/translations.g.dart';
 import 'package:touchstone/core/app/riverpod/riverpod_observers.dart';
 import 'package:touchstone/core/app/routing/router.dart';
@@ -15,8 +16,10 @@ class MyApp extends StatelessWidget {
       child: TranslationProvider(
         child: MaterialApp.router(
           debugShowCheckedModeBanner: false,
-          theme: ThemeData(
-            colorScheme: ColorScheme.fromSeed(seedColor: AppColors.appPrimary),
+          themeMode: ThemeMode.light,
+          theme: getSnowflakeThemeData(
+            mode: ThemeMode.light,
+            appColors: lightColors,
           ),
           routerConfig: router,
         ),
