@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:snowflake_flutter_theme/snowflake_flutter_theme.dart';
 import 'package:touchstone/core/app/i18n/translations.g.dart';
 import 'package:touchstone/domain/model/todo.dart';
 import 'package:touchstone/ui/home/controller/home_controller.dart';
@@ -13,17 +14,16 @@ class HomeScreen extends ConsumerWidget {
 
     return Scaffold(
       appBar: AppBar(
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        title: Text(t.homeScreen.todosTitle),
+        title: AppText.l(t.homeScreen.todosTitle, bold: true),
       ),
       body: todosState.when(
         data: (todos) => todos.isEmpty
-            ? Center(child: Text(t.homeScreen.emptyTodos))
+            ? Center(child: AppText.m(t.homeScreen.emptyTodos))
             : _TodoList(todos: todos),
         error: (error, stackTrace) => _ErrorView(
           onRetry: () => ref.read(HomeController.provider.notifier).refresh(),
         ),
-        loading: () => const Center(child: CircularProgressIndicator()),
+        loading: () => const Center(child: AppLoader.regular()),
       ),
     );
   }
@@ -43,10 +43,12 @@ class _TodoList extends StatelessWidget {
         final todo = todos[index];
         final isCompleted = todo.status == TodoStatus.completed;
         return ListTile(
-          title: Text(todo.title),
+          contentPadding: ThemeSizes.sym(h: ThemeSizes.m, v: ThemeSizes.xxs),
+          title: AppText.m(todo.title),
           trailing: Icon(
             isCompleted ? Icons.check_circle : Icons.radio_button_unchecked,
-            color: isCompleted ? Colors.green : Colors.grey,
+            color:
+                isCompleted ? ThemeColors.statusSuccess : ThemeColors.grey40,
           ),
         );
       },
@@ -65,9 +67,9 @@ class _ErrorView extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Text(t.homeScreen.loadError),
-          const SizedBox(height: 16),
-          FilledButton(onPressed: onRetry, child: Text(t.common.retry)),
+          AppText.m(t.homeScreen.loadError),
+          const AppGap.m(),
+          AppButton.primary(onPressed: onRetry, label: t.common.retry),
         ],
       ),
     );
