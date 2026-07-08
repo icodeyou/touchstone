@@ -18,6 +18,22 @@ class _FakeTodoRepository implements TodoRepository {
     }
     return todos ?? <Todo>[];
   }
+
+  @override
+  Future<Todo> createTodo({required String title}) async {
+    final currentError = error;
+    if (currentError != null) {
+      throw currentError;
+    }
+    final todo = Todo(
+      id: 1,
+      userId: 42,
+      title: title,
+      status: TodoStatus.pending,
+    );
+    todos = [...?todos, todo];
+    return todo;
+  }
 }
 
 void main() {

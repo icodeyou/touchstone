@@ -12,4 +12,9 @@ class TodoRepository {
   final TodoApiClient _apiClient;
 
   Future<List<Todo>> getTodos() => _apiClient.fetchTodos();
+
+  Future<Todo> createTodo({required String title}) async {
+    final userId = await _apiClient.fetchFirstUserId();
+    return _apiClient.createTodo(userId: userId, title: title);
+  }
 }

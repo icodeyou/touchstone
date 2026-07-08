@@ -38,16 +38,115 @@ class HomeScreen extends ConsumerWidget {
         appBar: AppBar(
           title: AppText.l(t.homeScreen.todosTitle, bold: true),
         ),
-        body: todosState.when(
-          data: (todos) => todos.isEmpty
-              ? Center(child: AppText.m(t.homeScreen.emptyTodos))
-              : _TodoList(todos: todos),
-          error: (error, stackTrace) => _ErrorView(
-            onRetry: () => ref.read(HomeController.provider.notifier).refresh(),
+        body: Padding(
+          padding: ThemeSizes.m.asInsets,
+          child: Column(
+            children: [
+              const _CreateTodoField(),
+              const AppGap.m(),
+              Expanded(
+                child: todosState.when(
+                  data: (todos) => todos.isEmpty
+                      ? Center(child: AppText.m(t.homeScreen.emptyTodos))
+                      : _TodoList(todos: todos),
+                  error: (error, stackTrace) => _ErrorView(
+                    onRetry: () =>
+                        ref.read(HomeController.provider.notifier).refresh(),
+                  ),
+                  loading: () => const Center(child: AppLoader.regular()),
+                ),
+              ),
+            ],
           ),
-          loading: () => const Center(child: AppLoader.regular()),
         ),
       ),
+    );
+  }
+}
+
+class _CreateTodoField extends ConsumerStatefulWidget {
+  const _CreateTodoField();
+
+  @override
+  ConsumerState<_CreateTodoField> createState() => _CreateTodoFieldState();
+}
+
+class _CreateTodoFieldState extends ConsumerState<_CreateTodoField> {
+  final _controller = TextEditingController();
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
+  Future<void> _submit() async {
+    final title = _controller.text.trim();
+    if (title.isEmpty) {
+      return;
+    }
+    await ref.read(HomeController.provider.notifier).createTodo(title);
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        TextField(
+          controller: _controller,
+          decoration: InputDecoration(
+            hintText: t.homeScreen.createTodoHint,
+            border: OutlineInputBorder(
+              borderRadius: ThemeRadius.m.asBorderRadius,
+              borderSide: BorderSide(color: ThemeColors.secondary(context)),
+            ),
+            enabledBorder: OutlineInputBorder(
+              borderRadius: ThemeRadius.m.asBorderRadius,
+              borderSide: BorderSide(color: ThemeColors.secondary(context)),
+            ),
+            focusedBorder: OutlineInputBorder(
+              borderRadius: ThemeRadius.m.asBorderRadius,
+              borderSide: BorderSide(
+                color: ThemeColors.secondary(context),
+                width: 2,
+              ),
+            ),
+          ),
+          onSubmitted: (_) => _submit(),
+        ),
+        const AppGap.s(),
+        MutationButton<void>(
+          buttonType: ButtonType.primary,
+          expand: true,
+          label: t.homeScreen.addItem,
+          color: ThemeColors.secondary(context),
+          fontColor: ThemeColors.onSecondary(context),
+          onPressed: _submit,
+          onSuccess: (_) {
+            final hasError = ref.read(HomeController.provider).hasError;
+            if (!context.mounted) {
+              return;
+            }
+            if (hasError) {
+              Notif.showToast(
+                context: context,
+                title: t.common.error,
+                message: t.homeScreen.loadError,
+                type: ToastType.error,
+              );
+            } else {
+              _controller.clear();
+              Notif.showToast(
+                context: context,
+                title: t.common.success,
+                message: t.homeScreen.todoCreated,
+                type: ToastType.success,
+              );
+            }
+          },
+        ),
+      ],
     );
   }
 }

@@ -2,12 +2,19 @@ common:
   error: Error
   retry: Retry
   ok: OK
+  cancel: Cancel
+  create: Create
+  success: Success
 
 homeScreen:
   hello: Hello
   todosTitle: To-Do List
   loadError: Failed to load todos
   emptyTodos: No todos found
+  createTodoTitle: New To-Do
+  createTodoHint: Title
+  todoCreated: To-Do created
+  addItem: Add an item
 
 welcomeDialog:
   title: Welcome aboard! ✨

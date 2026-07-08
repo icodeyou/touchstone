@@ -17,9 +17,16 @@ class TodoApiClient {
 
   final http.Client _client;
 
+  Map<String, String> get _headers => {
+        HttpHeaders.contentTypeHeader: 'application/json',
+        if (AppConstants.goRestApiToken.isNotEmpty)
+          HttpHeaders.authorizationHeader:
+              'Bearer ${AppConstants.goRestApiToken}',
+      };
+
   Future<List<Todo>> fetchTodos() async {
     final uri = Uri.parse('${AppConstants.goRestBaseUrl}/todos');
-    final response = await _client.get(uri);
+    final response = await _client.get(uri, headers: _headers);
     if (response.statusCode != HttpStatus.ok) {
       throw HttpException(
         'GET /todos failed (${response.statusCode})',
@@ -28,5 +35,46 @@ class TodoApiClient {
     }
     final body = jsonDecode(response.body) as List<Object?>;
     return body.whereType<Map<String, Object?>>().map(Todo.fromMap).toList();
+  }
+
+  Future<Todo> createTodo({
+    required int userId,
+    required String title,
+    TodoStatus status = TodoStatus.pending,
+  }) async {
+    final uri = Uri.parse('${AppConstants.goRestBaseUrl}/todos');
+    final response = await _client.post(
+      uri,
+      headers: _headers,
+      body: jsonEncode({
+        'user_id': userId,
+        'title': title,
+        'status': status.toValue(),
+      }),
+    );
+    if (response.statusCode != HttpStatus.created) {
+      throw HttpException(
+        'POST /todos failed (${response.statusCode})',
+        uri: uri,
+      );
+    }
+    return Todo.fromMap(jsonDecode(response.body) as Map<String, Object?>);
+  }
+
+  Future<int> fetchFirstUserId() async {
+    final uri = Uri.parse('${AppConstants.goRestBaseUrl}/users?per_page=1');
+    final response = await _client.get(uri, headers: _headers);
+    if (response.statusCode != HttpStatus.ok) {
+      throw HttpException(
+        'GET /users failed (${response.statusCode})',
+        uri: uri,
+      );
+    }
+    final body = jsonDecode(response.body) as List<Object?>;
+    final user = body.whereType<Map<String, Object?>>().firstOrNull;
+    if (user == null) {
+      throw HttpException('GET /users returned no users', uri: uri);
+    }
+    return user['id']! as int;
   }
 }

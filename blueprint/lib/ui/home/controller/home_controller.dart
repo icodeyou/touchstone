@@ -3,8 +3,9 @@ import 'package:touchstone/data/repository/todo_repository.dart';
 import 'package:touchstone/domain/model/todo.dart';
 
 class HomeController extends AsyncNotifier<List<Todo>> {
-  static final provider =
-      AsyncNotifierProvider<HomeController, List<Todo>>(HomeController.new);
+  static final provider = AsyncNotifierProvider<HomeController, List<Todo>>(
+    HomeController.new,
+  );
 
   @override
   Future<List<Todo>> build() => ref.watch(TodoRepository.provider).getTodos();
@@ -14,5 +15,10 @@ class HomeController extends AsyncNotifier<List<Todo>> {
     state = await AsyncValue.guard(
       () => ref.read(TodoRepository.provider).getTodos(),
     );
+  }
+
+  Future<void> createTodo(String title) async {
+    await ref.read(TodoRepository.provider).createTodo(title: title);
+    ref.invalidateSelf();
   }
 }

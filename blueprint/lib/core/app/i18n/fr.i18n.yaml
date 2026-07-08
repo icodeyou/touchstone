@@ -2,12 +2,19 @@ common:
   error: Error
   retry: Réessayer
   ok: OK
+  cancel: Annuler
+  create: Créer
+  success: Succès
 
 homeScreen:
   hello: Bonjour
   todosTitle: Liste de tâches
   loadError: Échec du chargement des tâches
   emptyTodos: Aucune tâche
+  createTodoTitle: Nouvelle tâche
+  createTodoHint: Titre
+  todoCreated: Tâche créée
+  addItem: Ajouter un élément
 
 welcomeDialog:
   title: Bienvenue à bord ! ✨

@@ -2,12 +2,19 @@ common:
   error: Error
   retry: Riprova
   ok: OK
+  cancel: Annulla
+  create: Crea
+  success: Successo
 
 homeScreen:
   hello: Ciao
   todosTitle: Elenco attività
   loadError: Impossibile caricare le attività
   emptyTodos: Nessuna attività
+  createTodoTitle: Nuova attività
+  createTodoHint: Titolo
+  todoCreated: Attività creata
+  addItem: Aggiungi un elemento
 
 welcomeDialog:
   title: Benvenuto a bordo! ✨

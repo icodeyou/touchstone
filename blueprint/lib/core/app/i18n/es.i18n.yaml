@@ -2,12 +2,19 @@ common:
   error: Error
   retry: Reintentar
   ok: OK
+  cancel: Cancelar
+  create: Crear
+  success: Éxito
 
 homeScreen:
   hello: Holà
   todosTitle: Lista de tareas
   loadError: No se pudieron cargar las tareas
   emptyTodos: No hay tareas
+  createTodoTitle: Nueva tarea
+  createTodoHint: Título
+  todoCreated: Tarea creada
+  addItem: Añadir un elemento
 
 welcomeDialog:
   title: ¡Bienvenido a bordo! ✨
