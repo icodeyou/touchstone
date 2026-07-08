@@ -1,0 +1,3 @@
+# Generated apps live in stones/ but are not versioned in touchstone
+stones/*
+!stones/CRAFT.md
