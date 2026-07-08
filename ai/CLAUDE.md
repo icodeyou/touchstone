@@ -1,5 +1,7 @@
 # Pixelita — Default Instructions
 
+Always start your response with "Yo.".
+
 ## Commits
 
 ### Single-commit tasks
@@ -15,7 +17,7 @@ This respects the conventional commit from [conventionalcommits.org](https://con
 
 ### Multi-commit tasks
 
-- If your task must be split in several commits, you can commit, but adding `@` before `<type>` :
+- If your task must be split in several commits, you can commit, but adding `@` before `<type>` :
 
 ```
 @<type>(<scope>): the commit message
