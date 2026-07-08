@@ -8,17 +8,21 @@
 
 ### Blueprint conformance
 
-Every time you write code, always make sure the app uses the same practices, architecture, folder structure, naming conventions, dependencies and theming as the reference @../../blueprint.
+Every time you write code, always make sure the app uses the same practices, architecture, folder structure, naming conventions, dependencies and theming as the reference @.blueprint/.
 
 #### Blueprint version : 1.0
 
-The blueprint is versioned through the touchstone repository's git tags. Before conforming to @../../blueprint, check out the touchstone project (the repository at `../..`, which contains the blueprint) to the git tag matching the version above:
+`@.blueprint/` is a local cache: a snapshot of the touchstone blueprint frozen at this version. Always conform to it, never to a live blueprint.
+
+**The `.blueprint/` folder is a hard prerequisite for writing any code.** Before writing or modifying any code, verify it exists. If it does not, you MUST create it first — and you MUST NOT write any code until it exists. Create it from the touchstone repository (at `../..`) at the git tag matching the version above; this reads the tag's snapshot without checking out or modifying touchstone:
 
 ```
-git -C ../.. checkout <version>
+mkdir -p .blueprint && git -C ../.. archive <version> blueprint | tar -x --strip-components=1 -C .blueprint
 ```
 
-This ensures the app always conforms to a stable, pinned version of the blueprint rather than in-progress changes.
+If `.blueprint/` cannot be created (touchstone is unavailable or the tag is missing), **stop and refuse to write code** — there is no valid reference to conform to.
+
+Add `.blueprint/` to this project's `.gitignore`; it is a regenerable cache.
 
 ## Custom instructions
 
