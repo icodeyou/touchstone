@@ -1,16 +1,30 @@
 # New Pixelita App
 
+When this file is referenced without any instructions, it means that you should run all the steps.
+
 Announce each step to the user when you start it.
 
 ## 🚀 App Creation
 
 1. Echo, with stars and colors: `Thank you for bringing a new app to the world of Pixelita !`
-2. Ask the user for the name of the new app.
-3. Run: `flutter create --org fr.toto --platforms ios,android,web <app_name_in_snake_case>`
-4. Clean the generated app, remove all comments
-5. Make the home screen display: `Another wonderful app by Pixelita`
+2. Ask the user for the name of the new app. This will be the displayed name.
+3. Ask confirmation for the bundle ID that it will generate : `dev.pixelita.<app_name_in_flat_case>`
+4. If user specifies a space, a dash or any character that is not a letter, say :  "The bundle ID is invalid (we ask flatCase to make bundle ID consistent between Android and iOS)"
+5. Ask user for the languages (English is mandatory and will be default language)
+6. In folder `stones/`, run: `flutter create --org <org> --platforms ios,android,web <app_name_in_flat_case>`
+
+  `<org>` is `dev.pixelita` or something else if user specified so in the last step
+7. Clean the generated app, remove all comments
+8. Make the home screen display: `Another wonderful app by Pixelita`
 
 ## 🗿 Blueprint
 
 1. Match the structure of the `touchstone/blueprint` project as closely as possible, omitting any files not needed for this home screen.
+2. Copy file [CLAUDE.md](http://CLAUDE.md) from `touchstone/blueprint` and paste it in the root of the created project.
+
+## ☁️ Github
+
+1. Ask user if he wants to create a repository on Github
+2. If yes, ask if it should be public/private
+3. Create the repository for the project, using CLI `gh`
 
