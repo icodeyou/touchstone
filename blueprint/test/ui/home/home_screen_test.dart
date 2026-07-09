@@ -37,29 +37,21 @@ void main() {
     await tester.pumpAndSettle();
   }
 
-  group('HomeScreen create todo popup', () {
-    testWidgets('dismissing the popup does not crash', (tester) async {
+  group('HomeScreen create todo', () {
+    testWidgets('shows the empty state initially', (tester) async {
       await pumpHomeScreen(tester);
 
-      await tester.tap(find.byType(FloatingActionButton));
-      await tester.pumpAndSettle();
-      expect(find.byType(TextField), findsOneWidget);
-
-      // Dismiss by tapping the barrier, then let the exit animation finish.
-      await tester.tapAt(const Offset(5, 5));
-      await tester.pumpAndSettle();
-
-      expect(find.byType(TextField), findsNothing);
+      expect(find.text('No todos found'), findsOneWidget);
     });
 
-    testWidgets('confirming creates the todo', (tester) async {
+    testWidgets('submitting the field creates the todo', (tester) async {
       await pumpHomeScreen(tester);
 
-      await tester.tap(find.byType(FloatingActionButton));
-      await tester.pumpAndSettle();
-
       await tester.enterText(find.byType(TextField), 'Buy milk');
-      await tester.tap(find.text('Create'));
+      await tester.tap(find.text('Add an item'));
+      await tester.pump();
+      // Let the success toast (5s auto-close) expire so no timers leak.
+      await tester.pump(const Duration(seconds: 6));
       await tester.pumpAndSettle();
 
       expect(find.text('Buy milk'), findsOneWidget);
