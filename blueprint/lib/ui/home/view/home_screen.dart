@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:snowflake_flutter_theme/snowflake_flutter_theme.dart';
 import 'package:touchstone/core/app/i18n/translations.g.dart';
-import 'package:touchstone/data/local/app_preferences.dart';
 import 'package:touchstone/core/theme/app_colors.dart';
+import 'package:touchstone/data/local/app_preferences.dart';
 import 'package:touchstone/domain/model/todo.dart';
 import 'package:touchstone/ui/home/controller/home_controller.dart';
 
@@ -36,9 +36,7 @@ class HomeScreen extends ConsumerWidget {
     return Init(
       onInitPostFrame: () => _showWelcomeDialog(context, ref),
       child: Scaffold(
-        appBar: AppBar(
-          title: AppText.l(t.homeScreen.todosTitle, bold: true),
-        ),
+        appBar: AppBar(title: AppText.l(t.homeScreen.todosTitle, bold: true)),
         body: Padding(
           padding: ThemeSizes.m.asInsets,
           child: Column(
