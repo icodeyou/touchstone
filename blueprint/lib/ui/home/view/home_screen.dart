@@ -86,16 +86,49 @@ class _CreateTodoFieldState extends ConsumerState<_CreateTodoField> {
     if (title.isEmpty) {
       return;
     }
-    await ref.read(HomeController.provider.notifier).createTodo(title);
+    await ref
+        .read(myMutationControllerProvider(hashCode).notifier)
+        .action<void>(
+          mutation: () =>
+              ref.read(HomeController.provider.notifier).createTodo(title),
+          onSuccess: (_) => _onCreateSuccess(),
+        );
+  }
+
+  void _onCreateSuccess() {
+    final hasError = ref.read(HomeController.provider).hasError;
+    if (!mounted) {
+      return;
+    }
+    if (hasError) {
+      Notif.showToast(
+        context: context,
+        title: t.common.error,
+        message: t.homeScreen.loadError,
+        type: ToastType.error,
+      );
+    } else {
+      _controller.clear();
+      Notif.showToast(
+        context: context,
+        title: t.common.success,
+        message: t.homeScreen.todoCreated,
+        type: ToastType.success,
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    final isLoading =
+        ref.watch(myMutationControllerProvider(hashCode)) ==
+        MutationState.loading;
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         TextField(
           controller: _controller,
+          enabled: !isLoading,
           decoration: InputDecoration(
             hintText: t.homeScreen.createTodoHint,
             border: OutlineInputBorder(
@@ -117,36 +150,21 @@ class _CreateTodoFieldState extends ConsumerState<_CreateTodoField> {
           onSubmitted: (_) => _submit(),
         ),
         const AppGap.s(),
-        MutationButton<void>(
-          buttonType: ButtonType.primary,
-          expand: true,
-          label: t.homeScreen.addItem,
-          color: ThemeColors.secondary(context),
-          fontColor: ThemeColors.onSecondary(context),
-          onPressed: _submit,
-          onSuccess: (_) {
-            final hasError = ref.read(HomeController.provider).hasError;
-            if (!context.mounted) {
-              return;
-            }
-            if (hasError) {
-              Notif.showToast(
-                context: context,
-                title: t.common.error,
-                message: t.homeScreen.loadError,
-                type: ToastType.error,
-              );
-            } else {
-              _controller.clear();
-              Notif.showToast(
-                context: context,
-                title: t.common.success,
-                message: t.homeScreen.todoCreated,
-                type: ToastType.success,
-              );
-            }
-          },
-        ),
+        if (isLoading)
+          Center(
+            child: CircularProgressIndicator(
+              color: ThemeColors.secondary(context),
+            ),
+          )
+        else
+          AppButton(
+            buttonType: ButtonType.primary,
+            expand: true,
+            label: t.homeScreen.addItem,
+            color: ThemeColors.secondary(context),
+            fontColor: ThemeColors.onSecondary(context),
+            onPressed: _submit,
+          ),
       ],
     );
   }

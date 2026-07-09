@@ -12,6 +12,7 @@ class _FakeTodoRepository implements TodoRepository {
 
   List<Todo> todos;
   Exception? updateError;
+  Completer<void>? createGate;
   Completer<void>? updateGate;
   int updateCalls = 0;
 
@@ -20,6 +21,10 @@ class _FakeTodoRepository implements TodoRepository {
 
   @override
   Future<Todo> createTodo({required String title}) async {
+    final gate = createGate;
+    if (gate != null) {
+      await gate.future;
+    }
     final todo = Todo(
       id: 1,
       userId: 42,
@@ -90,6 +95,28 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('Buy milk'), findsOneWidget);
+    });
+
+    testWidgets('the field is disabled while the create is in flight',
+        (tester) async {
+      final repository = _FakeTodoRepository()..createGate = Completer<void>();
+      await pumpHomeScreen(tester, repository: repository);
+
+      await tester.enterText(find.byType(TextField), 'Buy milk');
+      await tester.tap(find.text('Add an item'));
+      await tester.pump();
+
+      expect(tester.widget<TextField>(find.byType(TextField)).enabled, isFalse);
+      expect(find.byType(CircularProgressIndicator), findsOneWidget);
+      expect(find.text('Add an item'), findsNothing);
+
+      repository.createGate!.complete();
+      await tester.pump();
+      // Let the success toast (5s auto-close) expire so no timers leak.
+      await tester.pump(const Duration(seconds: 6));
+      await tester.pumpAndSettle();
+
+      expect(tester.widget<TextField>(find.byType(TextField)).enabled, isTrue);
     });
   });
 
