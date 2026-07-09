@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:snowflake_flutter_theme/snowflake_flutter_theme.dart';
 import 'package:touchstone/core/app/i18n/translations.g.dart';
 import 'package:touchstone/data/local/app_preferences.dart';
+import 'package:touchstone/core/theme/app_colors.dart';
 import 'package:touchstone/domain/model/todo.dart';
 import 'package:touchstone/ui/home/controller/home_controller.dart';
 
@@ -167,7 +168,11 @@ class _TodoList extends ConsumerWidget {
         final mutationState = ref.watch(myMutationControllerProvider(todo.id));
         return ListTile(
           contentPadding: ThemeSizes.sym(h: ThemeSizes.m, v: ThemeSizes.xxs),
-          title: AppText.m(todo.title),
+          title: AppText.m(
+            todo.title,
+            color: isCompleted ? AppColors.grey : null,
+            textDecoration: isCompleted ? TextDecoration.lineThrough : null,
+          ),
           onTap: mutationState == MutationState.loading
               ? null
               : () => _onTodoTap(context, ref, todo),
