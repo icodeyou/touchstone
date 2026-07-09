@@ -43,6 +43,8 @@ firepit-log.txt
 #ios related
 /ios/build/
 /ios/Runner/
+/ios/Flutter/Debug.xcconfig
+/ios/Flutter/Release.xcconfig
 
 # Web related
 
