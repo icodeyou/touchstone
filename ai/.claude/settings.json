@@ -1,7 +1,8 @@
 {
   "permissions": {
     "allow": [
-      "Bash(git push --tags)"
+      "Bash(git push --tags)",
+      "Bash(gh pr merge:*)"
     ]
   }
 }
