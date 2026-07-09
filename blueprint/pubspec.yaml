@@ -17,6 +17,7 @@ dependencies:
   http: ^1.2.0
   json_annotation: ^4.9.0
   logger: ^2.4.0
+  mmkv: ^2.4.0
   slang: ">=4.0.0 <4.11.0" # error in version 4.11.0
   slang_flutter: ">=4.0.0 <4.11.0" # error in version 4.11.0
   snowflake_flutter_theme:
@@ -24,6 +25,7 @@ dependencies:
       url: https://github.com/icodeyou/snowflake_flutter_theme
       ref: v27
   uuid: ^4.5.2
+  web: ^1.1.1
 
 dev_dependencies:
   build_runner: ^2.4.8

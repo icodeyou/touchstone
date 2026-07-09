@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:snowflake_flutter_theme/snowflake_flutter_theme.dart';
 import 'package:touchstone/core/app/i18n/translations.g.dart';
+import 'package:touchstone/data/repository/preferences_repository.dart';
 import 'package:touchstone/domain/model/todo.dart';
 import 'package:touchstone/ui/home/controller/home_controller.dart';
 
@@ -20,15 +21,19 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   Future<void> _showWelcomeDialog() async {
-    if (!mounted) {
+    final preferences = ref.read(PreferencesRepository.provider);
+    if (!mounted || preferences.welcomeMessageSeen) {
       return;
     }
-    await Notif.showPopup(
+    final confirmed = await Notif.showPopup(
       context: context,
       title: t.welcomeDialog.title,
       content: AppText.m(t.welcomeDialog.message),
       confirmButtonText: t.welcomeDialog.ok,
     );
+    if (confirmed) {
+      preferences.markWelcomeMessageSeen();
+    }
   }
 
   @override
