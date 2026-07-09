@@ -18,8 +18,10 @@ class HomeController extends AsyncNotifier<List<Todo>> {
   }
 
   Future<void> createTodo(String title) async {
-    await ref.read(TodoRepository.provider).createTodo(title: title);
-    ref.invalidateSelf();
+    final created = await ref
+        .read(TodoRepository.provider)
+        .createTodo(title: title);
+    state = AsyncData([created, ...?state.value]);
   }
 
   /// Optimistic flip
