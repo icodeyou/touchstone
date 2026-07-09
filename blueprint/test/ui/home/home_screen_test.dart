@@ -15,12 +15,14 @@ class _FakeTodoRepository implements TodoRepository {
   Completer<void>? createGate;
   Completer<void>? updateGate;
   int updateCalls = 0;
+  int createCalls = 0;
 
   @override
   Future<List<Todo>> getTodos() async => todos;
 
   @override
   Future<Todo> createTodo({required String title}) async {
+    createCalls++;
     final gate = createGate;
     if (gate != null) {
       await gate.future;
@@ -95,6 +97,45 @@ void main() {
       await tester.pumpAndSettle();
 
       expect(find.text('Buy milk'), findsOneWidget);
+      expect(find.text('Please enter a title'), findsNothing);
+    });
+
+    testWidgets('submitting an empty field shows an error and does not create',
+        (tester) async {
+      final repository = _FakeTodoRepository();
+      await pumpHomeScreen(tester, repository: repository);
+
+      await tester.tap(find.text('Add an item'));
+      await tester.pump();
+
+      expect(find.text('Please enter a title'), findsOneWidget);
+      expect(repository.createCalls, 0);
+    });
+
+    testWidgets('submitting a whitespace-only field shows the error',
+        (tester) async {
+      final repository = _FakeTodoRepository();
+      await pumpHomeScreen(tester, repository: repository);
+
+      await tester.enterText(find.byType(TextField), '   ');
+      await tester.tap(find.text('Add an item'));
+      await tester.pump();
+
+      expect(find.text('Please enter a title'), findsOneWidget);
+      expect(repository.createCalls, 0);
+    });
+
+    testWidgets('typing clears the empty-field error', (tester) async {
+      await pumpHomeScreen(tester);
+
+      await tester.tap(find.text('Add an item'));
+      await tester.pump();
+      expect(find.text('Please enter a title'), findsOneWidget);
+
+      await tester.enterText(find.byType(TextField), 'B');
+      await tester.pump();
+
+      expect(find.text('Please enter a title'), findsNothing);
     });
 
     testWidgets('the field is disabled while the create is in flight',

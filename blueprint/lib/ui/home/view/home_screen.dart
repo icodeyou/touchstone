@@ -74,6 +74,7 @@ class _CreateTodoField extends ConsumerStatefulWidget {
 
 class _CreateTodoFieldState extends ConsumerState<_CreateTodoField> {
   final _controller = TextEditingController();
+  String? _errorText;
 
   @override
   void dispose() {
@@ -84,7 +85,11 @@ class _CreateTodoFieldState extends ConsumerState<_CreateTodoField> {
   Future<void> _submit() async {
     final title = _controller.text.trim();
     if (title.isEmpty) {
+      setState(() => _errorText = t.homeScreen.createTodoEmptyError);
       return;
+    }
+    if (_errorText != null) {
+      setState(() => _errorText = null);
     }
     await ref
         .read(myMutationControllerProvider(hashCode).notifier)
@@ -129,8 +134,14 @@ class _CreateTodoFieldState extends ConsumerState<_CreateTodoField> {
         TextField(
           controller: _controller,
           enabled: !isLoading,
+          onChanged: (_) {
+            if (_errorText != null) {
+              setState(() => _errorText = null);
+            }
+          },
           decoration: InputDecoration(
             hintText: t.homeScreen.createTodoHint,
+            errorText: _errorText,
             border: OutlineInputBorder(
               borderRadius: ThemeRadius.m.asBorderRadius,
               borderSide: BorderSide(color: ThemeColors.secondary(context)),
