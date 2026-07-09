@@ -16,6 +16,17 @@ class _FakeTodoRepository implements TodoRepository {
 
   @override
   Future<List<Todo>> getTodos() async => todos;
+
+  @override
+  Future<Todo> createTodo({required String title}) async =>
+      Todo(id: 1, userId: 42, title: title, status: TodoStatus.pending);
+
+  @override
+  Future<Todo> updateTodoStatus({
+    required int id,
+    required TodoStatus status,
+  }) async =>
+      todos.firstWhere((todo) => todo.id == id).copyWith(status: status);
 }
 
 void main() {

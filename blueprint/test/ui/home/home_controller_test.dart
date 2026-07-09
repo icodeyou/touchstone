@@ -18,6 +18,41 @@ class _FakeTodoRepository implements TodoRepository {
     }
     return todos ?? <Todo>[];
   }
+
+  @override
+  Future<Todo> createTodo({required String title}) async {
+    final currentError = error;
+    if (currentError != null) {
+      throw currentError;
+    }
+    final todo = Todo(
+      id: 1,
+      userId: 42,
+      title: title,
+      status: TodoStatus.pending,
+    );
+    todos = [...?todos, todo];
+    return todo;
+  }
+
+  @override
+  Future<Todo> updateTodoStatus({
+    required int id,
+    required TodoStatus status,
+  }) async {
+    final currentError = error;
+    if (currentError != null) {
+      throw currentError;
+    }
+    final updated = todos!
+        .firstWhere((todo) => todo.id == id)
+        .copyWith(status: status);
+    todos = [
+      for (final todo in todos!)
+        if (todo.id == id) updated else todo,
+    ];
+    return updated;
+  }
 }
 
 void main() {
@@ -81,6 +116,63 @@ void main() {
       await container.read(HomeController.provider.notifier).refresh();
 
       expect(container.read(HomeController.provider).value, [todo]);
+    });
+
+    group('toggleTodo', () {
+      test('optimistically completes a pending todo', () async {
+        final repository = _FakeTodoRepository(todos: [todo]);
+        final container = makeContainer(repository);
+        await container.read(HomeController.provider.future);
+
+        final future = container
+            .read(HomeController.provider.notifier)
+            .toggleTodo(todo);
+
+        // State is already flipped before the repository call resolves.
+        expect(
+          container.read(HomeController.provider).value?.single.status,
+          TodoStatus.completed,
+        );
+
+        await future;
+        expect(
+          container.read(HomeController.provider).value?.single.status,
+          TodoStatus.completed,
+        );
+      });
+
+      test('toggles a completed todo back to pending', () async {
+        final completed = todo.copyWith(status: TodoStatus.completed);
+        final repository = _FakeTodoRepository(todos: [completed]);
+        final container = makeContainer(repository);
+        await container.read(HomeController.provider.future);
+
+        await container
+            .read(HomeController.provider.notifier)
+            .toggleTodo(completed);
+
+        expect(
+          container.read(HomeController.provider).value?.single.status,
+          TodoStatus.pending,
+        );
+      });
+
+      test('rolls back and rethrows when the update fails', () async {
+        final repository = _FakeTodoRepository(todos: [todo]);
+        final container = makeContainer(repository);
+        await container.read(HomeController.provider.future);
+
+        repository.error = Exception('network down');
+
+        await expectLater(
+          container.read(HomeController.provider.notifier).toggleTodo(todo),
+          throwsException,
+        );
+        expect(
+          container.read(HomeController.provider).value?.single.status,
+          TodoStatus.pending,
+        );
+      });
     });
   });
 }

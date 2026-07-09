@@ -2,13 +2,22 @@ common:
   error: Error
   retry: Retry
   ok: OK
+  cancel: Cancel
+  create: Create
+  success: Success
 
 homeScreen:
   hello: Hello
   todosTitle: To-Do List
   loadError: Failed to load todos
+  todoUpdateError: Failed to update the todo
   emptyTodos: No todos found
+  createTodoTitle: New To-Do
+  createTodoHint: Title
+  createTodoEmptyError: Please enter a title
+  todoCreated: To-Do created
+  addItem: Add an item
 
 welcomeDialog:
   title: Welcome aboard! ✨
-  message: You just opened this app for the very first time — that officially makes you an early explorer. Look around, tap on things, and make yourself at home. We're thrilled to have you here!
+  message: You just opened this app for the very first time. Look around, tap on things, and make yourself at home. We're thrilled to have you here!

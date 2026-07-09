@@ -9,8 +9,37 @@ import 'package:touchstone/domain/model/todo.dart';
 import 'package:touchstone/ui/home/view/home_screen.dart';
 
 class _FakeTodoRepository implements TodoRepository {
+  List<Todo> todos = const <Todo>[];
+
   @override
-  Future<List<Todo>> getTodos() async => [];
+  Future<List<Todo>> getTodos() async => todos;
+
+  @override
+  Future<Todo> createTodo({required String title}) async {
+    final todo = Todo(
+      id: todos.length + 1,
+      userId: 42,
+      title: title,
+      status: TodoStatus.pending,
+    );
+    todos = [...todos, todo];
+    return todo;
+  }
+
+  @override
+  Future<Todo> updateTodoStatus({
+    required int id,
+    required TodoStatus status,
+  }) async {
+    final updated = todos
+        .firstWhere((todo) => todo.id == id)
+        .copyWith(status: status);
+    todos = [
+      for (final todo in todos)
+        if (todo.id == id) updated else todo,
+    ];
+    return updated;
+  }
 }
 
 Widget _buildApp() {

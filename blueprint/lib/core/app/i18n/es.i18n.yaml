@@ -2,13 +2,22 @@ common:
   error: Error
   retry: Reintentar
   ok: OK
+  cancel: Cancelar
+  create: Crear
+  success: Éxito
 
 homeScreen:
   hello: Holà
   todosTitle: Lista de tareas
   loadError: No se pudieron cargar las tareas
+  todoUpdateError: No se pudo actualizar la tarea
   emptyTodos: No hay tareas
+  createTodoTitle: Nueva tarea
+  createTodoHint: Título
+  createTodoEmptyError: Introduce un título
+  todoCreated: Tarea creada
+  addItem: Añadir un elemento
 
 welcomeDialog:
   title: ¡Bienvenido a bordo! ✨
-  message: Acabas de abrir esta app por primera vez — eso te convierte oficialmente en un explorador pionero. Echa un vistazo, toca lo que quieras y siéntete como en casa. ¡Estamos encantados de tenerte aquí!
+  message: Acabas de abrir esta app por primera vez. Echa un vistazo, toca lo que quieras y siéntete como en casa. ¡Estamos encantados de tenerte aquí!

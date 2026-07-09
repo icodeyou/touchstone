@@ -43,8 +43,6 @@ firepit-log.txt
 #ios related
 /ios/build/
 /ios/Runner/
-/ios/Flutter/Debug.xcconfig
-/ios/Flutter/Release.xcconfig
 
 # Web related
 
@@ -70,5 +68,9 @@ app.*.map.json
 
 # Claude Code local settings
 .claude/settings.local.json
+.blueprint/
+
+# API keys (dart-define file)
+api_keys.json
 
 .blueprint/

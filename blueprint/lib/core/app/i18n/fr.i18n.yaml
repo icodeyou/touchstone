@@ -2,13 +2,22 @@ common:
   error: Error
   retry: Réessayer
   ok: OK
+  cancel: Annuler
+  create: Créer
+  success: Succès
 
 homeScreen:
   hello: Bonjour
   todosTitle: Liste de tâches
   loadError: Échec du chargement des tâches
+  todoUpdateError: Échec de la mise à jour de la tâche
   emptyTodos: Aucune tâche
+  createTodoTitle: Nouvelle tâche
+  createTodoHint: Titre
+  createTodoEmptyError: Veuillez saisir un titre
+  todoCreated: Tâche créée
+  addItem: Ajouter un élément
 
 welcomeDialog:
   title: Bienvenue à bord ! ✨
-  message: Vous venez d'ouvrir cette app pour la toute première fois — cela fait officiellement de vous un explorateur de la première heure. Regardez autour de vous, touchez à tout et faites comme chez vous. Nous sommes ravis de vous compter parmi nous !
+  message: Vous venez d'ouvrir cette app pour la toute première fois. Regardez autour de vous, touchez à tout et faites comme chez vous. Nous sommes ravis de vous compter parmi nous !

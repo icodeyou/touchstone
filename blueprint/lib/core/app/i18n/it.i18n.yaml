@@ -2,13 +2,22 @@ common:
   error: Error
   retry: Riprova
   ok: OK
+  cancel: Annulla
+  create: Crea
+  success: Successo
 
 homeScreen:
   hello: Ciao
   todosTitle: Elenco attività
   loadError: Impossibile caricare le attività
+  todoUpdateError: Impossibile aggiornare l'attività
   emptyTodos: Nessuna attività
+  createTodoTitle: Nuova attività
+  createTodoHint: Titolo
+  createTodoEmptyError: Inserisci un titolo
+  todoCreated: Attività creata
+  addItem: Aggiungi un elemento
 
 welcomeDialog:
   title: Benvenuto a bordo! ✨
-  message: Hai appena aperto questa app per la primissima volta — questo ti rende ufficialmente un esploratore della prima ora. Dai un'occhiata in giro, tocca tutto e sentiti a casa. Siamo felicissimi di averti qui!
+  message: Hai appena aperto questa app per la primissima volta. Dai un'occhiata in giro, tocca tutto e sentiti a casa. Siamo felicissimi di averti qui!
