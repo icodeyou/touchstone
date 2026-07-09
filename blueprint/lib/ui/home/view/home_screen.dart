@@ -2,28 +2,51 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:snowflake_flutter_theme/snowflake_flutter_theme.dart';
 import 'package:touchstone/core/app/i18n/translations.g.dart';
+import 'package:touchstone/data/local/app_preferences.dart';
 import 'package:touchstone/domain/model/todo.dart';
 import 'package:touchstone/ui/home/controller/home_controller.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
+  Future<void> _showWelcomeDialog(BuildContext context, WidgetRef ref) async {
+    final preferences = ref.read(AppPreferences.provider);
+    if (await preferences.welcomeMessageSeen) {
+      return;
+    }
+    if (!context.mounted) {
+      return;
+    }
+    final confirmed = await Notif.showPopup(
+      context: context,
+      title: t.welcomeDialog.title,
+      content: AppText.m(t.welcomeDialog.message),
+      confirmButtonText: t.common.ok,
+    );
+    if (confirmed) {
+      await preferences.markWelcomeMessageSeen();
+    }
+  }
+
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final todosState = ref.watch(HomeController.provider);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: AppText.l(t.homeScreen.todosTitle, bold: true),
-      ),
-      body: todosState.when(
-        data: (todos) => todos.isEmpty
-            ? Center(child: AppText.m(t.homeScreen.emptyTodos))
-            : _TodoList(todos: todos),
-        error: (error, stackTrace) => _ErrorView(
-          onRetry: () => ref.read(HomeController.provider.notifier).refresh(),
+    return Init(
+      onInitPostFrame: () => _showWelcomeDialog(context, ref),
+      child: Scaffold(
+        appBar: AppBar(
+          title: AppText.l(t.homeScreen.todosTitle, bold: true),
         ),
-        loading: () => const Center(child: AppLoader.regular()),
+        body: todosState.when(
+          data: (todos) => todos.isEmpty
+              ? Center(child: AppText.m(t.homeScreen.emptyTodos))
+              : _TodoList(todos: todos),
+          error: (error, stackTrace) => _ErrorView(
+            onRetry: () => ref.read(HomeController.provider.notifier).refresh(),
+          ),
+          loading: () => const Center(child: AppLoader.regular()),
+        ),
       ),
     );
   }

@@ -1,9 +1,14 @@
 common:
   error: Error
   retry: Retry
+  ok: OK
 
 homeScreen:
   hello: Hello
   todosTitle: To-Do List
   loadError: Failed to load todos
   emptyTodos: No todos found
+
+welcomeDialog:
+  title: Welcome aboard! ✨
+  message: You just opened this app for the very first time — that officially makes you an early explorer. Look around, tap on things, and make yourself at home. We're thrilled to have you here!
