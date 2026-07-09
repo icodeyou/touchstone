@@ -59,23 +59,24 @@ no-op.
 
 ### 4. UI (`lib/ui/home/view/home_screen.dart`)
 
-Each row in `_TodoList` is wrapped in a `MutationWidget<void>` from
-`snowflake_flutter_theme` (the exported entry point to the package's
-`MutationController` pattern):
+Uses the package's `MutationController` directly (exported since
+`snowflake_flutter_theme 1.5.5`, which this change pins), **not**
+`MutationWidget` — no loader is shown, so the optimistic flip stays
+visible. Each `ListTile` in `_TodoList` gets an `onTap`:
 
-- `onPressed`: calls `toggleTodo(todo)` — the whole row is the tap target
-  via `MutationWidget`'s internal `GestureDetector`.
-- `onError`: shows an error toast (`Notif.showToast`, type error) using a
-  new `todoUpdateError` i18n key. The controller's rethrow after rollback
-  is what routes here (`MutationWidget`'s `mutate()` catches it).
-- `onSuccess`: nothing — the controller already updated the state, so the
-  row re-renders with the flipped icon. No success toast.
-- `_TodoList` becomes a `ConsumerWidget` to reach the controller.
-
-Known trade-off (accepted): while the PATCH is in flight, `MutationWidget`
-replaces the row with a centered `CircularProgressIndicator`, briefly
-hiding the optimistic flip. The optimistic update still gives instant
-final state on success and rollback on failure.
+- Runs the mutation through the per-todo controller instance:
+  `ref.read(myMutationControllerProvider(todo.id).notifier).action<void>(...)`
+  with:
+  - `mutation`: `() => ref.read(HomeController.provider.notifier).toggleTodo(todo)`
+  - `onError`: shows an error toast (`Notif.showToast`, type error) using
+    a new `todoUpdateError` i18n key. The home controller's rethrow after
+    rollback is what routes here (`action()`'s internal `mutate()`
+    catches it).
+  - `onSuccess`: nothing — state is already updated. No success toast.
+- Double-tap guard: `onTap` no-ops while that todo's mutation state is
+  `MutationState.loading` (read from `myMutationControllerProvider(todo.id)`),
+  without rendering any loading UI.
+- `_TodoList` becomes a `ConsumerWidget` to reach the providers.
 
 ## i18n
 
@@ -84,9 +85,9 @@ Add `todoUpdateError` under `homeScreen` in all four locale files
 
 ## Error handling
 
-- API/network failure → controller rolls back the list state and rethrows
-  → `MutationWidget` calls `onError` → error toast. Icon returns to its
-  previous state.
+- API/network failure → home controller rolls back the list state and
+  rethrows → `MutationController.action()` routes to `onError` → error
+  toast. Icon returns to its previous state.
 - No retry logic; the user can simply tap again.
 
 ## Testing
@@ -104,5 +105,4 @@ Follow existing test files and patterns:
 
 - Editing todo titles, deleting todos.
 - Success toasts for toggling.
-- Concurrent-tap dedup beyond what `MutationWidget`'s loading state
-  provides.
+- Concurrent-tap dedup beyond the per-todo `MutationState.loading` guard.
