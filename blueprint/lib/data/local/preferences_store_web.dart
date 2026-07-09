@@ -1,9 +1,12 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:touchstone/data/local/preferences_store.dart';
 import 'package:web/web.dart';
 
 Future<void> initializePreferences() async {}
 
-PreferencesStore createPreferencesStore() => _LocalStoragePreferencesStore();
+final Provider<PreferencesStore> preferencesStoreProvider = Provider(
+  (ref) => _LocalStoragePreferencesStore(),
+);
 
 class _LocalStoragePreferencesStore implements PreferencesStore {
   @override

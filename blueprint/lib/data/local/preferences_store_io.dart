@@ -1,3 +1,4 @@
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:mmkv/mmkv.dart';
 import 'package:touchstone/data/local/preferences_store.dart';
 
@@ -5,7 +6,9 @@ Future<void> initializePreferences() async {
   await MMKV.initialize();
 }
 
-PreferencesStore createPreferencesStore() => _MmkvPreferencesStore();
+final Provider<PreferencesStore> preferencesStoreProvider = Provider(
+  (ref) => _MmkvPreferencesStore(),
+);
 
 class _MmkvPreferencesStore implements PreferencesStore {
   final MMKV _mmkv = MMKV.defaultMMKV();
