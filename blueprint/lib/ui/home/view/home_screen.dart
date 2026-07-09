@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:snowflake_flutter_theme/snowflake_flutter_theme.dart';
 import 'package:touchstone/core/app/i18n/translations.g.dart';
-import 'package:touchstone/data/repository/preferences_repository.dart';
+import 'package:touchstone/data/local/app_preferences.dart';
 import 'package:touchstone/domain/model/todo.dart';
 import 'package:touchstone/ui/home/controller/home_controller.dart';
 
@@ -10,8 +10,11 @@ class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
   Future<void> _showWelcomeDialog(BuildContext context, WidgetRef ref) async {
-    final preferences = ref.read(PreferencesRepository.provider);
-    if (preferences.welcomeMessageSeen) {
+    final preferences = ref.read(AppPreferences.provider);
+    if (await preferences.welcomeMessageSeen) {
+      return;
+    }
+    if (!context.mounted) {
       return;
     }
     final confirmed = await Notif.showPopup(
@@ -21,7 +24,7 @@ class HomeScreen extends ConsumerWidget {
       confirmButtonText: t.common.ok,
     );
     if (confirmed) {
-      preferences.markWelcomeMessageSeen();
+      await preferences.markWelcomeMessageSeen();
     }
   }
 
