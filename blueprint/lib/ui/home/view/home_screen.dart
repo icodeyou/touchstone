@@ -5,11 +5,34 @@ import 'package:touchstone/core/app/i18n/translations.g.dart';
 import 'package:touchstone/domain/model/todo.dart';
 import 'package:touchstone/ui/home/controller/home_controller.dart';
 
-class HomeScreen extends ConsumerWidget {
+class HomeScreen extends ConsumerStatefulWidget {
   const HomeScreen({super.key});
 
   @override
-  Widget build(BuildContext context, WidgetRef ref) {
+  ConsumerState<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends ConsumerState<HomeScreen> {
+  @override
+  void initState() {
+    super.initState();
+    WidgetsBinding.instance.addPostFrameCallback((_) => _showWelcomeDialog());
+  }
+
+  Future<void> _showWelcomeDialog() async {
+    if (!mounted) {
+      return;
+    }
+    await Notif.showPopup(
+      context: context,
+      title: t.welcomeDialog.title,
+      content: AppText.m(t.welcomeDialog.message),
+      confirmButtonText: t.welcomeDialog.ok,
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
     final todosState = ref.watch(HomeController.provider);
 
     return Scaffold(

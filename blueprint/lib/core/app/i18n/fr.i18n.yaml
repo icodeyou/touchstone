@@ -7,3 +7,8 @@ homeScreen:
   todosTitle: Liste de tâches
   loadError: Échec du chargement des tâches
   emptyTodos: Aucune tâche
+
+welcomeDialog:
+  title: Bienvenue à bord ! ✨
+  message: Vous venez d'ouvrir cette app pour la toute première fois — cela fait officiellement de vous un explorateur de la première heure. Regardez autour de vous, touchez à tout et faites comme chez vous. Nous sommes ravis de vous compter parmi nous !
+  ok: OK
