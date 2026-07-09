@@ -22,6 +22,21 @@ class _FakeTodoRepository implements TodoRepository {
     todos = [...todos, todo];
     return todo;
   }
+
+  @override
+  Future<Todo> updateTodoStatus({
+    required int id,
+    required TodoStatus status,
+  }) async {
+    final updated = todos
+        .firstWhere((todo) => todo.id == id)
+        .copyWith(status: status);
+    todos = [
+      for (final todo in todos)
+        if (todo.id == id) updated else todo,
+    ];
+    return updated;
+  }
 }
 
 void main() {

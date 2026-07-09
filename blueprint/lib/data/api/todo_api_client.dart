@@ -61,6 +61,25 @@ class TodoApiClient {
     return Todo.fromMap(jsonDecode(response.body) as Map<String, Object?>);
   }
 
+  Future<Todo> updateTodoStatus({
+    required int id,
+    required TodoStatus status,
+  }) async {
+    final uri = Uri.parse('${AppConstants.goRestBaseUrl}/todos/$id');
+    final response = await _client.patch(
+      uri,
+      headers: _headers,
+      body: jsonEncode({'status': status.toValue()}),
+    );
+    if (response.statusCode != HttpStatus.ok) {
+      throw HttpException(
+        'PATCH /todos/$id failed (${response.statusCode})',
+        uri: uri,
+      );
+    }
+    return Todo.fromMap(jsonDecode(response.body) as Map<String, Object?>);
+  }
+
   Future<int> fetchFirstUserId() async {
     final uri = Uri.parse('${AppConstants.goRestBaseUrl}/users?per_page=1');
     final response = await _client.get(uri, headers: _headers);

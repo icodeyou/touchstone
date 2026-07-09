@@ -17,4 +17,10 @@ class TodoRepository {
     final userId = await _apiClient.fetchFirstUserId();
     return _apiClient.createTodo(userId: userId, title: title);
   }
+
+  Future<Todo> updateTodoStatus({
+    required int id,
+    required TodoStatus status,
+  }) =>
+      _apiClient.updateTodoStatus(id: id, status: status);
 }
