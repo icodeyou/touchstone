@@ -1,6 +1,7 @@
 common:
   error: Error
   retry: Riprova
+  ok: OK
 
 homeScreen:
   hello: Ciao
@@ -11,4 +12,3 @@ homeScreen:
 welcomeDialog:
   title: Benvenuto a bordo! ✨
   message: Hai appena aperto questa app per la primissima volta — questo ti rende ufficialmente un esploratore della prima ora. Dai un'occhiata in giro, tocca tutto e sentiti a casa. Siamo felicissimi di averti qui!
-  ok: OK

@@ -18,7 +18,7 @@ class HomeScreen extends ConsumerWidget {
       context: context,
       title: t.welcomeDialog.title,
       content: AppText.m(t.welcomeDialog.message),
-      confirmButtonText: t.welcomeDialog.ok,
+      confirmButtonText: t.common.ok,
     );
     if (confirmed) {
       preferences.markWelcomeMessageSeen();

@@ -52,7 +52,7 @@ void main() {
     await tester.pumpWidget(_buildApp(preferences));
     await tester.pumpAndSettle();
 
-    await tester.tap(find.text(t.welcomeDialog.ok));
+    await tester.tap(find.text(t.common.ok));
     await tester.pumpAndSettle();
 
     expect(find.byType(AlertDialog), findsNothing);
