@@ -10,6 +10,7 @@ homeScreen:
   hello: Bonjour
   todosTitle: Liste de tâches
   loadError: Échec du chargement des tâches
+  todoUpdateError: Échec de la mise à jour de la tâche
   emptyTodos: Aucune tâche
   createTodoTitle: Nouvelle tâche
   createTodoHint: Titre

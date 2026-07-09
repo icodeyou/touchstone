@@ -10,6 +10,7 @@ homeScreen:
   hello: Holà
   todosTitle: Lista de tareas
   loadError: No se pudieron cargar las tareas
+  todoUpdateError: No se pudo actualizar la tarea
   emptyTodos: No hay tareas
   createTodoTitle: Nueva tarea
   createTodoHint: Título

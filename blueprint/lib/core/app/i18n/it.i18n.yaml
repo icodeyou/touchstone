@@ -10,6 +10,7 @@ homeScreen:
   hello: Ciao
   todosTitle: Elenco attività
   loadError: Impossibile caricare le attività
+  todoUpdateError: Impossibile aggiornare l'attività
   emptyTodos: Nessuna attività
   createTodoTitle: Nuova attività
   createTodoHint: Titolo

@@ -10,6 +10,7 @@ homeScreen:
   hello: Hello
   todosTitle: To-Do List
   loadError: Failed to load todos
+  todoUpdateError: Failed to update the todo
   emptyTodos: No todos found
   createTodoTitle: New To-Do
   createTodoHint: Title
