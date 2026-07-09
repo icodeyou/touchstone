@@ -14,6 +14,7 @@ homeScreen:
   emptyTodos: Aucune tâche
   createTodoTitle: Nouvelle tâche
   createTodoHint: Titre
+  createTodoEmptyError: Veuillez saisir un titre
   todoCreated: Tâche créée
   addItem: Ajouter un élément
 

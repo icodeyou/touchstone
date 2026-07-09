@@ -14,6 +14,7 @@ homeScreen:
   emptyTodos: No hay tareas
   createTodoTitle: Nueva tarea
   createTodoHint: Título
+  createTodoEmptyError: Introduce un título
   todoCreated: Tarea creada
   addItem: Añadir un elemento
 
