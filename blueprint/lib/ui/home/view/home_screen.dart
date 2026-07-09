@@ -48,9 +48,14 @@ class HomeScreen extends ConsumerWidget {
                   data: (todos) => todos.isEmpty
                       ? Center(child: AppText.m(t.homeScreen.emptyTodos))
                       : _TodoList(todos: todos),
-                  error: (error, stackTrace) => _ErrorView(
-                    onRetry: () =>
-                        ref.read(HomeController.provider.notifier).refresh(),
+                  error: (error, stackTrace) => AppErrorView(
+                    errorTitle: t.common.error,
+                    errorMessage: t.homeScreen.loadError,
+                    retryButton: (
+                      label: t.common.retry,
+                      callback: () =>
+                          ref.read(HomeController.provider.notifier).refresh(),
+                    ),
                   ),
                   loading: () => const Center(child: AppLoader.regular()),
                 ),
@@ -230,25 +235,5 @@ class _TodoList extends ConsumerWidget {
             );
           },
         );
-  }
-}
-
-class _ErrorView extends StatelessWidget {
-  const _ErrorView({required this.onRetry});
-
-  final VoidCallback onRetry;
-
-  @override
-  Widget build(BuildContext context) {
-    return Center(
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          AppText.m(t.homeScreen.loadError),
-          const AppGap.m(),
-          AppButton.primary(onPressed: onRetry, label: t.common.retry),
-        ],
-      ),
-    );
   }
 }
