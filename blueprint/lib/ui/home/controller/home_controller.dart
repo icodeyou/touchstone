@@ -21,4 +21,26 @@ class HomeController extends AsyncNotifier<List<Todo>> {
     await ref.read(TodoRepository.provider).createTodo(title: title);
     ref.invalidateSelf();
   }
+
+  Future<void> toggleTodo(Todo todo) async {
+    final todos = state.value;
+    if (todos == null) {
+      return;
+    }
+    final newStatus = todo.status == TodoStatus.completed
+        ? TodoStatus.pending
+        : TodoStatus.completed;
+    state = AsyncData([
+      for (final item in todos)
+        if (item.id == todo.id) item.copyWith(status: newStatus) else item,
+    ]);
+    try {
+      await ref
+          .read(TodoRepository.provider)
+          .updateTodoStatus(id: todo.id, status: newStatus);
+    } catch (_) {
+      state = AsyncData(todos);
+      rethrow;
+    }
+  }
 }

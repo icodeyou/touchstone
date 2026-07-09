@@ -117,5 +117,62 @@ void main() {
 
       expect(container.read(HomeController.provider).value, [todo]);
     });
+
+    group('toggleTodo', () {
+      test('optimistically completes a pending todo', () async {
+        final repository = _FakeTodoRepository(todos: [todo]);
+        final container = makeContainer(repository);
+        await container.read(HomeController.provider.future);
+
+        final future = container
+            .read(HomeController.provider.notifier)
+            .toggleTodo(todo);
+
+        // State is already flipped before the repository call resolves.
+        expect(
+          container.read(HomeController.provider).value?.single.status,
+          TodoStatus.completed,
+        );
+
+        await future;
+        expect(
+          container.read(HomeController.provider).value?.single.status,
+          TodoStatus.completed,
+        );
+      });
+
+      test('toggles a completed todo back to pending', () async {
+        final completed = todo.copyWith(status: TodoStatus.completed);
+        final repository = _FakeTodoRepository(todos: [completed]);
+        final container = makeContainer(repository);
+        await container.read(HomeController.provider.future);
+
+        await container
+            .read(HomeController.provider.notifier)
+            .toggleTodo(completed);
+
+        expect(
+          container.read(HomeController.provider).value?.single.status,
+          TodoStatus.pending,
+        );
+      });
+
+      test('rolls back and rethrows when the update fails', () async {
+        final repository = _FakeTodoRepository(todos: [todo]);
+        final container = makeContainer(repository);
+        await container.read(HomeController.provider.future);
+
+        repository.error = Exception('network down');
+
+        await expectLater(
+          container.read(HomeController.provider.notifier).toggleTodo(todo),
+          throwsException,
+        );
+        expect(
+          container.read(HomeController.provider).value?.single.status,
+          TodoStatus.pending,
+        );
+      });
+    });
   });
 }
