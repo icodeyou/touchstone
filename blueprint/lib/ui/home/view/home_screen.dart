@@ -151,30 +151,53 @@ class _CreateTodoFieldState extends ConsumerState<_CreateTodoField> {
   }
 }
 
-class _TodoList extends StatelessWidget {
+class _TodoList extends ConsumerWidget {
   const _TodoList({required this.todos});
 
   final List<Todo> todos;
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     return ListView.separated(
       itemCount: todos.length,
       separatorBuilder: (context, index) => const Divider(height: 1),
       itemBuilder: (context, index) {
         final todo = todos[index];
         final isCompleted = todo.status == TodoStatus.completed;
+        final mutationState = ref.watch(myMutationControllerProvider(todo.id));
         return ListTile(
           contentPadding: ThemeSizes.sym(h: ThemeSizes.m, v: ThemeSizes.xxs),
           title: AppText.m(todo.title),
+          onTap: mutationState == MutationState.loading
+              ? null
+              : () => _onTodoTap(context, ref, todo),
           trailing: Icon(
             isCompleted ? Icons.check_circle : Icons.radio_button_unchecked,
-            color:
-                isCompleted ? ThemeColors.statusSuccess : ThemeColors.grey40,
+            color: isCompleted ? ThemeColors.statusSuccess : ThemeColors.grey40,
           ),
         );
       },
     );
+  }
+
+  void _onTodoTap(BuildContext context, WidgetRef ref, Todo todo) {
+    ref
+        .read(myMutationControllerProvider(todo.id).notifier)
+        .action<void>(
+          mutation: () =>
+              ref.read(HomeController.provider.notifier).toggleTodo(todo),
+          onError: () {
+            if (!context.mounted) {
+              return;
+            }
+            Notif.showToast(
+              context: context,
+              title: t.common.error,
+              message: t.homeScreen.todoUpdateError,
+              type: ToastType.error,
+            );
+          },
+        );
   }
 }
 

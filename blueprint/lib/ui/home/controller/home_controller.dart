@@ -22,6 +22,7 @@ class HomeController extends AsyncNotifier<List<Todo>> {
     ref.invalidateSelf();
   }
 
+  /// Optimistic flip
   Future<void> toggleTodo(Todo todo) async {
     final todos = state.value;
     if (todos == null) {
