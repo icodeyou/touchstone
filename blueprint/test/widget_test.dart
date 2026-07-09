@@ -6,7 +6,7 @@ import 'package:snowflake_flutter_theme/snowflake_flutter_theme.dart';
 import 'package:touchstone/core/app/i18n/translations.g.dart';
 import 'package:touchstone/data/local/preferences_keys.dart';
 import 'package:touchstone/data/repository/todo_repository.dart';
-import 'package:touchstone/domain/model/todo.dart';
+import 'package:touchstone/domain/entity/todo.dart';
 import 'package:touchstone/ui/home/view/home_screen.dart';
 
 class _FakeTodoRepository implements TodoRepository {

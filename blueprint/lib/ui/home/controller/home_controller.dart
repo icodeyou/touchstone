@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:touchstone/data/repository/todo_repository.dart';
-import 'package:touchstone/domain/model/todo.dart';
+import 'package:touchstone/domain/entity/todo.dart';
 
 class HomeController extends AsyncNotifier<List<Todo>> {
   static final provider = AsyncNotifierProvider<HomeController, List<Todo>>(

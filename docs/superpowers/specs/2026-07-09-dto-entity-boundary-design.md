@@ -44,7 +44,7 @@ No mapper. The repository passes the DTO through as the entity. This is the
   `snake_case`, raw types, `fromMap`/`fromJson`).
 - `Foo` (`domain/entity/`) becomes a pure entity: `@MappableClass` used **only**
   for `==`/`hashCode`/`copyWith`, no JSON, no `caseStyle`.
-- `FooMapper.fromDto` (`data/mapper/`) does the transformation.
+- `FooEntityMapper.fromDto` (`data/mapper/`) does the transformation.
 
 Because every consumer already imports `Foo`, promoting a typedef to a real
 class is a localized change: add the entity class, add the mapper, map in the
@@ -139,8 +139,8 @@ class Todo with TodoMappable {
 import 'package:touchstone/data/api/dto/todo_dto.dart';
 import 'package:touchstone/domain/entity/todo.dart';
 
-class TodoMapper {
-  const TodoMapper._();
+class TodoEntityMapper {
+  const TodoEntityMapper._();
 
   static Todo fromDto(TodoDto dto) => Todo(
         id: dto.id,
@@ -152,8 +152,9 @@ class TodoMapper {
 }
 ```
 
-No name collision: `dart_mappable` generates `TodoDtoMappable`/`TodoDtoMapper`
-from `TodoDto`, distinct from the hand-written `TodoMapper`.
+Naming: `dart_mappable` generates a `TodoMapper` from the entity `Todo` **and**
+a `TodoDtoMapper` from `TodoDto`. The hand-written mapper is therefore named
+`TodoEntityMapper` to avoid colliding with both.
 
 ## Data flow changes
 
