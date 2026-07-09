@@ -23,7 +23,7 @@ dependencies:
   snowflake_flutter_theme:
     git:
       url: https://github.com/icodeyou/snowflake_flutter_theme
-      ref: v27
+      ref: 1.6.0
   uuid: ^4.5.2
   web: ^1.1.1
 

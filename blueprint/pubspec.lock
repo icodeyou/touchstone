@@ -814,11 +814,11 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: v27
-      resolved-ref: "27c46d6e768a3e3229422e1c3cf1d43e9d02497c"
+      ref: "1.6.0"
+      resolved-ref: "886de1689635809b89777f1b52b6752d75f616b6"
       url: "https://github.com/icodeyou/snowflake_flutter_theme"
     source: git
-    version: "2.0.0+27"
+    version: "1.6.0+34"
   source_gen:
     dependency: transitive
     description:

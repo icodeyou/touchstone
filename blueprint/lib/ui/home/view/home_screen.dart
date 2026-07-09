@@ -6,23 +6,12 @@ import 'package:touchstone/data/repository/preferences_repository.dart';
 import 'package:touchstone/domain/model/todo.dart';
 import 'package:touchstone/ui/home/controller/home_controller.dart';
 
-class HomeScreen extends ConsumerStatefulWidget {
+class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
-  @override
-  ConsumerState<HomeScreen> createState() => _HomeScreenState();
-}
-
-class _HomeScreenState extends ConsumerState<HomeScreen> {
-  @override
-  void initState() {
-    super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) => _showWelcomeDialog());
-  }
-
-  Future<void> _showWelcomeDialog() async {
+  Future<void> _showWelcomeDialog(BuildContext context, WidgetRef ref) async {
     final preferences = ref.read(PreferencesRepository.provider);
-    if (!mounted || preferences.welcomeMessageSeen) {
+    if (preferences.welcomeMessageSeen) {
       return;
     }
     final confirmed = await Notif.showPopup(
@@ -37,21 +26,24 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
     final todosState = ref.watch(HomeController.provider);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: AppText.l(t.homeScreen.todosTitle, bold: true),
-      ),
-      body: todosState.when(
-        data: (todos) => todos.isEmpty
-            ? Center(child: AppText.m(t.homeScreen.emptyTodos))
-            : _TodoList(todos: todos),
-        error: (error, stackTrace) => _ErrorView(
-          onRetry: () => ref.read(HomeController.provider.notifier).refresh(),
+    return Init(
+      onInitPostFrame: () => _showWelcomeDialog(context, ref),
+      child: Scaffold(
+        appBar: AppBar(
+          title: AppText.l(t.homeScreen.todosTitle, bold: true),
         ),
-        loading: () => const Center(child: AppLoader.regular()),
+        body: todosState.when(
+          data: (todos) => todos.isEmpty
+              ? Center(child: AppText.m(t.homeScreen.emptyTodos))
+              : _TodoList(todos: todos),
+          error: (error, stackTrace) => _ErrorView(
+            onRetry: () => ref.read(HomeController.provider.notifier).refresh(),
+          ),
+          loading: () => const Center(child: AppLoader.regular()),
+        ),
       ),
     );
   }
