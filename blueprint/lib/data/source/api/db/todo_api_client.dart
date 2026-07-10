@@ -3,8 +3,9 @@ import 'dart:io';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
-import 'package:touchstone/core/constants/app_constants.dart';
-import 'package:touchstone/domain/model/todo.dart';
+import 'package:touchstone/data/source/api/dto/todo_dto.dart';
+import 'package:touchstone/domain/entity/todo.dart';
+import 'package:touchstone/shared/constants/app_constants.dart';
 
 class TodoApiClient {
   TodoApiClient({required http.Client client}) : _client = client;
@@ -18,13 +19,12 @@ class TodoApiClient {
   final http.Client _client;
 
   Map<String, String> get _headers => {
-        HttpHeaders.contentTypeHeader: 'application/json',
-        if (AppConstants.goRestApiToken.isNotEmpty)
-          HttpHeaders.authorizationHeader:
-              'Bearer ${AppConstants.goRestApiToken}',
-      };
+    HttpHeaders.contentTypeHeader: 'application/json',
+    if (AppConstants.goRestApiToken.isNotEmpty)
+      HttpHeaders.authorizationHeader: 'Bearer ${AppConstants.goRestApiToken}',
+  };
 
-  Future<List<Todo>> fetchTodos() async {
+  Future<List<TodoDto>> fetchTodos() async {
     final uri = Uri.parse('${AppConstants.goRestBaseUrl}/todos');
     final response = await _client.get(uri, headers: _headers);
     if (response.statusCode != HttpStatus.ok) {
@@ -34,10 +34,10 @@ class TodoApiClient {
       );
     }
     final body = jsonDecode(response.body) as List<Object?>;
-    return body.whereType<Map<String, Object?>>().map(Todo.fromMap).toList();
+    return body.whereType<Map<String, Object?>>().map(TodoDto.fromMap).toList();
   }
 
-  Future<Todo> createTodo({
+  Future<TodoDto> createTodo({
     required int userId,
     required String title,
     TodoStatus status = TodoStatus.pending,
@@ -58,10 +58,10 @@ class TodoApiClient {
         uri: uri,
       );
     }
-    return Todo.fromMap(jsonDecode(response.body) as Map<String, Object?>);
+    return TodoDto.fromMap(jsonDecode(response.body) as Map<String, Object?>);
   }
 
-  Future<Todo> updateTodoStatus({
+  Future<TodoDto> updateTodoStatus({
     required int id,
     required TodoStatus status,
   }) async {
@@ -77,7 +77,7 @@ class TodoApiClient {
         uri: uri,
       );
     }
-    return Todo.fromMap(jsonDecode(response.body) as Map<String, Object?>);
+    return TodoDto.fromMap(jsonDecode(response.body) as Map<String, Object?>);
   }
 
   Future<int> fetchFirstUserId() async {

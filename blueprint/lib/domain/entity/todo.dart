@@ -5,7 +5,11 @@ part 'todo.mapper.dart';
 @MappableEnum()
 enum TodoStatus { pending, completed }
 
-@MappableClass(caseStyle: CaseStyle.snakeCase)
+/// Domain entity for a todo. Pure of any wire format: it carries no JSON
+/// serialization. `@MappableClass` is used only for `==`/`hashCode`/`copyWith`.
+///
+/// It is built from a `TodoDto` via `TodoEntityMapper.fromDto`.
+@MappableClass()
 class Todo with TodoMappable {
   const Todo({
     required this.id,
@@ -20,8 +24,4 @@ class Todo with TodoMappable {
   final String title;
   final TodoStatus status;
   final DateTime? dueOn;
-
-  static Todo fromMap(Map<String, Object?> map) => TodoMapper.fromMap(map);
-
-  static const fromJson = TodoMapper.fromJson;
 }

@@ -1,7 +1,7 @@
 import 'dart:developer';
 
 import 'package:logger/logger.dart';
-import 'package:touchstone/core/constants/app_constants.dart';
+import 'package:touchstone/shared/constants/app_constants.dart';
 
 /// Getter for singleton, accessible from anywhere
 Logger get logger => Log();

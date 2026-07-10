@@ -1,5 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:touchstone/core/app/log/log.dart';
+import 'package:touchstone/core/log/log.dart';
 
 final class RiverpodObserver extends ProviderObserver {
   @override

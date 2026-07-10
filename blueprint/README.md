@@ -69,3 +69,36 @@ More information here : [Flutter channels](https://docs.flutter.dev/release/upgr
 
 This project uses Riverpod for state management and Clean Architecture.
 Here is the [Riverpod documentation](https://riverpod.dev/).
+
+#### Data layer: DTOs, entities & mappers
+
+The backend wire format is kept separate from the domain. There are two forms,
+and you pick based on whether they actually differ:
+
+- **Simple model (no divergence yet).** Write only the DTO — the
+  `dart_mappable` serializable class in `data/api/dto/` — and alias the entity
+  to it in `domain/entity/`:
+
+  ```dart
+  // domain/entity/foo.dart
+  typedef Foo = FooDto;
+  ```
+
+  No mapper; the repository passes the DTO through as the entity.
+
+- **Diverged model.** When the backend shape and the entity differ (renamed or
+  reshaped fields, type conversions, dropped/computed fields), promote the
+  entity to a real class:
+  - `FooDto` (`data/api/dto/`) keeps the wire format (`@MappableClass`,
+    `snake_case`, raw types).
+  - `Foo` (`domain/entity/`) is a pure entity — `@MappableClass` only for
+    `==`/`copyWith`, no JSON.
+  - `FooEntityMapper.fromDto` (`data/mapper/`) does the transformation. Use the
+    `Entity` suffix so the name doesn't collide with `dart_mappable`'s generated
+    `FooMapper` (from the entity) and `FooDtoMapper` (from the DTO).
+  - The repository maps DTOs to entities; UI consumes only entities.
+
+Promoting a typedef to a real class is localized: consumers already import
+`Foo`, so you only add the entity class, the mapper, and the mapping call in the
+repository. See `Todo` (`TodoDto` → `TodoEntityMapper` → `Todo`) for a worked
+example.

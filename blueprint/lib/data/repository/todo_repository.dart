@@ -1,6 +1,7 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:touchstone/data/api/todo_api_client.dart';
-import 'package:touchstone/domain/model/todo.dart';
+import 'package:touchstone/data/source/api/db/todo_api_client.dart';
+import 'package:touchstone/data/source/api/dto/todo_entity_converter.dart';
+import 'package:touchstone/domain/entity/todo.dart';
 
 class TodoRepository {
   TodoRepository({required TodoApiClient apiClient}) : _apiClient = apiClient;
@@ -11,16 +12,22 @@ class TodoRepository {
 
   final TodoApiClient _apiClient;
 
-  Future<List<Todo>> getTodos() => _apiClient.fetchTodos();
+  Future<List<Todo>> getTodos() async {
+    final dtos = await _apiClient.fetchTodos();
+    return dtos.map(TodoEntityConverter.fromDto).toList();
+  }
 
   Future<Todo> createTodo({required String title}) async {
     final userId = await _apiClient.fetchFirstUserId();
-    return _apiClient.createTodo(userId: userId, title: title);
+    final dto = await _apiClient.createTodo(userId: userId, title: title);
+    return TodoEntityConverter.fromDto(dto);
   }
 
   Future<Todo> updateTodoStatus({
     required int id,
     required TodoStatus status,
-  }) =>
-      _apiClient.updateTodoStatus(id: id, status: status);
+  }) async {
+    final dto = await _apiClient.updateTodoStatus(id: id, status: status);
+    return TodoEntityConverter.fromDto(dto);
+  }
 }
