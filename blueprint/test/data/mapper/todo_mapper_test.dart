@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:touchstone/data/source/api/dto/todo_dto.dart';
-import 'package:touchstone/data/source/api/dto/todo_entity_converter.dart';
+import 'package:touchstone/data/source/api/dto/todo/todo_dto.dart';
+import 'package:touchstone/data/source/api/dto/todo/todo_entity_converter.dart';
 import 'package:touchstone/domain/entity/todo.dart';
 
 void main() {

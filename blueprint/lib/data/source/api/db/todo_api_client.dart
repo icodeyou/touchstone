@@ -3,7 +3,7 @@ import 'dart:io';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
-import 'package:touchstone/data/source/api/dto/todo_dto.dart';
+import 'package:touchstone/data/source/api/dto/todo/todo_dto.dart';
 import 'package:touchstone/domain/entity/todo.dart';
 import 'package:touchstone/shared/constants/app_constants.dart';
 

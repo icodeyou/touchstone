@@ -1,4 +1,4 @@
-import 'package:touchstone/data/source/api/dto/todo_dto.dart';
+import 'package:touchstone/data/source/api/dto/todo/todo_dto.dart';
 import 'package:touchstone/domain/entity/todo.dart';
 
 /// Maps the [TodoDto] wire model to the domain [Todo] entity.

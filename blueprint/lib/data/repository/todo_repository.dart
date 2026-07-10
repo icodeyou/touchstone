@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:touchstone/data/source/api/db/todo_api_client.dart';
-import 'package:touchstone/data/source/api/dto/todo_entity_converter.dart';
+import 'package:touchstone/data/source/api/dto/todo/todo_entity_converter.dart';
 import 'package:touchstone/domain/entity/todo.dart';
 
 class TodoRepository {
