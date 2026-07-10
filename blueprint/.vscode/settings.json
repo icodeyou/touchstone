@@ -10,7 +10,8 @@
     },
     "cSpell.diagnosticLevel": "Hint",
     "cSpell.words": [
-        "touchstone"
+        "touchstone",
+        "dtos"
     ],
     "cSpell.overrides": [
         {

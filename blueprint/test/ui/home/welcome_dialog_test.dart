@@ -5,7 +5,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:touchstone/core/i18n/translations.g.dart';
 import 'package:touchstone/data/repository/todo_repository.dart';
 import 'package:touchstone/domain/entity/todo.dart';
-import 'package:touchstone/shared/constants/preference_keys.dart';
+import 'package:touchstone/shared/constants/pref_keys.dart';
 import 'package:touchstone/ui/home/view/home_screen.dart';
 
 class _FakeTodoRepository implements TodoRepository {
@@ -75,7 +75,7 @@ void main() {
 
     expect(find.byType(AlertDialog), findsNothing);
     final preferences = await SharedPreferences.getInstance();
-    expect(preferences.getBool(PreferenceKeys.welcomeMessageSeen), isTrue);
+    expect(preferences.getBool(PrefKeys.welcomeMessageSeen), isTrue);
   });
 
   testWidgets('Dismissing the dialog does not record the preference', (
@@ -90,15 +90,13 @@ void main() {
 
     expect(find.byType(AlertDialog), findsNothing);
     final preferences = await SharedPreferences.getInstance();
-    expect(preferences.getBool(PreferenceKeys.welcomeMessageSeen), isNull);
+    expect(preferences.getBool(PrefKeys.welcomeMessageSeen), isNull);
   });
 
   testWidgets('HomeScreen does not show the dialog once acknowledged', (
     tester,
   ) async {
-    SharedPreferences.setMockInitialValues({
-      PreferenceKeys.welcomeMessageSeen: true,
-    });
+    SharedPreferences.setMockInitialValues({PrefKeys.welcomeMessageSeen: true});
     await tester.pumpWidget(_buildApp());
     await tester.pumpAndSettle();
 
