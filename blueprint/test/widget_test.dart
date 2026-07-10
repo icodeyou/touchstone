@@ -3,10 +3,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:snowflake_flutter_theme/snowflake_flutter_theme.dart';
-import 'package:touchstone/core/app/i18n/translations.g.dart';
-import 'package:touchstone/data/local/preferences_keys.dart';
+import 'package:touchstone/core/i18n/translations.g.dart';
 import 'package:touchstone/data/repository/todo_repository.dart';
 import 'package:touchstone/domain/entity/todo.dart';
+import 'package:touchstone/shared/constants/preference_keys.dart';
 import 'package:touchstone/ui/home/view/home_screen.dart';
 
 class _FakeTodoRepository implements TodoRepository {
@@ -32,7 +32,7 @@ class _FakeTodoRepository implements TodoRepository {
 void main() {
   testWidgets('HomeScreen shows a loader then the todo list', (tester) async {
     SharedPreferences.setMockInitialValues({
-      PreferencesKeys.welcomeMessageSeen: true,
+      PreferenceKeys.welcomeMessageSeen: true,
     });
     const todos = [
       Todo(id: 1, userId: 42, title: 'Buy milk', status: TodoStatus.pending),
@@ -42,9 +42,7 @@ void main() {
     await tester.pumpWidget(
       ProviderScope(
         overrides: [
-          TodoRepository.provider.overrideWithValue(
-            _FakeTodoRepository(todos),
-          ),
+          TodoRepository.provider.overrideWithValue(_FakeTodoRepository(todos)),
         ],
         child: TranslationProvider(
           child: const MaterialApp(home: HomeScreen()),

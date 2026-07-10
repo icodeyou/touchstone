@@ -2,10 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:touchstone/core/app/i18n/translations.g.dart';
-import 'package:touchstone/data/local/preferences_keys.dart';
+import 'package:touchstone/core/i18n/translations.g.dart';
 import 'package:touchstone/data/repository/todo_repository.dart';
 import 'package:touchstone/domain/entity/todo.dart';
+import 'package:touchstone/shared/constants/preference_keys.dart';
 import 'package:touchstone/ui/home/view/home_screen.dart';
 
 class _FakeTodoRepository implements TodoRepository {
@@ -47,15 +47,14 @@ Widget _buildApp() {
     overrides: [
       TodoRepository.provider.overrideWithValue(_FakeTodoRepository()),
     ],
-    child: TranslationProvider(
-      child: const MaterialApp(home: HomeScreen()),
-    ),
+    child: TranslationProvider(child: const MaterialApp(home: HomeScreen())),
   );
 }
 
 void main() {
-  testWidgets('HomeScreen shows the welcome dialog on first launch',
-      (tester) async {
+  testWidgets('HomeScreen shows the welcome dialog on first launch', (
+    tester,
+  ) async {
     SharedPreferences.setMockInitialValues({});
     await tester.pumpWidget(_buildApp());
     await tester.pumpAndSettle();
@@ -64,8 +63,9 @@ void main() {
     expect(find.text(t.welcomeDialog.title), findsOneWidget);
   });
 
-  testWidgets('Tapping OK closes the dialog and records the preference',
-      (tester) async {
+  testWidgets('Tapping OK closes the dialog and records the preference', (
+    tester,
+  ) async {
     SharedPreferences.setMockInitialValues({});
     await tester.pumpWidget(_buildApp());
     await tester.pumpAndSettle();
@@ -75,11 +75,12 @@ void main() {
 
     expect(find.byType(AlertDialog), findsNothing);
     final preferences = await SharedPreferences.getInstance();
-    expect(preferences.getBool(PreferencesKeys.welcomeMessageSeen), isTrue);
+    expect(preferences.getBool(PreferenceKeys.welcomeMessageSeen), isTrue);
   });
 
-  testWidgets('Dismissing the dialog does not record the preference',
-      (tester) async {
+  testWidgets('Dismissing the dialog does not record the preference', (
+    tester,
+  ) async {
     SharedPreferences.setMockInitialValues({});
     await tester.pumpWidget(_buildApp());
     await tester.pumpAndSettle();
@@ -89,13 +90,14 @@ void main() {
 
     expect(find.byType(AlertDialog), findsNothing);
     final preferences = await SharedPreferences.getInstance();
-    expect(preferences.getBool(PreferencesKeys.welcomeMessageSeen), isNull);
+    expect(preferences.getBool(PreferenceKeys.welcomeMessageSeen), isNull);
   });
 
-  testWidgets('HomeScreen does not show the dialog once acknowledged',
-      (tester) async {
+  testWidgets('HomeScreen does not show the dialog once acknowledged', (
+    tester,
+  ) async {
     SharedPreferences.setMockInitialValues({
-      PreferencesKeys.welcomeMessageSeen: true,
+      PreferenceKeys.welcomeMessageSeen: true,
     });
     await tester.pumpWidget(_buildApp());
     await tester.pumpAndSettle();

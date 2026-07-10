@@ -3,9 +3,9 @@ import 'dart:io';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:http/http.dart' as http;
-import 'package:touchstone/core/constants/app_constants.dart';
-import 'package:touchstone/data/api/dto/todo_dto.dart';
+import 'package:touchstone/data/source/api/dto/todo_dto.dart';
 import 'package:touchstone/domain/entity/todo.dart';
+import 'package:touchstone/shared/constants/app_constants.dart';
 
 class TodoApiClient {
   TodoApiClient({required http.Client client}) : _client = client;
@@ -19,11 +19,10 @@ class TodoApiClient {
   final http.Client _client;
 
   Map<String, String> get _headers => {
-        HttpHeaders.contentTypeHeader: 'application/json',
-        if (AppConstants.goRestApiToken.isNotEmpty)
-          HttpHeaders.authorizationHeader:
-              'Bearer ${AppConstants.goRestApiToken}',
-      };
+    HttpHeaders.contentTypeHeader: 'application/json',
+    if (AppConstants.goRestApiToken.isNotEmpty)
+      HttpHeaders.authorizationHeader: 'Bearer ${AppConstants.goRestApiToken}',
+  };
 
   Future<List<TodoDto>> fetchTodos() async {
     final uri = Uri.parse('${AppConstants.goRestBaseUrl}/todos');

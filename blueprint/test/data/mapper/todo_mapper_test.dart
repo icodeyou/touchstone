@@ -1,6 +1,6 @@
 import 'package:flutter_test/flutter_test.dart';
-import 'package:touchstone/data/api/dto/todo_dto.dart';
-import 'package:touchstone/data/mapper/todo_mapper.dart';
+import 'package:touchstone/data/source/api/dto/todo_dto.dart';
+import 'package:touchstone/data/source/api/dto/todo_entity_converter.dart';
 import 'package:touchstone/domain/entity/todo.dart';
 
 void main() {
@@ -14,7 +14,7 @@ void main() {
         dueOn: '2026-07-09T00:00:00.000Z',
       );
 
-      final todo = TodoEntityMapper.fromDto(dto);
+      final todo = TodoEntityConverter.fromDto(dto);
 
       expect(todo.id, 1);
       expect(todo.userId, 42);
@@ -31,7 +31,7 @@ void main() {
         status: 'pending',
       );
 
-      expect(TodoEntityMapper.fromDto(dto).status, TodoStatus.pending);
+      expect(TodoEntityConverter.fromDto(dto).status, TodoStatus.pending);
     });
 
     test('leaves dueOn null when absent', () {
@@ -42,7 +42,7 @@ void main() {
         status: 'pending',
       );
 
-      expect(TodoEntityMapper.fromDto(dto).dueOn, isNull);
+      expect(TodoEntityConverter.fromDto(dto).dueOn, isNull);
     });
   });
 }

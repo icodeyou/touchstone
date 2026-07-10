@@ -1,5 +1,5 @@
 import 'package:go_router/go_router.dart';
-import 'package:touchstone/core/app/routing/paths.dart';
+import 'package:touchstone/core/routing/paths.dart';
 import 'package:touchstone/ui/home/view/home_screen.dart';
 
 final router = GoRouter(
