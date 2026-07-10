@@ -4,15 +4,24 @@ import 'package:touchstone/shared/constants/pref_keys.dart';
 
 /// User preferences, persisted with [SharedPreferences].
 class AppPreferences {
-  static final provider = Provider<AppPreferences>((ref) => AppPreferences());
+  AppPreferences({required SharedPreferences preferences})
+    : _preferences = preferences;
 
-  Future<bool> get welcomeMessageSeen async {
-    final preferences = await SharedPreferences.getInstance();
-    return preferences.getBool(PrefKeys.welcomeMessageSeen) ?? false;
-  }
+  static final futureProvider = FutureProvider<SharedPreferences>(
+    (ref) => SharedPreferences.getInstance(),
+    retry: (retryCount, error) => null,
+  );
 
-  Future<void> markWelcomeMessageSeen() async {
-    final preferences = await SharedPreferences.getInstance();
-    await preferences.setBool(PrefKeys.welcomeMessageSeen, true);
-  }
+  static final provider = Provider<AppPreferences>(
+    (ref) =>
+        AppPreferences(preferences: ref.watch(futureProvider).requireValue),
+  );
+
+  final SharedPreferences _preferences;
+
+  bool get welcomeMessageSeen =>
+      _preferences.getBool(PrefKeys.welcomeMessageSeen) ?? false;
+
+  Future<void> markWelcomeMessageSeen() =>
+      _preferences.setBool(PrefKeys.welcomeMessageSeen, true);
 }

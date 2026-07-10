@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:touchstone/core/app_preferences.dart';
 import 'package:touchstone/core/i18n/translations.g.dart';
 import 'package:touchstone/data/repository/todo_repository.dart';
 import 'package:touchstone/domain/entity/todo.dart';
@@ -42,10 +43,14 @@ class _FakeTodoRepository implements TodoRepository {
   }
 }
 
-Widget _buildApp() {
+Future<Widget> _buildApp() async {
+  final preferences = await SharedPreferences.getInstance();
   return ProviderScope(
     overrides: [
       TodoRepository.provider.overrideWithValue(_FakeTodoRepository()),
+      AppPreferences.futureProvider.overrideWithValue(
+        AsyncValue.data(preferences),
+      ),
     ],
     child: TranslationProvider(child: const MaterialApp(home: HomeScreen())),
   );
@@ -56,7 +61,7 @@ void main() {
     tester,
   ) async {
     SharedPreferences.setMockInitialValues({});
-    await tester.pumpWidget(_buildApp());
+    await tester.pumpWidget(await _buildApp());
     await tester.pumpAndSettle();
 
     expect(find.byType(AlertDialog), findsOneWidget);
@@ -67,7 +72,7 @@ void main() {
     tester,
   ) async {
     SharedPreferences.setMockInitialValues({});
-    await tester.pumpWidget(_buildApp());
+    await tester.pumpWidget(await _buildApp());
     await tester.pumpAndSettle();
 
     await tester.tap(find.text(t.common.ok));
@@ -82,7 +87,7 @@ void main() {
     tester,
   ) async {
     SharedPreferences.setMockInitialValues({});
-    await tester.pumpWidget(_buildApp());
+    await tester.pumpWidget(await _buildApp());
     await tester.pumpAndSettle();
 
     await tester.tapAt(const Offset(5, 5));
@@ -97,7 +102,7 @@ void main() {
     tester,
   ) async {
     SharedPreferences.setMockInitialValues({PrefKeys.welcomeMessageSeen: true});
-    await tester.pumpWidget(_buildApp());
+    await tester.pumpWidget(await _buildApp());
     await tester.pumpAndSettle();
 
     expect(find.byType(AlertDialog), findsNothing);

@@ -12,10 +12,7 @@ class HomeScreen extends ConsumerWidget {
 
   Future<void> _showWelcomeDialog(BuildContext context, WidgetRef ref) async {
     final preferences = ref.read(AppPreferences.provider);
-    if (await preferences.welcomeMessageSeen) {
-      return;
-    }
-    if (!context.mounted) {
+    if (preferences.welcomeMessageSeen) {
       return;
     }
     final confirmed = await Notif.showPopup(
