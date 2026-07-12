@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:snowflake_flutter_theme/snowflake_flutter_theme.dart';
-import 'package:touchstone/core/app_preferences.dart';
 import 'package:touchstone/core/i18n/translations.g.dart';
+import 'package:touchstone/core/startup/startup_providers.dart';
 import 'package:touchstone/ui/home/controller/home_controller.dart';
 import 'package:touchstone/ui/home/view/create_todo_view.dart';
 import 'package:touchstone/ui/home/view/todo_list_view.dart';
@@ -11,7 +11,7 @@ class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
 
   Future<void> _showWelcomeDialog(BuildContext context, WidgetRef ref) async {
-    final preferences = ref.read(AppPreferences.provider);
+    final preferences = ref.read(StartupProviders.appPreferences);
     if (preferences.welcomeMessageSeen) {
       return;
     }

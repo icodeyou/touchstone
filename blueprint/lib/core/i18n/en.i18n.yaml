@@ -6,6 +6,9 @@ common:
   create: Create
   success: Success
 
+startup:
+  loadError: Failed to start the app
+
 homeScreen:
   hello: Hello
   todosTitle: To-Do List

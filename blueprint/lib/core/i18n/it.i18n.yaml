@@ -6,6 +6,9 @@ common:
   create: Crea
   success: Successo
 
+startup:
+  loadError: Impossibile avviare l'app
+
 homeScreen:
   hello: Ciao
   todosTitle: Elenco attività

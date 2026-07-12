@@ -6,6 +6,9 @@ common:
   create: Crear
   success: Éxito
 
+startup:
+  loadError: Error al iniciar la aplicación
+
 homeScreen:
   hello: Holà
   todosTitle: Lista de tareas
