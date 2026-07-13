@@ -24,6 +24,10 @@ If `.blueprint/` cannot be created (touchstone is unavailable or the tag is miss
 
 Add `.blueprint/` to this project's `.gitignore`; it is a regenerable cache.
 
+#### Sentry
+
+The app is created **without Sentry**. When conforming to `.blueprint/`, omit all Sentry wiring: the `sentry_flutter` dependency, `lib/core/log/sentry_reporter.dart`, the `SentryReporter` calls in `main.dart` and `log.dart`, and the `AppConstants.sentryDsn` constant. Sentry is added only when the app goes to production, via the `sentry` skill.
+
 ## Custom instructions
 
 Write here your custom instructions, concerning this project only.

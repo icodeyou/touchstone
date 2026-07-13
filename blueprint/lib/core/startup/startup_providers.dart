@@ -3,6 +3,9 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:touchstone/core/app_preferences.dart';
 import 'package:touchstone/core/startup/app_startup.dart';
 
+/// Set once in `main` before the app starts.
+late final PackageInfo appPackageInfo;
+
 /// Synchronous access to the async dependencies initialized by [AppStartup].
 /// Reading one before startup completes throws a [StateError].
 class StartupProviders {
@@ -12,14 +15,5 @@ class StartupProviders {
     ),
   );
 
-  static final packageInfo = Provider<PackageInfo>(
-    (ref) => ref.watch(StartupFutureProviders.packageInfo).requireValue,
-  );
-}
-
-class StartupFutureProviders {
-  static final packageInfo = FutureProvider<PackageInfo>(
-    (ref) => PackageInfo.fromPlatform(),
-    retry: (retryCount, error) => null,
-  );
+  static final packageInfo = Provider<PackageInfo>((ref) => appPackageInfo);
 }

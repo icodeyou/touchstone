@@ -1,4 +1,6 @@
 import 'package:flutter/foundation.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
+import 'package:touchstone/core/log/sentry_reporter.dart';
 
 /// Getter for singleton, accessible from anywhere
 Log get logger => Log();
@@ -78,6 +80,13 @@ class Log {
     }
     // ignore: avoid_print
     print(buffer);
+
+    SentryReporter.report(
+      level.sentryLevel,
+      message,
+      error: error,
+      stackTrace: stackTrace,
+    );
   }
 
   static String _colorize(Object? text, _AnsiCode color, {bool bold = false}) {
@@ -92,6 +101,16 @@ class Log {
     String two(int n) => n.toString().padLeft(2, '0');
     return '${two(now.hour)}:${two(now.minute)}:${two(now.second)}';
   }
+}
+
+extension on _Level {
+  SentryLevel get sentryLevel => switch (this) {
+    _Level.trace || _Level.debug => SentryLevel.debug,
+    _Level.info => SentryLevel.info,
+    _Level.warning => SentryLevel.warning,
+    _Level.error => SentryLevel.error,
+    _Level.fatal => SentryLevel.fatal,
+  };
 }
 
 extension LogStringExtension on String {
