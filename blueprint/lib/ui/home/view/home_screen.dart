@@ -29,6 +29,7 @@ class HomeScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final todosState = ref.watch(HomeController.provider);
+    final packageInfo = ref.watch(StartupProviders.packageInfo);
 
     return Init(
       onInitPostFrame: () => _showWelcomeDialog(context, ref),
@@ -57,6 +58,8 @@ class HomeScreen extends ConsumerWidget {
                   loading: () => const Center(child: AppLoader.regular()),
                 ),
               ),
+              const AppGap.m(),
+              AppText.s('v${packageInfo.version} (${packageInfo.buildNumber})'),
             ],
           ),
         ),

@@ -3,8 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:package_info_plus/package_info_plus.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:touchstone/core/app_preferences.dart';
+import 'package:touchstone/core/startup/startup_providers.dart';
 import 'package:touchstone/data/repository/todo_repository.dart';
 import 'package:touchstone/domain/entity/todo.dart';
 import 'package:touchstone/shared/constants/pref_keys.dart';
@@ -80,6 +82,16 @@ void main() {
           ),
           AppPreferences.futureProvider.overrideWithValue(
             AsyncValue.data(preferences),
+          ),
+          StartupFutureProviders.packageInfo.overrideWithValue(
+            AsyncValue.data(
+              PackageInfo(
+                appName: 'touchstone',
+                packageName: 'com.example.touchstone',
+                version: '1.0.0',
+                buildNumber: '1',
+              ),
+            ),
           ),
         ],
         child: const MaterialApp(home: HomeScreen()),

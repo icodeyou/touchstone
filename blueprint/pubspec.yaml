@@ -18,6 +18,7 @@ dependencies:
   http: ^1.2.0
   json_annotation: ^4.9.0
   logger: ^2.4.0
+  package_info_plus: ^10.2.0
   shared_preferences: ^2.5.3
   slang: ">=4.0.0 <4.11.0" # error in version 4.11.0
   slang_flutter: ">=4.0.0 <4.11.0" # error in version 4.11.0
