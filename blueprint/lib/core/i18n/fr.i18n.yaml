@@ -1,10 +1,14 @@
 common:
+  appName: Touchstone
   error: Error
   retry: Réessayer
   ok: OK
   cancel: Annuler
   create: Créer
   success: Succès
+
+startup:
+  loadError: Échec du démarrage de l'application
 
 homeScreen:
   hello: Bonjour

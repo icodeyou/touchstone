@@ -4,6 +4,7 @@ import 'package:snowflake_flutter_theme/snowflake_flutter_theme.dart';
 import 'package:touchstone/core/i18n/translations.g.dart';
 import 'package:touchstone/core/riverpod/riverpod_observers.dart';
 import 'package:touchstone/core/routing/router.dart';
+import 'package:touchstone/core/startup/app_startup_widget.dart';
 import 'package:touchstone/core/theme/app_colors.dart';
 
 class MyApp extends StatelessWidget {
@@ -21,6 +22,7 @@ class MyApp extends StatelessWidget {
             appColors: lightColors,
           ),
           routerConfig: router,
+          builder: (_, child) => AppStartupWidget(onLoaded: (_) => child!),
         ),
       ),
     );

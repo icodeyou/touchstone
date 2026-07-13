@@ -3,8 +3,13 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:package_info_plus/package_info_plus.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:touchstone/core/app_preferences.dart';
+import 'package:touchstone/core/startup/startup_providers.dart';
 import 'package:touchstone/data/repository/todo_repository.dart';
 import 'package:touchstone/domain/entity/todo.dart';
+import 'package:touchstone/shared/constants/pref_keys.dart';
 import 'package:touchstone/ui/home/view/home_screen.dart';
 
 class _FakeTodoRepository implements TodoRepository {
@@ -67,11 +72,27 @@ void main() {
     WidgetTester tester, {
     _FakeTodoRepository? repository,
   }) async {
+    SharedPreferences.setMockInitialValues({PrefKeys.welcomeMessageSeen: true});
+    final preferences = await SharedPreferences.getInstance();
     await tester.pumpWidget(
       ProviderScope(
         overrides: [
-          TodoRepository.provider
-              .overrideWithValue(repository ?? _FakeTodoRepository()),
+          TodoRepository.provider.overrideWithValue(
+            repository ?? _FakeTodoRepository(),
+          ),
+          AppPreferences.futureProvider.overrideWithValue(
+            AsyncValue.data(preferences),
+          ),
+          StartupFutureProviders.packageInfo.overrideWithValue(
+            AsyncValue.data(
+              PackageInfo(
+                appName: 'touchstone',
+                packageName: 'com.example.touchstone',
+                version: '1.0.0',
+                buildNumber: '1',
+              ),
+            ),
+          ),
         ],
         child: const MaterialApp(home: HomeScreen()),
       ),
@@ -100,20 +121,23 @@ void main() {
       expect(find.text('Please enter a title'), findsNothing);
     });
 
-    testWidgets('submitting an empty field shows an error and does not create',
-        (tester) async {
-      final repository = _FakeTodoRepository();
-      await pumpHomeScreen(tester, repository: repository);
+    testWidgets(
+      'submitting an empty field shows an error and does not create',
+      (tester) async {
+        final repository = _FakeTodoRepository();
+        await pumpHomeScreen(tester, repository: repository);
 
-      await tester.tap(find.text('Add an item'));
-      await tester.pump();
+        await tester.tap(find.text('Add an item'));
+        await tester.pump();
 
-      expect(find.text('Please enter a title'), findsOneWidget);
-      expect(repository.createCalls, 0);
-    });
+        expect(find.text('Please enter a title'), findsOneWidget);
+        expect(repository.createCalls, 0);
+      },
+    );
 
-    testWidgets('submitting a whitespace-only field shows the error',
-        (tester) async {
+    testWidgets('submitting a whitespace-only field shows the error', (
+      tester,
+    ) async {
       final repository = _FakeTodoRepository();
       await pumpHomeScreen(tester, repository: repository);
 
@@ -138,8 +162,9 @@ void main() {
       expect(find.text('Please enter a title'), findsNothing);
     });
 
-    testWidgets('the field is disabled while the create is in flight',
-        (tester) async {
+    testWidgets('the field is disabled while the create is in flight', (
+      tester,
+    ) async {
       final repository = _FakeTodoRepository()..createGate = Completer<void>();
       await pumpHomeScreen(tester, repository: repository);
 
@@ -192,8 +217,9 @@ void main() {
       expect(find.byIcon(Icons.radio_button_unchecked), findsOneWidget);
     });
 
-    testWidgets('failed update rolls the icon back and shows a toast',
-        (tester) async {
+    testWidgets('failed update rolls the icon back and shows a toast', (
+      tester,
+    ) async {
       final repository = _FakeTodoRepository(todos: [pendingTodo])
         ..updateError = Exception('network down');
       await pumpHomeScreen(tester, repository: repository);
@@ -211,8 +237,9 @@ void main() {
       await tester.pumpAndSettle();
     });
 
-    testWidgets('taps are ignored while an update is in flight',
-        (tester) async {
+    testWidgets('taps are ignored while an update is in flight', (
+      tester,
+    ) async {
       final repository = _FakeTodoRepository(todos: [pendingTodo])
         ..updateGate = Completer<void>();
       await pumpHomeScreen(tester, repository: repository);
