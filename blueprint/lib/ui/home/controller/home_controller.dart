@@ -1,4 +1,5 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:touchstone/core/log/log.dart';
 import 'package:touchstone/data/repository/todo_repository.dart';
 import 'package:touchstone/domain/entity/todo.dart';
 
@@ -21,6 +22,7 @@ class HomeController extends AsyncNotifier<List<Todo>> {
     final created = await ref
         .read(TodoRepository.provider)
         .createTodo(title: title);
+    'Todo ${created.id} created'.logInfo;
     state = AsyncData([created, ...?state.value]);
   }
 
@@ -41,7 +43,12 @@ class HomeController extends AsyncNotifier<List<Todo>> {
       await ref
           .read(TodoRepository.provider)
           .updateTodoStatus(id: todo.id, status: newStatus);
-    } catch (_) {
+      'Todo ${todo.id} updated to ${newStatus.name}'.logInfo;
+    } catch (error, stackTrace) {
+      'Failed to update todo ${todo.id}, reverting'.logWarning(
+        error: error,
+        stackTrace: stackTrace,
+      );
       state = AsyncData(todos);
       rethrow;
     }

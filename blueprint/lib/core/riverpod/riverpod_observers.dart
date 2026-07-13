@@ -27,7 +27,6 @@ final class RiverpodObserver extends ProviderObserver {
     Object error,
     StackTrace stackTrace,
   ) {
-    print('ERROR');
     logger.e('''
         ⛔ ERROR IN PROVIDER : ${context.provider}
         💬 MESSAGE : $error

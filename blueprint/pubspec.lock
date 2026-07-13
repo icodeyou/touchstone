@@ -270,6 +270,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_color_logger:
+    dependency: "direct main"
+    description:
+      name: flutter_color_logger
+      sha256: b95c47c608e9e04ff54125ef9a596d281fcb20e94d0d0313b096d3770fbe856d
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.1.0"
   flutter_form_builder:
     dependency: transitive
     description:
