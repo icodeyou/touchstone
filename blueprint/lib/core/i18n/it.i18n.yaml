@@ -1,4 +1,5 @@
 common:
+  appName: Touchstone
   error: Error
   retry: Riprova
   ok: OK

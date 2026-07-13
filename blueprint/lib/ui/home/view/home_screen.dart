@@ -34,7 +34,7 @@ class HomeScreen extends ConsumerWidget {
     return Init(
       onInitPostFrame: () => _showWelcomeDialog(context, ref),
       child: Scaffold(
-        appBar: AppBar(title: AppText.l(t.homeScreen.todosTitle, bold: true)),
+        appBar: AppBar(title: AppText.l(t.common.appName, bold: true)),
         body: Padding(
           padding: ThemeSizes.m.asInsets,
           child: Column(
