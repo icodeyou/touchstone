@@ -22,7 +22,6 @@ class AppStartupWidget extends ConsumerWidget {
         return onLoaded(context);
       },
       error: (error, stackTrace) {
-        'App startup failed'.logError(error: error, stackTrace: stackTrace);
         FlutterNativeSplash.remove();
         return Scaffold(
           body: AppErrorView(

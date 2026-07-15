@@ -9,7 +9,7 @@ import 'package:touchstone/core/startup/startup_future_providers.dart';
 class StartupProviders {
   /// Overridden in `MyApp` with the instance resolved in `main`.
   static final packageInfo = Provider<PackageInfo>(
-    (ref) => throw UnimplementedError('packageInfo was not overridden'),
+    (ref) => throw UnimplementedError('Provider packageInfo was not overridden'),
   );
 
   static final appPreferences = Provider<AppPreferences>(
