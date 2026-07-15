@@ -102,5 +102,21 @@ than committing them by accident — they may want to stash or split first.
 For a minor bump within the same family, drop the family from the message:
 `chore(blueprint): upgrade to version 1.1`.
 
+### 7. Tag the commit
+
+Tag the commit you just made. The tag is the bare version number — no `v` prefix, matching
+the existing tags:
+
+```bash
+git tag -a 2.0 -m "Version 2.0 (BLEACHERS)"
+```
+
+For a minor bump within the same family, drop the family: `-m "Version 1.1"`.
+
+If the tag already exists, stop and tell the user rather than moving or forcing it — an
+existing tag means that version was already released.
+
+Don't push the tag. Leave that to the user.
+
 Report the result to the user: old version → new version, the file rename if there was one,
-and the commit.
+the commit, and the tag.
