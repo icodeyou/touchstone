@@ -1,0 +1,106 @@
+---
+name: upgrade
+description: Upgrade the Pixelita blueprint to a new version — bumps the version number in `blueprint/_<FAMILY>.version` and `blueprint/pubspec.yaml`, renaming the version file when a new major starts a new version family. Use this whenever the user wants to bump, release, or upgrade the blueprint version, mentions a new blueprint version number like "2.0", asks to "pass the blueprint to the next version", or wants to start a new version family — even if they don't say the word "upgrade".
+---
+
+Upgrade the blueprint to a new version.
+
+Only `blueprint/` is ever touched. The `.blueprint` folders inside `stones/` are frozen
+snapshots recording which blueprint version each stone was crafted from — rewriting them
+would destroy that history. Leave them alone.
+
+## Versioning model
+
+Two files carry the version, and they must always agree:
+
+- `blueprint/_<FAMILY>.version` — the source of truth. Holds the version family and the
+  `X.Y` number.
+- `blueprint/pubspec.yaml` — line `version: X.Y.0+<build>`. The patch is always `0`
+  (the blueprint is a template, never patched), the build number counts up on every
+  upgrade so it never repeats.
+
+Each major version has a **version family** named after a music artist, and families run
+in alphabetical order: major 1 is `ARCTIC MONKEYS` (A). A new major means a new family
+whose first letter comes strictly after the current one — that's what makes the family
+name alone tell you which major you're on. A minor bump stays in the same family.
+
+The file name encodes the family: family `BLEACHERS` lives in `_BLEACHERS.version`. The name
+is uppercased and any spaces become underscores — `ARCTIC MONKEYS` lives in
+`_ARCTIC_MONKEYS.version`. So a new family means renaming the file, not just editing it.
+
+## Steps
+
+### 1. Read the current version
+
+```bash
+cat blueprint/_*.version
+```
+
+It looks like this — keep the ` : ` spacing exactly when you rewrite it:
+
+```
+Version family : ARCTIC MONKEYS
+Version number : 1.0
+```
+
+### 2. Ask for the new version
+
+Ask the user for the new version, and tell them where they're starting from:
+`Current version is 1.0`.
+
+Validate the answer before going further — a bad version silently written to disk is worse
+than one more question:
+
+- Shape must be `X.Y` (two numbers). `2`, `2.0.0` or `v2.0` are not valid.
+- It must be strictly higher than the current one. If they answer `1.0` or `0.9` against a
+  current `1.0`, say so plainly (`0.9 is not higher than 1.0.`) and ask again.
+
+### 3. Ask for the version family — only if the major changed
+
+If the major is unchanged (`1.0` → `1.1`), the family is unchanged. Skip this step, and
+don't ask a question whose answer is already known.
+
+If the major changed (`1.0` → `2.0`), ask for the new version family, telling them the
+constraint that applies right now — compute the required letter from the *current* family's
+first letter, don't hardcode it:
+
+> Current family is ARCTIC MONKEYS. Version family? Must start with B or any letter after.
+
+Validate: the first letter must come strictly after the current family's first letter in the
+alphabet. `AIR` after `ARCTIC MONKEYS` is a rejection.
+
+### 4. Write the version file
+
+Uppercase the family. If it changed, rename the file with `git mv` so the history follows
+the file instead of showing a delete plus an add:
+
+```bash
+git mv blueprint/_ARCTIC_MONKEYS.version blueprint/_BLEACHERS.version
+```
+
+Then write both lines — family and number — with the new values.
+
+### 5. Write pubspec.yaml
+
+Bump `version:` to `Y.Y.0+<build+1>`, reading the old build number rather than assuming it:
+`version: 1.0.0+1` → `version: 2.0.0+2`.
+
+### 6. Commit
+
+Stage only the two version files by path — never `git add blueprint/` or `-A`. The working
+tree often carries unrelated in-progress changes (including other edits to `pubspec.yaml`
+itself), and this commit must contain the version bump and nothing else:
+
+```bash
+git add blueprint/_BLEACHERS.version blueprint/pubspec.yaml
+git commit -m "chore(blueprint): upgrade to version 2.0 (BLEACHERS)"
+```
+
+If `git add` also picks up unrelated edits to `pubspec.yaml`, stop and tell the user rather
+than committing them by accident — they may want to stash or split first.
+
+For a minor bump within the same family, drop the family from the message:
+`chore(blueprint): upgrade to version 1.1`.
+
+Report the result to the user: old version → new version, the file rename if there was one,
+and the commit.
