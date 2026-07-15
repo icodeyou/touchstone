@@ -5,16 +5,17 @@ import 'package:touchstone/core/startup/startup_future_providers.dart';
 
 /// Eagerly initializes the app's async dependencies during startup.
 class AppStartup {
+  static final _futureProviders = <FutureProvider<Object?>>[
+    AppPreferences.futureProvider,
+    StartupFutureProviders.deviceId,
+    // Add your other provider initializations here
+  ];
+
   static final futureProvider = FutureProvider<void>((ref) async {
-    final dependencies = <Future<Object>>[
-      ref.watch(AppPreferences.futureProvider.future),
-      ref.watch(StartupFutureProviders.deviceId.future),
-    ];
-    await Future.wait(dependencies);
+    await Future.wait(
+      _futureProviders.map((dependency) => ref.watch(dependency.future)),
+    );
     'App startup completed'.logInfo;
-    ref.onDispose(() {
-      ref.invalidate(AppPreferences.futureProvider);
-      ref.invalidate(StartupFutureProviders.deviceId);
-    });
+    ref.onDispose(() => _futureProviders.forEach(ref.invalidate));
   }, retry: (retryCount, error) => null);
 }
