@@ -1,4 +1,7 @@
 class AppConstants {
+  // Debug
+  static const String debugPrefix = 'debug_';
+  // ---------------------------------------------------------------------------
   // Logging
   static const int logStacktraceNumber = 5;
 
