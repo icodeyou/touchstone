@@ -16,7 +16,7 @@ Every time you write code, always make sure the app uses the same practices, arc
 
 **The `.blueprint/` folder is a hard prerequisite for writing any code.** Before writing or modifying any code, verify it exists. If it does not, you MUST create it first — and you MUST NOT write any code until it exists. Create it from the touchstone repository (at `../..`) at the git tag matching the version above; this reads the tag's snapshot without checking out or modifying touchstone:
 
-```
+```sh
 mkdir -p .blueprint && git -C ../.. archive <version> blueprint | tar -x --strip-components=1 -C .blueprint
 ```
 
@@ -31,4 +31,3 @@ The app is created **without Sentry**. When conforming to `.blueprint/`, omit al
 ## Custom instructions
 
 Write here your custom instructions, concerning this project only.
-

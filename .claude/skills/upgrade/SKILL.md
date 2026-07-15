@@ -1,6 +1,6 @@
 ---
 name: upgrade
-description: Upgrade the Pixelita blueprint to a new version — bumps the version number in `blueprint/_<FAMILY>.version` and `blueprint/pubspec.yaml`, renaming the version file when a new major starts a new version family. Use this whenever the user wants to bump, release, or upgrade the blueprint version, mentions a new blueprint version number like "2.0", asks to "pass the blueprint to the next version", or wants to start a new version family — even if they don't say the word "upgrade".
+description: Upgrade the Pixelita blueprint to a new version — bumps the version number in `blueprint/_<FAMILY>.version`, `blueprint/pubspec.yaml` and `blueprint/CLAUDE.md`, renaming the version file when a new major starts a new version family. Use this whenever the user wants to bump, release, or upgrade the blueprint version, mentions a new blueprint version number like "2.0", asks to "pass the blueprint to the next version", or wants to start a new version family — even if they don't say the word "upgrade".
 ---
 
 Upgrade the blueprint to a new version.
@@ -11,13 +11,15 @@ would destroy that history. Leave them alone.
 
 ## Versioning model
 
-Two files carry the version, and they must always agree:
+Three files carry the version, and they must always agree:
 
 - `blueprint/_<FAMILY>.version` — the source of truth. Holds the version family and the
   `X.Y` number.
 - `blueprint/pubspec.yaml` — line `version: X.Y.0+<build>`. The patch is always `0`
   (the blueprint is a template, never patched), the build number counts up on every
   upgrade so it never repeats.
+- `blueprint/CLAUDE.md` — line `#### Blueprint version : X.Y`. This is the version
+  crafted stones pin their `.blueprint/` cache to.
 
 Each major version has a **version family** named after a music artist, and families run
 in alphabetical order: major 1 is `ARCTIC MONKEYS` (A). A new major means a new family
@@ -85,24 +87,30 @@ Then write both lines — family and number — with the new values.
 Bump `version:` to `Y.Y.0+<build+1>`, reading the old build number rather than assuming it:
 `version: 1.0.0+1` → `version: 2.0.0+2`.
 
-### 6. Commit
+### 6. Write CLAUDE.md
 
-Stage only the two version files by path — never `git add blueprint/` or `-A`. The working
+Update the `#### Blueprint version : X.Y` line in `blueprint/CLAUDE.md` to the new
+version: `#### Blueprint version : 1.0` → `#### Blueprint version : 2.0`. Keep the
+` : ` spacing exactly.
+
+### 7. Commit
+
+Stage only the three version files by path — never `git add blueprint/` or `-A`. The working
 tree often carries unrelated in-progress changes (including other edits to `pubspec.yaml`
 itself), and this commit must contain the version bump and nothing else:
 
 ```bash
-git add blueprint/_BLEACHERS.version blueprint/pubspec.yaml
+git add blueprint/_BLEACHERS.version blueprint/pubspec.yaml blueprint/CLAUDE.md
 git commit -m "chore(blueprint): upgrade to version 2.0 (BLEACHERS)"
 ```
 
-If `git add` also picks up unrelated edits to `pubspec.yaml`, stop and tell the user rather
-than committing them by accident — they may want to stash or split first.
+If `git add` also picks up unrelated edits to `pubspec.yaml` or `CLAUDE.md`, stop and tell
+the user rather than committing them by accident — they may want to stash or split first.
 
 For a minor bump within the same family, drop the family from the message:
 `chore(blueprint): upgrade to version 1.1`.
 
-### 7. Tag the commit
+### 8. Tag the commit
 
 Tag the commit you just made. The tag is the bare version number — no `v` prefix, matching
 the existing tags:
