@@ -23,6 +23,7 @@ Announce each step to the user when you start it.
 1. Match the structure of the `touchstone/blueprint` project as closely as possible, omitting any files not needed for this home screen, and ommitting the `.version` file.
 2. Do not set up preferences (e.g. `app_preferences.dart` and its wiring) in the crafted app, unless the user explicitly asked for them.
 3. Copy file [CLAUDE.md](http://CLAUDE.md) from `touchstone/blueprint` and paste it in the root of the created project.
+4. Copy the `.claude/` folder from `touchstone/blueprint` to the root of the created project, adjusting the symlinks so they reference the `ai/.claude` folder of touchstone, relative to the new project folder (e.g. `settings.json -> ../../../ai/.claude/settings.json` and `skills -> ../../../ai/.claude/skills` for a project in `stones/<app_name>`).
 
 ## ☁️ Github
 
