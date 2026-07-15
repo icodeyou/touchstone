@@ -48,14 +48,12 @@ void main() {
           AppPreferences.futureProvider.overrideWithValue(
             AsyncValue.data(preferences),
           ),
-          StartupFutureProviders.packageInfo.overrideWithValue(
-            AsyncValue.data(
-              PackageInfo(
-                appName: 'touchstone',
-                packageName: 'com.example.touchstone',
-                version: '1.0.0',
-                buildNumber: '1',
-              ),
+          StartupProviders.packageInfo.overrideWithValue(
+            PackageInfo(
+              appName: 'touchstone',
+              packageName: 'com.example.touchstone',
+              version: '1.0.0',
+              buildNumber: '1',
             ),
           ),
         ],
