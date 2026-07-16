@@ -5,12 +5,11 @@ import 'package:touchstone/domain/entity/todo.dart';
 
 class TodoRepository {
   TodoRepository({required TodoApiClient apiClient}) : _apiClient = apiClient;
+  final TodoApiClient _apiClient;
 
   static final provider = Provider<TodoRepository>(
     (ref) => TodoRepository(apiClient: ref.watch(TodoApiClient.provider)),
   );
-
-  final TodoApiClient _apiClient;
 
   Future<List<Todo>> getTodos() async {
     final dtos = await _apiClient.fetchTodos();

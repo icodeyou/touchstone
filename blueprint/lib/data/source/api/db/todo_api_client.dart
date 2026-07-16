@@ -8,22 +8,25 @@ import 'package:touchstone/domain/entity/todo.dart';
 import 'package:touchstone/shared/constants/app_constants.dart';
 
 class TodoApiClient {
+  // [BLUEPRINT COMMENT] First the constructor
   TodoApiClient({required this._client});
+  final http.Client _client; // [BLUEPRINT COMMENT] Then the class variable
 
+  // [BLUEPRINT COMMENT] Then the provider
   static final provider = Provider<TodoApiClient>((ref) {
     final client = http.Client();
     ref.onDispose(client.close);
     return TodoApiClient(client: client);
   });
 
-  final http.Client _client;
-
+  // [BLUEPRINT COMMENT] Then the private variables
   Map<String, String> get _headers => {
     HttpHeaders.contentTypeHeader: 'application/json',
     if (AppConstants.goRestApiToken.isNotEmpty)
       HttpHeaders.authorizationHeader: 'Bearer ${AppConstants.goRestApiToken}',
   };
 
+  // [BLUEPRINT COMMENT] Then the methods
   Future<List<TodoDto>> fetchTodos() async {
     final uri = Uri.parse('${AppConstants.goRestBaseUrl}/todos');
     final response = await _client.get(uri, headers: _headers);

@@ -8,13 +8,12 @@ import 'package:touchstone/shared/constants/pref_keys.dart';
 class AppPreferences {
   AppPreferences({required SharedPreferences preferences})
     : _preferences = preferences;
+  final SharedPreferences _preferences;
 
   static final futureProvider = FutureProvider<SharedPreferences>(
     (ref) => SharedPreferences.getInstance(),
     retry: (retryCount, error) => null,
   );
-
-  final SharedPreferences _preferences;
 
   bool get welcomeMessageSeen =>
       _preferences.getBool(PrefKeys.welcomeMessageSeen) ?? false;
