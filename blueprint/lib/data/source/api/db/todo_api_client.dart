@@ -8,7 +8,7 @@ import 'package:touchstone/domain/entity/todo.dart';
 import 'package:touchstone/shared/constants/app_constants.dart';
 
 class TodoApiClient {
-  TodoApiClient({required http.Client client}) : _client = client;
+  TodoApiClient({required this._client});
 
   static final provider = Provider<TodoApiClient>((ref) {
     final client = http.Client();
