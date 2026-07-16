@@ -128,3 +128,18 @@ Don't push the tag. Leave that to the user.
 
 Report the result to the user: old version → new version, the file rename if there was one,
 the commit, and the tag.
+
+### 9. Warn the user to upgrade the stones
+
+The apps in `stones/` are still pinned to the old version. Find them all — every
+directory in `stones/` is an app:
+
+```bash
+ls -d stones/*/
+```
+
+End your report with a warning that names each app found and the new version, telling the
+user to upgrade every one of them by running the `upgrade-touchstone` skill inside that app:
+
+> ⚠️ Touchstone is now 2.0. Upgrade each stone to 2.0 by running the `upgrade-touchstone`
+> skill inside it: todoapp, chess, weather.
