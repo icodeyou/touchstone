@@ -1,24 +1,24 @@
 ---
 name: upgrade
-description: Upgrade the Pixelita blueprint to a new version — bumps the version number in `blueprint/_<FAMILY>.version`, `blueprint/pubspec.yaml` and `blueprint/CLAUDE.md`, renaming the version file when a new major starts a new version family. Use this whenever the user wants to bump, release, or upgrade the blueprint version, mentions a new blueprint version number like "2.0", asks to "pass the blueprint to the next version", or wants to start a new version family — even if they don't say the word "upgrade".
+description: Upgrade the Pixelita touchstone to a new version — bumps the version number in `_<FAMILY>.version` at the touchstone root, `blueprint/pubspec.yaml` and `blueprint/CLAUDE.md`, renaming the version file when a new major starts a new version family. Use this whenever the user wants to bump, release, or upgrade the touchstone (or blueprint) version, mentions a new touchstone version number like "2.0", asks to "pass the touchstone to the next version", or wants to start a new version family — even if they don't say the word "upgrade".
 ---
 
-Upgrade the blueprint to a new version.
+Upgrade the touchstone to a new version.
 
-Only `blueprint/` is ever touched. The `.blueprint` folders inside `stones/` are frozen
-snapshots recording which blueprint version each stone was crafted from — rewriting them
-would destroy that history. Leave them alone.
+Only the root version file and `blueprint/` are ever touched. The `.blueprint` folders
+inside `stones/` are frozen snapshots recording which touchstone version each stone was
+crafted from — rewriting them would destroy that history. Leave them alone.
 
 ## Versioning model
 
 Three files carry the version, and they must always agree:
 
-- `blueprint/_<FAMILY>.version` — the source of truth. Holds the version family and the
-  `X.Y` number.
+- `_<FAMILY>.version` at the touchstone root — the source of truth. Holds the version
+  family and the `X.Y` number.
 - `blueprint/pubspec.yaml` — line `version: X.Y.0+<build>`. The patch is always `0`
   (the blueprint is a template, never patched), the build number counts up on every
   upgrade so it never repeats.
-- `blueprint/CLAUDE.md` — line `#### Blueprint version : X.Y`. This is the version
+- `blueprint/CLAUDE.md` — line `### Touchstone version : X.Y`. This is the version
   crafted stones pin their `.blueprint/` cache to.
 
 Each major version has a **version family** named after a music artist, and families run
@@ -35,7 +35,7 @@ is uppercased and any spaces become underscores — `ARCTIC MONKEYS` lives in
 ### 1. Read the current version
 
 ```bash
-cat blueprint/_*.version
+cat _*.version
 ```
 
 It looks like this — keep the ` : ` spacing exactly when you rewrite it:
@@ -77,7 +77,7 @@ Uppercase the family. If it changed, rename the file with `git mv` so the histor
 the file instead of showing a delete plus an add:
 
 ```bash
-git mv blueprint/_ARCTIC_MONKEYS.version blueprint/_BLEACHERS.version
+git mv _ARCTIC_MONKEYS.version _BLEACHERS.version
 ```
 
 Then write both lines — family and number — with the new values.
@@ -89,8 +89,8 @@ Bump `version:` to `Y.Y.0+<build+1>`, reading the old build number rather than a
 
 ### 6. Write CLAUDE.md
 
-Update the `#### Blueprint version : X.Y` line in `blueprint/CLAUDE.md` to the new
-version: `#### Blueprint version : 1.0` → `#### Blueprint version : 2.0`. Keep the
+Update the `### Touchstone version : X.Y` line in `blueprint/CLAUDE.md` to the new
+version: `### Touchstone version : 1.0` → `### Touchstone version : 2.0`. Keep the
 ` : ` spacing exactly.
 
 ### 7. Commit
@@ -100,15 +100,15 @@ tree often carries unrelated in-progress changes (including other edits to `pubs
 itself), and this commit must contain the version bump and nothing else:
 
 ```bash
-git add blueprint/_BLEACHERS.version blueprint/pubspec.yaml blueprint/CLAUDE.md
-git commit -m "chore(blueprint): upgrade to version 2.0 (BLEACHERS)"
+git add _BLEACHERS.version blueprint/pubspec.yaml blueprint/CLAUDE.md
+git commit -m "chore(touchstone): upgrade to version 2.0 (BLEACHERS)"
 ```
 
 If `git add` also picks up unrelated edits to `pubspec.yaml` or `CLAUDE.md`, stop and tell
 the user rather than committing them by accident — they may want to stash or split first.
 
 For a minor bump within the same family, drop the family from the message:
-`chore(blueprint): upgrade to version 1.1`.
+`chore(touchstone): upgrade to version 1.1`.
 
 ### 8. Tag the commit
 

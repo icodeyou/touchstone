@@ -1,12 +1,12 @@
 ---
-name: upgrade-blueprint
-description: Upgrade this app to the latest Pixelita blueprint version — bumps `Blueprint version` in the app's CLAUDE.md, refreshes the `.blueprint/` cache, and brings the code in line with the new standards. Use this whenever the user wants to move the app to a newer blueprint, mentions a new blueprint version, asks to "update the blueprint", "refresh .blueprint", or wonders whether the app is still on the current version — even if they don't say the word "upgrade".
+name: upgrade-touchstone
+description: Upgrade this app to the latest Pixelita touchstone version — bumps `Touchstone version` in the app's CLAUDE.md, refreshes the `.blueprint/` cache, and brings the code in line with the new standards. Use this whenever the user wants to move the app to a newer blueprint or touchstone version, mentions a new touchstone version, asks to "update the blueprint", "refresh .blueprint", or wonders whether the app is still on the current version — even if they don't say the word "upgrade".
 ---
 
-# Upgrading an app to a new blueprint version
+# Upgrading an app to a new touchstone version
 
 This skill runs **inside a crafted app**, and upgrades that app. Touchstone itself is
-never modified — releasing a new blueprint version is the touchstone `upgrade` skill's
+never modified — releasing a new touchstone version is the touchstone `upgrade` skill's
 job, and this skill only adopts what that one released.
 
 Touchstone lives at `../..`, the same path the app's `CLAUDE.md` already uses.
@@ -15,15 +15,15 @@ Touchstone lives at `../..`, the same path the app's `CLAUDE.md` already uses.
 
 ### 1. Resolve both versions
 
-The current version is the `#### Blueprint version : X.Y` line in this app's `CLAUDE.md`.
+The current version is the `### Touchstone version : X.Y` line in this app's `CLAUDE.md`.
 
 The latest is the version number declared on touchstone's `main`. Fetch first, so the
-answer isn't stale, then read the version file by its real name — the family is part of
-the file name, so never hardcode it:
+answer isn't stale, then read the version file by its real name — it lives at the
+touchstone root and the family is part of the file name, so never hardcode it:
 
 ```bash
 git -C ../.. fetch --tags
-git -C ../.. show main:$(git -C ../.. ls-tree --name-only main blueprint/ | grep '\.version$')
+git -C ../.. show main:$(git -C ../.. ls-tree --name-only main | grep '\.version$')
 ```
 
 If the two versions match, tell the user the app is already on X.Y and stop. There is
@@ -87,7 +87,7 @@ errors, so the `&&` guard leaves the existing copy untouched), keep the current
 
 ### 6. Pin the new version
 
-In this app's `CLAUDE.md`, set `#### Blueprint version : <new>`.
+In this app's `CLAUDE.md`, set `### Touchstone version : <new>`.
 
 ### 7. Bring the app in line with the new standards
 
@@ -113,7 +113,7 @@ migration rather than reporting a broken upgrade.
 changes. Don't commit — suggest the message:
 
 ```
-chore(blueprint): upgrade to version 1.1
+chore(touchstone): upgrade to version 1.1
 ```
 
 Report to the user: old version → new version, and what changed in the app's code.

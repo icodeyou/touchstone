@@ -1,18 +1,30 @@
 # Title of the app
 
-## Global instructions
+## Touchstone: The Global Instructions
 
-### Root file CLAUDE.md
+### Touchstone version : 1.0
 
-@../../ai/CLAUDE.md : This file contains your default instructions. Read it and apply it all the time.
+### AI guidelines
+
+@.ai/CLAUDE.md : This file contains your default instructions. Read it and apply it all the time.
+
+The `.ai/` folder defines everything AI-related for this app: besides these default instructions, all skills (`.ai/.claude/skills/`) and all Claude settings — permissions and hooks (`.ai/.claude/settings.json`) — are defined there. The app's `.claude/` folder only contains symlinks into `.ai/.claude/` (plus a local `settings.local.json`); never define skills or settings anywhere else.
+
+**Like `.blueprint/`, the `.ai/` folder is a hard prerequisite — it must always be present before any task.** It is a local copy: a snapshot of the touchstone `ai/` folder frozen at the touchstone version above. Before doing anything else, verify it exists. If it does not, you MUST copy it first — and you MUST NOT do anything until it exists. Create it from the touchstone repository (at `../..`) at the git tag matching the touchstone version; this reads the tag's snapshot without checking out or modifying touchstone:
+
+```sh
+mkdir -p .ai && git -C ../.. archive <version> ai | tar -x --strip-components=1 -C .ai
+```
+
+If `.ai/` cannot be created (touchstone is unavailable or the tag is missing), **stop and refuse to work** — the default instructions, skills and settings all live here.
+
+Add `.ai/` to this project's `.gitignore`; it is a regenerable cache.
 
 ### Blueprint conformance
 
 Every time you write code, always make sure the app uses the same practices, architecture, folder structure, naming conventions, dependencies and theming as the reference @.blueprint/.
 
-#### Blueprint version : 1.0
-
-`@.blueprint/` is a local cache: a snapshot of the touchstone blueprint frozen at this version. Always conform to it, never to a live blueprint.
+`@.blueprint/` is a local cache: a snapshot of the touchstone blueprint frozen at the touchstone version above. Always conform to it, never to a live blueprint.
 
 **The `.blueprint/` folder is a hard prerequisite for writing any code.** Before writing or modifying any code, verify it exists. If it does not, you MUST create it first — and you MUST NOT write any code until it exists. Create it from the touchstone repository (at `../..`) at the git tag matching the version above; this reads the tag's snapshot without checking out or modifying touchstone:
 
