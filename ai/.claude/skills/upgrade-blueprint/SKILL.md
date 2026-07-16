@@ -63,15 +63,27 @@ This is the authoritative account of how the blueprint moved between the two ver
 Read it before touching the cache — once `.blueprint/` is replaced, the old reference is
 gone.
 
-### 5. Replace the cache
+### 5. Replace the vendored copies
+
+Two things are vendored from touchstone at the pinned version: the `.blueprint/` cache
+and the `.ai/CLAUDE.md` default instructions. Refresh both from `<new>` so they stay in
+lockstep with the version being adopted.
 
 ```bash
 rm -rf .blueprint
 mkdir -p .blueprint && git -C ../.. archive <new> blueprint | tar -x --strip-components=1 -C .blueprint
+git -C ../.. show <new>:ai/CLAUDE.md > .ai/CLAUDE.md.tmp && mv .ai/CLAUDE.md.tmp .ai/CLAUDE.md
 ```
 
-If the fetch fails, say so plainly and stop: with no `.blueprint/`, no code may be
-written in this app at all.
+Both are gitignored, regenerable caches vendored from touchstone. `.ai/CLAUDE.md` holds
+the app's default instructions and lets `@.ai/CLAUDE.md` resolve with a repo-relative path
+(a `../../ai/CLAUDE.md` path points outside the tree and breaks inside git worktrees).
+Refreshing it here is what keeps that cache from drifting away from touchstone.
+
+If the blueprint fetch fails, say so plainly and stop: with no `.blueprint/`, no code may
+be written in this app at all. If `ai/CLAUDE.md` is absent at `<new>` (the `git show`
+errors, so the `&&` guard leaves the existing copy untouched), keep the current
+`.ai/CLAUDE.md` and tell the user rather than replacing it with an empty file.
 
 ### 6. Pin the new version
 
@@ -97,8 +109,8 @@ migration rather than reporting a broken upgrade.
 
 ### 9. Suggest a commit
 
-`.blueprint/` is gitignored, so the commit is `CLAUDE.md` plus the code changes. Don't
-commit — suggest the message:
+`.blueprint/` and `.ai/` are gitignored, so the commit is `CLAUDE.md` plus the code
+changes. Don't commit — suggest the message:
 
 ```
 chore(blueprint): upgrade to version 1.1

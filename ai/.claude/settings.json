@@ -4,5 +4,17 @@
       "Bash(git push --tags)",
       "Bash(gh pr merge:*)"
     ]
+  },
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "if [ -d .blueprint ] && [ ! -d .ai ]; then printf '%s' '{\"continue\": false, \"stopReason\": \"🗿 Pixelita guard: this stone has a .blueprint but no .ai folder. .ai must always be present (just like .blueprint). Restore it before continuing.\"}'; fi"
+          }
+        ]
+      }
+    ]
   }
 }
