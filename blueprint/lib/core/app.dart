@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:package_info_plus/package_info_plus.dart';
@@ -43,24 +44,79 @@ class PhoneFrame extends StatelessWidget {
 
   final Widget child;
 
+  static const double _rim = ThemeSizes.xxxs;
+  static const double _bezel = ThemeSizes.xs;
+  static const double _margin = ThemeSizes.xl;
+  static const double _verticalMargin = _margin / 5;
+
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(
       builder: (context, constraints) {
-        final maxWidth = constraints.maxHeight * AppConstants.iphoneAspectRatio;
-        if (constraints.maxWidth <= maxWidth) {
+        final screenHeight =
+            constraints.maxHeight - 2 * (_verticalMargin + _rim + _bezel);
+        final screenWidth = screenHeight * AppConstants.iphoneAspectRatio;
+        final framed =
+            screenHeight > 0 &&
+            constraints.maxWidth >= screenWidth + 2 * (_margin + _rim + _bezel);
+        if (!framed) {
           return child;
         }
-        return ColoredBox(
-          color: Theme.of(context).colorScheme.surfaceContainerHighest,
-          child: Center(
-            child: SizedBox(
-              width: maxWidth,
-              child: MediaQuery(
-                data: MediaQuery.of(context).copyWith(
-                  size: Size(maxWidth, constraints.maxHeight),
+        return DecoratedBox(
+          decoration: kIsWeb
+              ? const BoxDecoration(
+                  image: DecorationImage(
+                    image: AssetImage(AppConstants.webBackgroundAsset),
+                    fit: BoxFit.cover,
+                  ),
+                )
+              : BoxDecoration(
+                  color: Theme.of(context).colorScheme.surfaceContainerHighest,
                 ),
-                child: child,
+          child: Padding(
+            padding: const EdgeInsets.symmetric(vertical: _verticalMargin),
+            child: Center(
+              child: Container(
+                decoration: BoxDecoration(
+                  gradient: const LinearGradient(
+                    begin: Alignment.topLeft,
+                    end: Alignment.bottomRight,
+                    colors: [Colors.white, Colors.white38, Colors.white],
+                  ),
+                  borderRadius: ThemeRadius.xl.asBorderRadius,
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.black.withValues(alpha: 0.5),
+                      blurRadius: ThemeSizes.xxl,
+                      offset: const Offset(0, ThemeSizes.m),
+                    ),
+                    BoxShadow(
+                      color: Colors.white.withValues(alpha: 0.25),
+                      blurRadius: ThemeSizes.l,
+                    ),
+                  ],
+                ),
+                padding: _rim.asInsets,
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.black,
+                    borderRadius: ThemeRadius.xl.asBorderRadius,
+                  ),
+                  padding: _bezel.asInsets,
+                  child: ClipRRect(
+                    borderRadius: ThemeRadius.l.asBorderRadius,
+                    child: SizedBox(
+                      width: screenWidth,
+                      height: screenHeight,
+                      child: MediaQuery(
+                        data: MediaQuery.of(
+                          context,
+                        ).copyWith(size: Size(screenWidth, screenHeight)),
+                        child: child,
+                      ),
+                    ),
+                  ),
+                ),
               ),
             ),
           ),
