@@ -18,7 +18,7 @@ is rolled back, a retry is triggered, a fallback is used. Pass the caught
 `error` and `stackTrace`.
 - **Error** — an operation failed with user-visible impact: startup failure,
 a request that ends in an error view. Pass the caught `error` and
-`stackTrace`. 
+`stackTrace`.
 
 Don't log happy-path UI noise (taps, rebuilds, navigation).
 
@@ -42,4 +42,8 @@ This respects the conventional commit from [conventionalcommits.org](https://con
 ```
 @<type>(<scope>): the commit message
 ```
+
+## Comments
+
+Don't comment code unless it's make it easier for the developer to understand (e.g. cases that are not explicitly detailed by reading the code).
 
