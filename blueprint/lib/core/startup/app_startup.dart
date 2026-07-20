@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:touchstone/core/app_preferences.dart';
 import 'package:touchstone/core/log/log.dart';
+import 'package:touchstone/core/preferences/app_preferences.dart';
 import 'package:touchstone/core/startup/startup_future_providers.dart';
 
 /// Eagerly initializes the app's async dependencies during startup.

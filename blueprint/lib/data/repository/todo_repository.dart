@@ -4,7 +4,7 @@ import 'package:touchstone/data/source/api/dto/todo/todo_entity_converter.dart';
 import 'package:touchstone/domain/entity/todo.dart';
 
 class TodoRepository {
-  TodoRepository({required TodoApiClient apiClient}) : _apiClient = apiClient;
+  TodoRepository({required this._apiClient});
   final TodoApiClient _apiClient;
 
   static final provider = Provider<TodoRepository>(

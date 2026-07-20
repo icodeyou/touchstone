@@ -1,6 +1,6 @@
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:package_info_plus/package_info_plus.dart';
-import 'package:touchstone/core/app_preferences.dart';
+import 'package:touchstone/core/preferences/app_preferences.dart';
 import 'package:touchstone/core/startup/app_startup.dart';
 import 'package:touchstone/core/startup/startup_future_providers.dart';
 
@@ -9,7 +9,8 @@ import 'package:touchstone/core/startup/startup_future_providers.dart';
 class StartupProviders {
   /// Overridden in `MyApp` with the instance resolved in `main`.
   static final packageInfo = Provider<PackageInfo>(
-    (ref) => throw UnimplementedError('Provider packageInfo was not overridden'),
+    (ref) =>
+        throw UnimplementedError('Provider packageInfo was not overridden'),
   );
 
   static final appPreferences = Provider<AppPreferences>(

@@ -3,7 +3,6 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:snowflake_flutter_theme/snowflake_flutter_theme.dart';
 import 'package:touchstone/core/i18n/translations.g.dart';
-import 'package:touchstone/core/log/log.dart';
 import 'package:touchstone/core/startup/app_startup.dart';
 
 /// Keeps the native splash while [AppStartup] is loading, then removes it and

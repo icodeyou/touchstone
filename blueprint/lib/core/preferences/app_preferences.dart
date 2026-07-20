@@ -6,8 +6,7 @@ import 'package:touchstone/shared/constants/pref_keys.dart';
 /// User preferences, persisted with [SharedPreferences].
 /// Provider is located in [StartupProviders]
 class AppPreferences {
-  AppPreferences({required SharedPreferences preferences})
-    : _preferences = preferences;
+  AppPreferences({required this._preferences});
   final SharedPreferences _preferences;
 
   static final futureProvider = FutureProvider<SharedPreferences>(
