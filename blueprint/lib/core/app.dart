@@ -8,6 +8,7 @@ import 'package:touchstone/core/routing/router.dart';
 import 'package:touchstone/core/startup/app_startup_widget.dart';
 import 'package:touchstone/core/startup/startup_providers.dart';
 import 'package:touchstone/core/theme/app_colors.dart';
+import 'package:touchstone/shared/constants/app_constants.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({required this.packageInfo, super.key});
@@ -27,9 +28,44 @@ class MyApp extends StatelessWidget {
             appColors: lightColors,
           ),
           routerConfig: router,
-          builder: (_, child) => AppStartupWidget(onLoaded: (_) => child!),
+          builder: (_, child) =>
+              PhoneFrame(child: AppStartupWidget(onLoaded: (_) => child!)),
         ),
       ),
+    );
+  }
+}
+
+/// Caps the app width to an iPhone portrait aspect ratio, so wide viewports
+/// (web, desktop) render the app as a centered phone-shaped column.
+class PhoneFrame extends StatelessWidget {
+  const PhoneFrame({required this.child, super.key});
+
+  final Widget child;
+
+  @override
+  Widget build(BuildContext context) {
+    return LayoutBuilder(
+      builder: (context, constraints) {
+        final maxWidth = constraints.maxHeight * AppConstants.iphoneAspectRatio;
+        if (constraints.maxWidth <= maxWidth) {
+          return child;
+        }
+        return ColoredBox(
+          color: Theme.of(context).colorScheme.surfaceContainerHighest,
+          child: Center(
+            child: SizedBox(
+              width: maxWidth,
+              child: MediaQuery(
+                data: MediaQuery.of(context).copyWith(
+                  size: Size(maxWidth, constraints.maxHeight),
+                ),
+                child: child,
+              ),
+            ),
+          ),
+        );
+      },
     );
   }
 }

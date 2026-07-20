@@ -7,6 +7,11 @@ class AppConstants {
   static const String sentryDsn =
       'https://3a136dc602b6f06602e1f9f87119d40c@o4511727383871488.ingest.de.sentry.io/4511727449669712';
   // ---------------------------------------------------------------------------
+  // Layout
+  /// iPhone portrait aspect ratio (width / height), used to cap the app width
+  /// on wide screens (web, desktop).
+  static const double iphoneAspectRatio = 9 / 19.5;
+  // ---------------------------------------------------------------------------
   // Network
   static const String goRestBaseUrl = 'https://gorest.co.in/public/v2';
   static const String goRestApiToken = String.fromEnvironment(
