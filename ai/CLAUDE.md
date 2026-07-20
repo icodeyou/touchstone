@@ -29,7 +29,7 @@ Don't log happy-path UI noise (taps, rebuilds, navigation).
 - When your task can fit in one commit, don't commit
 - Instead, you must suggest a commit message like this :
 
-```
+```txt
 <type>(<scope>): the commit message
 ```
 
@@ -39,7 +39,7 @@ This respects the conventional commit from [conventionalcommits.org](https://con
 
 - If your task must be split in several commits, you can commit, but adding `@` before `<type>` :
 
-```
+```txt
 @<type>(<scope>): the commit message
 ```
 
@@ -47,3 +47,11 @@ This respects the conventional commit from [conventionalcommits.org](https://con
 
 Don't comment code unless it's make it easier for the developer to understand (e.g. cases that are not explicitly detailed by reading the code).
 
+## UI
+
+Only use the predefined scale values from the `snowflake_flutter_theme` lib:
+`AppText.xs`, `AppText.s`, ... for texts, `ThemeSizes.xs`, `ThemeSizes.s`, ...
+for sizes, paddings and margins, etc. Never hardcode font sizes or dimensions.
+
+If a value you need doesn't exist in the scale, ask me to update the
+snowflake lib instead of hardcoding it.
