@@ -2,7 +2,7 @@
 
 ## Touchstone: The Global Instructions
 
-### Touchstone version : 1.2
+### Touchstone version : 1.3
 
 ### AI guidelines
 
