@@ -2,6 +2,10 @@
 
 Always start your response with "Yo.".
 
+## Plans and specs
+
+Don't write plans or spec files, unless I specifically ask you to do so, or unless you're in plan mode.
+
 ## Logging
 
 Never use `print`.
@@ -55,3 +59,4 @@ for sizes, paddings and margins, etc. Never hardcode font sizes or dimensions.
 
 If a value you need doesn't exist in the scale, ask me to update the
 snowflake lib instead of hardcoding it.
+
