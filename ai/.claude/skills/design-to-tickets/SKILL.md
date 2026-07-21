@@ -48,7 +48,23 @@ a hole in a spec later. Hunt specifically for what a quick read misses:
 - **Prototype quirks** — frozen dates, hardcoded sample data, simulated
   behavior. Note the global ones (like a frozen clock) for `README.md`.
 
-## Step 3 — Propose the cutting, wait for confirmation
+## Step 3 — Brainstorm what the prototype can't answer
+
+Use the superpowers:brainstorming skill to ask the user the questions the
+prototype leaves open before cutting anything. Make sure the questions cover
+at least:
+
+- **Storage / database** — where the data lives and what backend (if any)
+  sits behind it.
+- **Authentication** — whether there are user accounts, and how users sign in.
+- **Local / offline** — whether the app is local-first, must work offline, and
+  how data syncs if it does.
+
+The answers shape the cutting (a synced, authenticated app orders and sizes
+tickets differently than a purely local one), so don't move on until they're
+settled.
+
+## Step 4 — Propose the cutting, wait for confirmation
 
 Present a numbered table: feature name, what it contains, one line on why it
 sits at that position. Order by dependency, not by prominence:
@@ -68,7 +84,7 @@ too fine and specs repeat each other's context.
 **Do not create anything yet.** The user will rename, merge, split and reorder.
 Iterate on the table until they explicitly confirm the cutting and the order.
 
-## Step 4 — Materialize `tickets/`
+## Step 5 — Materialize `tickets/`
 
 After confirmation only, create at the app root:
 
