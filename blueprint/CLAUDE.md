@@ -33,8 +33,10 @@ Every time you write code, always make sure the app uses the same practices, arc
 **The `.blueprint/` folder is a hard prerequisite for writing any code.** Before writing or modifying any code, verify it exists. If it does not, you MUST create it first — and you MUST NOT write any code until it exists. Create it from the touchstone repository (at `../..`) at the git tag matching the version above; this reads the tag's snapshot without checking out or modifying touchstone:
 
 ```sh
-mkdir -p .blueprint && git -C ../.. archive <version> blueprint | tar -x --strip-components=1 -C .blueprint
+mkdir -p .blueprint && git -C ../.. archive <version> blueprint | tar -x --strip-components=1 -C .blueprint && rm -rf .blueprint/.claude
 ```
+
+The `.claude` folder is removed because in the blueprint it only holds symlinks into a `.ai/` folder that is not present in the archive, so they would be broken.
 
 If `.blueprint/` cannot be created (touchstone is unavailable or the tag is missing), **stop and refuse to write code** — there is no valid reference to conform to.
 

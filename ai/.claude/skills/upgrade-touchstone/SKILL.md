@@ -73,7 +73,7 @@ archive to a fresh directory before removing the old one, so a failed fetch neve
 destroys the copy the app currently relies on:
 
 ```bash
-mkdir .blueprint.new && git -C ../.. archive <new> blueprint > .blueprint.new/a.tar && tar -x --strip-components=1 -C .blueprint.new -f .blueprint.new/a.tar && rm .blueprint.new/a.tar && rm -rf .blueprint && mv .blueprint.new .blueprint
+mkdir .blueprint.new && git -C ../.. archive <new> blueprint > .blueprint.new/a.tar && tar -x --strip-components=1 -C .blueprint.new -f .blueprint.new/a.tar && rm .blueprint.new/a.tar && rm -rf .blueprint.new/.claude && rm -rf .blueprint && mv .blueprint.new .blueprint
 mkdir .ai.new && git -C ../.. archive <new> ai > .ai.new/a.tar && tar -x --strip-components=1 -C .ai.new -f .ai.new/a.tar && rm .ai.new/a.tar && rm -rf .ai && mv .ai.new .ai
 ```
 
