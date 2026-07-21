@@ -4,6 +4,10 @@
 
 ### Touchstone version : 1.4
 
+### Prerequisites
+
+`.ai/` and `.blueprint/` must both be present before any Claude Code session. At the very start of every session, verify they exist; if either is missing, create it as described in its section below before doing anything else.
+
 ### AI guidelines
 
 @.ai/CLAUDE.md : This file contains your default instructions. Read it and apply it all the time.
