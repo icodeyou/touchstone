@@ -1,11 +1,12 @@
 #!/bin/sh
 set -e
 
-echo "⏳ Copying folders .ai/ and .blueprint/"
+echo "⏳ Copying folders .ai/ and .blueprint/ and file api_keys.json"
 main_repo="$(dirname "$(git rev-parse --path-format=absolute --git-common-dir)")"
 cp -r "$main_repo/.ai" .
 cp -r "$main_repo/.blueprint" .
-echo "✅ Folders .ai/ and .blueprint/ have been copied from root workspace"
+cp "$main_repo/api_keys.json" .
+echo "✅ Folders .ai/ and .blueprint/ and file api_keys.json have been copied from root workspace"
 echo ""
 
 echo "⏳ Flutter commands"
