@@ -2,7 +2,7 @@
 
 ## Touchstone: The Global Instructions
 
-### Touchstone version : 1.5
+### Touchstone version : 1.6
 
 ### Prerequisites
 
