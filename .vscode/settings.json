@@ -1,4 +1,12 @@
 {
+    "workbench.colorCustomizations": {
+        "titleBar.activeBackground": "#1b1e24",
+        "titleBar.activeForeground": "#e6d056",
+        "titleBar.inactiveBackground": "#1b1e24",
+        "titleBar.inactiveForeground": "#e6d056",
+        "activityBar.activeBackground": "#1b1e24",
+        "activityBar.foreground": "#e6d056"
+    },
     "cSpell.words": [
         "dtos",
         "Pixelita",
