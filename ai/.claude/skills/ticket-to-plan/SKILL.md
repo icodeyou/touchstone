@@ -43,6 +43,9 @@ Be thorough — anything not written down here will be improvised later.
 
 Write the plan as `tickets/<N>_<feature>/PLAN.md`.
 
+- Be concise: the plan must be easy to read.
+- Don't write code in the plan.
+- Show the new directory tree, limited to the files the plan touches.
 - Every UI task must name the baseline PNG(s) it must match as acceptance
   criteria.
 - Insert a breakpoint after each task: suggest a conventional commit message
