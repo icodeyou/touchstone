@@ -48,17 +48,10 @@ Write the plan as `tickets/<N>_<feature>/PLAN.md`.
 - Show the new directory tree, limited to the files the plan touches.
 - Every UI task must name the baseline PNG(s) it must match as acceptance
   criteria.
-- Insert a breakpoint after each task: suggest a conventional commit message
-  (no `@` prefix). If the user confirms, commit it yourself with the `@`
-  prefix; the user may also commit it themselves and reply something like
+- Insert a breakpoint after each task: suggest a conventional commit message  
+  (no `@` prefix). If the user confirms, commit it yourself with the `@`  
+  prefix; the user may also commit it themselves and reply something like  
   "next" — then move on to the next task.
-
-## 5. Close the loop
-
-The plan must end with a visual verification task: build the app on web,
-screenshot it in the same states, and compare against the baseline PNGs by
-inspection — same layout, colors, icons and states. A UI task is not done
-until its screenshots match.
 
 ## No spec references in code
 
