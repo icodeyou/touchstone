@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:snowflake_flutter_theme/snowflake_flutter_theme.dart';
 import 'package:touchstone/core/i18n/translations.g.dart';
+import 'package:touchstone/shared/widgets/toast/toast_controller.dart';
 import 'package:touchstone/ui/home/controller/home_controller.dart';
 
 class CreateTodoView extends ConsumerStatefulWidget {
@@ -45,20 +46,10 @@ class _CreateTodoViewState extends ConsumerState<CreateTodoView> {
       return;
     }
     if (hasError) {
-      Notif.showToast(
-        context: context,
-        title: t.common.error,
-        message: t.homeScreen.loadError,
-        type: ToastType.error,
-      );
+      ref.toaster.show(t.homeScreen.loadError);
     } else {
       _controller.clear();
-      Notif.showToast(
-        context: context,
-        title: t.common.success,
-        message: t.homeScreen.todoCreated,
-        type: ToastType.success,
-      );
+      ref.toaster.show(t.homeScreen.todoCreated);
     }
   }
 

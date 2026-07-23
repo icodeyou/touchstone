@@ -10,6 +10,7 @@ import 'package:touchstone/core/startup/app_startup_widget.dart';
 import 'package:touchstone/core/startup/startup_providers.dart';
 import 'package:touchstone/core/theme/app_colors.dart';
 import 'package:touchstone/shared/constants/app_constants.dart';
+import 'package:touchstone/shared/widgets/toast/toast_layer_view.dart';
 
 class MyApp extends StatelessWidget {
   const MyApp({required this.packageInfo, super.key});
@@ -29,8 +30,22 @@ class MyApp extends StatelessWidget {
             appColors: lightColors,
           ),
           routerConfig: router,
-          builder: (_, child) =>
-              PhoneFrame(child: AppStartupWidget(onLoaded: (_) => child!)),
+          builder: (_, child) => PhoneFrame(
+            child: AppStartupWidget(
+              onLoaded: (_) => Stack(
+                fit: StackFit.expand,
+                children: [
+                  child!,
+                  // The toast lives above the Navigator, outside any Material:
+                  // give it one so text renders with the default style.
+                  const Material(
+                    type: MaterialType.transparency,
+                    child: ToastLayerView(),
+                  ),
+                ],
+              ),
+            ),
+          ),
         ),
       ),
     );

@@ -4,6 +4,7 @@ import 'package:snowflake_flutter_theme/snowflake_flutter_theme.dart';
 import 'package:touchstone/core/i18n/translations.g.dart';
 import 'package:touchstone/core/theme/app_colors.dart';
 import 'package:touchstone/domain/entity/todo.dart';
+import 'package:touchstone/shared/widgets/toast/toast_controller.dart';
 import 'package:touchstone/ui/home/controller/home_controller.dart';
 
 class TodoListView extends ConsumerWidget {
@@ -29,7 +30,7 @@ class TodoListView extends ConsumerWidget {
           ),
           onTap: mutationState == MutationState.loading
               ? null
-              : () => _onTodoTap(context, ref, todo),
+              : () => _onTodoTap(ref, todo),
           trailing: Icon(
             isCompleted ? Icons.check_circle : Icons.radio_button_unchecked,
             color: isCompleted ? ThemeColors.statusSuccess : ThemeColors.grey40,
@@ -39,23 +40,13 @@ class TodoListView extends ConsumerWidget {
     );
   }
 
-  void _onTodoTap(BuildContext context, WidgetRef ref, Todo todo) {
+  void _onTodoTap(WidgetRef ref, Todo todo) {
     ref
         .read(myMutationControllerProvider(todo.id).notifier)
         .action<void>(
           mutation: () =>
               ref.read(HomeController.provider.notifier).toggleTodo(todo),
-          onError: () {
-            if (!context.mounted) {
-              return;
-            }
-            Notif.showToast(
-              context: context,
-              title: t.common.error,
-              message: t.homeScreen.todoUpdateError,
-              type: ToastType.error,
-            );
-          },
+          onError: () => ref.toaster.show(t.homeScreen.todoUpdateError),
         );
   }
 }
