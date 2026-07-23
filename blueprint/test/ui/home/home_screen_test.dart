@@ -9,8 +9,8 @@ import 'package:touchstone/core/preferences/app_preferences.dart';
 import 'package:touchstone/core/startup/startup_providers.dart';
 import 'package:touchstone/data/repository/todo_repository.dart';
 import 'package:touchstone/domain/entity/todo.dart';
+import 'package:touchstone/presentation/home/view/home_screen.dart';
 import 'package:touchstone/shared/constants/pref_keys.dart';
-import 'package:touchstone/ui/home/view/home_screen.dart';
 
 class _FakeTodoRepository implements TodoRepository {
   _FakeTodoRepository({this.todos = const <Todo>[]});

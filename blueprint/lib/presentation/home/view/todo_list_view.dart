@@ -4,8 +4,8 @@ import 'package:snowflake_flutter_theme/snowflake_flutter_theme.dart';
 import 'package:touchstone/core/i18n/translations.g.dart';
 import 'package:touchstone/core/theme/app_colors.dart';
 import 'package:touchstone/domain/entity/todo.dart';
+import 'package:touchstone/presentation/home/controller/home_controller.dart';
 import 'package:touchstone/shared/widgets/toast/toast_controller.dart';
-import 'package:touchstone/ui/home/controller/home_controller.dart';
 
 class TodoListView extends ConsumerWidget {
   const TodoListView({required this.todos, super.key});

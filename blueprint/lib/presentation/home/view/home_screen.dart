@@ -3,9 +3,9 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:snowflake_flutter_theme/snowflake_flutter_theme.dart';
 import 'package:touchstone/core/i18n/translations.g.dart';
 import 'package:touchstone/core/startup/startup_providers.dart';
-import 'package:touchstone/ui/home/controller/home_controller.dart';
-import 'package:touchstone/ui/home/view/create_todo_view.dart';
-import 'package:touchstone/ui/home/view/todo_list_view.dart';
+import 'package:touchstone/presentation/home/controller/home_controller.dart';
+import 'package:touchstone/presentation/home/view/create_todo_view.dart';
+import 'package:touchstone/presentation/home/view/todo_list_view.dart';
 
 class HomeScreen extends ConsumerWidget {
   const HomeScreen({super.key});
