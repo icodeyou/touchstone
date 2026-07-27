@@ -25,7 +25,15 @@ folder, e.g. `tickets/<N>_<feature>/specs/03_voice_chip.png`. These are the
 baselines the implementation must match. Screenshotting the current app too
 shows where it stands and what the feature actually changes.
 
-## 3. Write SPECS.md
+## 3. Brainstorm
+
+**Required sub-skill:** `superpowers:brainstorming`.
+
+Use it to challenge the developer about the features they want to implement:
+question the ticket's assumptions, surface hidden requirements and edge
+cases, and confirm the intended scope before anything is written down.
+
+## 4. Write SPECS.md
 
 Write `tickets/<N>_<feature>/SPECS.md`, referencing the PNG screenshots.
 For each state, write down the details visible in the image:
@@ -37,7 +45,7 @@ For each state, write down the details visible in the image:
 
 Be thorough — anything not written down here will be improvised later.
 
-## 4. Write the plan
+## 5. Write the plan
 
 **Required sub-skill:** `superpowers:writing-plans`.
 
