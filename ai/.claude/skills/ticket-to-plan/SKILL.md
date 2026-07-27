@@ -60,6 +60,8 @@ Write the plan as `tickets/<N>_<feature>/PLAN.md`.
   (no `@` prefix). If the user confirms, commit it yourself with the `@`  
   prefix; the user may also commit it themselves and reply something like  
   "next" — then move on to the next task.
+- Don't mention the skill `superpowers:subagent-driven-development` in the
+  plan: the breakpoints replace it.
 
 ## No spec references in code
 
