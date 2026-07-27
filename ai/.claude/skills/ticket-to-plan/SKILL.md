@@ -54,6 +54,10 @@ Write the plan as `tickets/<N>_<feature>/PLAN.md`.
 - Be concise: the plan must be easy to read.
 - Don't write code in the plan.
 - Show the new directory tree, limited to the files the plan touches.
+- When the feature adds or changes models (domain entities, DTOs), include a
+  UML class diagram of them in a `plantuml` block: every field with its type,
+  and the relations between classes. Tag each class as new or edited, and
+  include an unchanged class only when a relation points to it.
 - Every UI task must name the baseline PNG(s) it must match as acceptance
   criteria.
 - Insert a breakpoint after each task: suggest a conventional commit message  
