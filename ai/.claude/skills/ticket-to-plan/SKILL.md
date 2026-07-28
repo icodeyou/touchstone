@@ -33,6 +33,19 @@ Use it to challenge the developer about the features they want to implement:
 question the ticket's assumptions, surface hidden requirements and edge
 cases, and confirm the intended scope before anything is written down.
 
+Two things must come out of the brainstorm, decided **with the developer**,
+never assumed:
+
+- **All the models.** Every domain entity and DTO the feature needs, with
+  their fields, types, nullability and the relations between them. Walk the
+  developer through each one and get it validated.
+- **The global architecture.** Which layers and components the feature adds
+  or touches (data sources, repositories, providers, controllers, widgets),
+  how data flows between them, and what state lives where.
+
+Don't leave this step until both are agreed: the UML diagram and the tasks
+in `PLAN.md` are written from these decisions.
+
 ## 4. Write SPECS.md
 
 Write `tickets/<N>_<feature>/SPECS.md`, referencing the PNG screenshots.
