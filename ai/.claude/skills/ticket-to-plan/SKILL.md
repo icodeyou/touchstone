@@ -79,12 +79,20 @@ Write the plan as `tickets/<N>_<feature>/PLAN.md`.
 - Don't write code in the plan.
 - Every UI task must name the baseline PNG(s) it must match as acceptance
 criteria.
-- Insert a breakpoint after each task: suggest a conventional commit message  
-(no `@` prefix). If the user confirms, commit it yourself with the `@`  
-prefix; the user may also commit it themselves and reply something like  
-"next" — then move on to the next task.
-- Don't mention the skill `superpowers:subagent-driven-development` in the
-plan: the breakpoints replace it.
+
+Ask user if he wants to go with : 
+
+- VIBE-CODING
+  - Use `superpowers:subagent-driven-development` 
+  - Commit without developer's approval (with prefix '@' so that I know it's not me)
+  - Make PR in the end and give me link so that I can check it
+- BREAKPOINTS
+  - Insert a breakpoint after each task: suggest a conventional commit message  
+  (no `@` prefix). If the user confirms, commit it yourself with the `@`  
+  prefix; the user may also commit it themselves and reply something like  
+  "next" — then move on to the next task.
+  - Don't mention the skill `superpowers:subagent-driven-development` in the  
+  plan: the breakpoints replace it.
 
 ## No spec references in code
 
