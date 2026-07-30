@@ -51,6 +51,12 @@ This respects the conventional commit from [conventionalcommits.org](https://con
 
 Don't comment code unless it's make it easier for the developer to understand (e.g. cases that are not explicitly detailed by reading the code).
 
+## Naming
+
+Prefer the singular over the plural as much as possible for class names, file
+names and folder names (`todo/todo_list.dart`, not `todos/todo_lists.dart`).
+Only use the plural when the name would be wrong in the singular.
+
 ## UI
 
 Only use the predefined scale values from the `snowflake_flutter_theme` lib:
