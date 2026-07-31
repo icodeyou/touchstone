@@ -96,8 +96,12 @@ Ask user if he wants to go with : 
   - Don't mention the skill `superpowers:subagent-driven-development` in the  
   plan: the breakpoints replace it.
 
-## No spec/task references in code
+### No spec/task references in code
 
 The spec, baselines and `DESIGN.html` exist only at planning and verification  
 time. Code and comments never mention them: no `// for next Task` `// Task 8` `// per spec`,
 `// Specs: ...`, `// matches 03_voice_chip.png`, no spec-section  or task-section names in identifiers. A comment must state a constraint the code can't show — never where a value came from.
+
+## 6. Green light
+
+When everything is ready, write a short implementation prompt that I can copy to use it in another session.
