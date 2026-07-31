@@ -68,6 +68,8 @@ Both with the **full list of parameters** (every column / field with its type an
 
 In the end, this file must contain the new directory tree, limited to the files the plan touches.
 
+Developer must agree with the file `ARCHITECTURE.md` then you commit and move on to the next step.
+
 ## 5. Write the plan
 
 **Required sub-skill:** `superpowers:writing-plans`.
