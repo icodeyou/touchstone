@@ -124,12 +124,21 @@ For a minor bump within the same family, drop the family: `-m "Version 1.1"`.
 If the tag already exists, stop and tell the user rather than moving or forcing it — an
 existing tag means that version was already released.
 
-Don't push the tag. Leave that to the user.
+### 9. Push the commit and the tag
+
+Push both, so the released version exists on the remote:
+
+```bash
+git push && git push origin 2.0
+```
+
+Never force-push. If the push is rejected (the branch moved on the remote), stop and tell
+the user rather than rebasing or forcing on your own.
 
 Report the result to the user: old version → new version, the file rename if there was one,
-the commit, and the tag.
+the commit, the tag, and the push.
 
-### 9. Warn the user to upgrade the stones
+### 10. Warn the user to upgrade the stones
 
 The apps in `stones/` are still pinned to the old version. Find them all — every
 directory in `stones/` is an app:
