@@ -56,13 +56,3 @@ Don't comment code unless it's make it easier for the developer to understand (e
 Prefer the singular over the plural as much as possible for class names, file
 names and folder names (`todo/todo_list.dart`, not `todos/todo_lists.dart`).
 Only use the plural when the name would be wrong in the singular.
-
-## UI
-
-Only use the predefined scale values from the `snowflake_flutter_theme` lib:
-`AppText.xs`, `AppText.s`, ... for texts, `ThemeSizes.xs`, `ThemeSizes.s`, ...
-for sizes, paddings and margins, etc. Never hardcode font sizes or dimensions.
-
-If a value you need doesn't exist in the scale, ask me to update the
-snowflake lib instead of hardcoding it.
-
