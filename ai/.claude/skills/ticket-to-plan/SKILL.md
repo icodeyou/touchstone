@@ -59,10 +59,13 @@ or touches (data sources, repositories, providers, controllers, widgets),
 how data flows between them, and what state lives where.
 
 Write the result as `tickets/<N>_<feature>/ARCHITECTURE.md`, with the
-diagrams in **Mermaid** blocks. The file must show two architectures:
+diagrams in **Mermaid** blocks. The file must show three architectures:
 
 - **Remote SQL tables** — the tables the feature reads or writes.
 - **Front app models** — the entities and DTOs the feature adds or changes.
+- **Layers and data flow** — the layers and components the feature adds or
+touches, and how data flows between them. Every controller must display its
+state: the state class (or type) it holds, with its fields.
 
 Both with the **full list of parameters** (every column / field with its type and nullability), and **only for the tables and models concerned by this feature**. Tag each class/table as new or edited.
 
