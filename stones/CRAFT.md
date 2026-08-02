@@ -30,4 +30,5 @@ Announce each step to the user when you start it.
 1. Ask user if he wants to create a repository on Github
 2. If yes, ask if it should be public/private
 3. Create the repository for the project, using CLI `gh`
+4. Commit everything with the message `🦋 First commit`, and push it
 
