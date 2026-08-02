@@ -65,7 +65,10 @@ diagrams in **Mermaid** blocks. The file must show three architectures:
 - **Front app models, states and controllers** — the entities and DTOs the feature adds or changes, the states, and the controllers with the type of their state.
 - **Layers and data flow** — the layers and components the feature adds or
 touches, and how data flows between them. Every controller must display its
-state: the state class (or type) it holds, with its fields.
+state: the state class (or type) it holds, with its fields. Make sure no data
+is duplicated across this diagram — the same field must not be held by two
+components. If it is, the architecture itself is wrong: rethink it with the
+developer instead of drawing the duplication.
 
 Both with the **full list of parameters** (every column / field with its type and nullability), and **only for the tables and models concerned by this feature**. Tag each class/table as new or edited.
 
