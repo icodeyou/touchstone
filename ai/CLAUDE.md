@@ -34,7 +34,7 @@ Don't log happy-path UI noise (taps, rebuilds, navigation).
 - Instead, you must suggest a commit message like this :
 
 ```txt
-<type>(<scope>): the commit message
+gca "@<type>(<scope>): <the commit message>"
 ```
 
 This respects the conventional commit from [conventionalcommits.org](https://conventionalcommits.org)
@@ -50,6 +50,12 @@ This respects the conventional commit from [conventionalcommits.org](https://con
 ## Comments
 
 Don't comment code unless it's make it easier for the developer to understand (e.g. cases that are not explicitly detailed by reading the code).
+
+## Wording
+
+In user-facing texts, never use a dash (` - ` or ` — `) as a comma-like
+separator between clauses; it is a typical AI writing tic. Use a period, a
+comma or a rewrite instead.
 
 ## Naming
 
