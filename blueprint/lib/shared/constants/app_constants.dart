@@ -2,10 +2,6 @@ class AppConstants {
   // ---------------------------------------------------------------------------
   // Logging
   static const int logStacktraceNumber = 5;
-
-  /// Sentry DSN - By default, it is project "Pixelita"
-  static const String sentryDsn =
-      'https://3a136dc602b6f06602e1f9f87119d40c@o4511727383871488.ingest.de.sentry.io/4511727449669712';
   // ---------------------------------------------------------------------------
   // Layout
   /// iPhone portrait aspect ratio (width / height), used to cap the app width

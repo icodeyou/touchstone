@@ -44,7 +44,7 @@ Add `.blueprint/` to this project's `.gitignore`; it is a regenerable cache.
 
 #### Sentry
 
-The app is created **without Sentry**. When conforming to `.blueprint/`, omit all Sentry wiring: the `sentry_flutter` dependency, `lib/core/log/sentry_reporter.dart`, the `SentryReporter` calls in `main.dart` and `log.dart`, and the `AppConstants.sentryDsn` constant. Sentry is added only when the app goes to production, via the `sentry` skill.
+The app is created **without Sentry**, and the blueprint contains no Sentry wiring. Sentry is added only when the app goes to production, via the `sentry` skill.
 
 ## Custom instructions
 

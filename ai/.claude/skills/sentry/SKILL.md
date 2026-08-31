@@ -12,16 +12,51 @@ Pixelita organization.
 
 ## Code
 
-Conform strictly to the way Sentry is implemented in the blueprint reference
-(aka the `.blueprint/` project):
+The blueprint contains no Sentry wiring; this skill is the reference. Add:
 
-- `sentry_flutter` dependency in `pubspec.yaml`
-- `lib/core/log/sentry_reporter.dart`
-- the `SentryReporter.report(...)` hook inside `lib/core/log/log.dart`
-- `SentryReporter.run(...)` wrapping `runApp` in `lib/main.dart`
-- the `AppConstants.sentryDsn` constant
+- the `sentry_flutter` dependency in `pubspec.yaml` (latest version)
+- `lib/core/log/sentry_reporter.dart`, copied from
+  `references/sentry_reporter.dart` (adapt the `touchstone` package name to
+  this app's)
+- in `lib/main.dart`, wrap the `runApp` call:
 
-Only the DSN value is app-specific; everything else must match `.blueprint/`.
+  ```dart
+  await SentryReporter.run(
+    () => runApp(MyApp(packageInfo: packageInfo)),
+    packageInfo.appName,
+  );
+  ```
+
+- in `lib/core/log/log.dart`, at the end of `_log(...)`, after the `print`:
+
+  ```dart
+  SentryReporter.report(
+    level.sentryLevel,
+    message,
+    error: error,
+    stackTrace: stackTrace,
+  );
+  ```
+
+  and a private mapping extension next to the other extensions:
+
+  ```dart
+  extension on _Level {
+    SentryLevel get sentryLevel => switch (this) {
+      _Level.trace || _Level.debug => SentryLevel.debug,
+      _Level.info => SentryLevel.info,
+      _Level.warning => SentryLevel.warning,
+      _Level.error => SentryLevel.error,
+      _Level.fatal => SentryLevel.fatal,
+    };
+  }
+  ```
+
+- an `AppConstants.sentryDsn` constant in
+  `lib/shared/constants/app_constants.dart`, filled by the provisioning
+  steps below
+
+Only the DSN value is app-specific; everything else must match this skill.
 
 ## Project provisioning
 
