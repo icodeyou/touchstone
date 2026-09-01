@@ -33,6 +33,12 @@ Whenever you work on analytics (events, user properties, super properties,
 feature flags, experiments), always base your work on this file: implement
 exactly what it describes, and update it whenever the tracking changes.
 
+## Colors
+
+Always use `AppColors` for colors. Never declare two different variables for
+the same color value: when two names would share a value, replace them with a
+single generic name that covers both uses (e.g. `lightBackground`).
+
 ## Commits
 
 ### Single-commit tasks
