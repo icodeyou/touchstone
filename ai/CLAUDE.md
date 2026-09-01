@@ -26,6 +26,13 @@ a request that ends in an error view. Pass the caught `error` and
 
 Don't log happy-path UI noise (taps, rebuilds, navigation).
 
+## Analytics
+
+`ANALYTICS.md` at the app root is the single source of truth for analytics.
+Whenever you work on analytics (events, user properties, super properties,
+feature flags, experiments), always base your work on this file: implement
+exactly what it describes, and update it whenever the tracking changes.
+
 ## Commits
 
 ### Single-commit tasks
