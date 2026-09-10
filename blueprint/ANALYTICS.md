@@ -4,6 +4,13 @@ We use Posthog to manage analytics and experiments.
 
 Legend: ✅ answered · ⏳ pending · 🔥 priority
 
+## Basic instructions
+
+### Debug mode
+PostHog must be disabled when the app runs in debug mode (`kDebugMode`).
+No event, user property, super property or feature flag evaluation is sent
+from a debug build.
+
 ## Feature flags
 
 `create_flow` : `inline` / `fullscreen` — 50/50 split, on iOS and Android.
