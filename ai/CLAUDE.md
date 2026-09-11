@@ -75,3 +75,6 @@ comma or a rewrite instead.
 Prefer the singular over the plural as much as possible for class names, file
 names and folder names (`todo/todo_list.dart`, not `todos/todo_lists.dart`).
 Only use the plural when the name would be wrong in the singular.
+
+SQL tables are the exception: always name them in the plural (`todos`, not
+`todo`).
