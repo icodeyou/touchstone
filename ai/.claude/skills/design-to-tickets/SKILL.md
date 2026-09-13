@@ -69,13 +69,14 @@ settled.
 Present a numbered table: feature name, what it contains, one line on why it
 sits at that position. Order by dependency, not by prominence:
 
-0. The app shell first — navigation, theming, global feedback (toasts etc.),
-   error reporting (see below). Everything else plugs into it.
+0. The app shell first — navigation, theming, global feedback (toasts etc.).
+   Everything else plugs into it.
 1. The core entity's basic lifecycle next (create/view/edit/delete) — most
    later features decorate it.
 2. Then features layered so each ticket only depends on lower numbers.
-3. Cross-cutting polish last — settings assembly, premium locks, first-run
+3. Cross-cutting polish next — settings assembly, premium locks, first-run
    empty states — because they touch every earlier feature.
+4. Error reporting closes the list, always (see below).
 
 Aim for tickets of comparable, shippable size: each one should leave the app
 runnable and demonstrably better. Too coarse and a ticket becomes a project;
@@ -84,25 +85,28 @@ too fine and specs repeat each other's context.
 **Do not create anything yet.** The user will rename, merge, split and reorder.
 Iterate on the table until they explicitly confirm the cutting and the order.
 
-### Error reporting always belongs to ticket 0
+### The last ticket is always Sentry
 
-The prototype never shows it, but the shell ticket owns error reporting, so
-put it in that ticket's scope even though nothing in `DESIGN.html` asks for
-it. The scope covers:
+Whatever the design contains, the final ticket wires the app to Sentry. It is
+the only ticket not cut from `DESIGN.html`, and the only one built
+differently: it holds a `README.md` instead of a `scope.md`, because there is
+nothing to scope. The `sentry` skill already defines the whole job.
 
-- **Sentry configured at startup** — wiring done with the `sentry` skill,
-  which holds the reference implementation and provisions the project.
-- **An event on every error log** — `logError` reports to Sentry, so no error
-  reaches the console without also reaching the dashboard. Info and warning
-  logs stay breadcrumbs.
-- **An event on every crash and uncaught exception**, Flutter framework
-  errors and zone errors included.
-- **The Riverpod error observer** (`providerDidFail` in `RiverpodObserver`)
-  routed through that same reporting, so a failing provider becomes an event
-  like any other error.
+Create it as `<N>_sentry/README.md`, `<N>` being the last number, containing:
 
-Name those four points in the scope and stop there: the wiring detail lives
-in the `sentry` skill, not in the ticket.
+```markdown
+# Sentry
+
+This ticket wires the app to its own Sentry project. Nothing here comes from
+`DESIGN.html`: it touches no screen, adds no model and has no UI state.
+
+**For `ticket-to-plan`:** skip the design exploration, the screenshots,
+`SPECS.md` and `ARCHITECTURE.md`. Run the `sentry` skill and write `PLAN.md`
+straight from it. That skill is the entire specification.
+```
+
+List it in the confirmed order table and in `tickets/README.md` like any
+other ticket.
 
 ## Step 5 — Materialize `tickets/`
 
@@ -112,13 +116,16 @@ After confirmation only, create at the app root:
 tickets/
 ├── README.md
 ├── 0_<feature_name>/
-│   └── SCOPE.md
+│   └── scope.md
 ├── 1_<other_feature>/
 │   └── scope.md
-└── ...
+├── ...
+└── <N>_sentry/
+    └── README.md
 ```
 
-Folder names are `<N>_<snake_case_feature>`; each contains a single `scope.md`.
+Folder names are `<N>_<snake_case_feature>`; each contains a single
+`scope.md`, except the last one, which holds the `README.md` described above.
 `README.md` holds the confirmed order table plus anything true of the whole
 prototype rather than one feature (vocabulary, frozen-time note, where the
 design tokens live).
@@ -138,5 +145,4 @@ twice or not at all. Keep it short:
 - **Depends on** — which lower-numbered tickets it builds on, one line each.
 
 Draw the boundaries from what the source actually does, not from what a
-typical app would do — the prototype is the source of truth. The single
-exception is ticket 0's error reporting, which no prototype ever shows.
+typical app would do — the prototype is the source of truth.
