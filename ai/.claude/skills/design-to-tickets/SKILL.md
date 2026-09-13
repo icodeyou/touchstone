@@ -74,9 +74,21 @@ gets analytics spends one of them permanently. Never ask "do you want
 analytics?" on its own: the honest question is whether this app is worth one
 of the remaining slots.
 
-So before asking, list the projects already taken, either from the
-organization's project list or by asking the user, and put the real count in
-the question:
+So before asking, list the projects already taken. The PostHog personal API
+key is in the environment as `POSTHOG_PERSONAL_API_KEY`; never print it and
+never write it into a file:
+
+```bash
+curl -s -H "Authorization: Bearer $POSTHOG_PERSONAL_API_KEY" \
+  https://us.posthog.com/api/organizations/@current/projects/ \
+  | python3 -c 'import json,sys; print([p["name"] for p in json.load(sys.stdin)["results"]])'
+```
+
+Use `eu.posthog.com` instead if the organization is on the EU cloud. If the
+key is missing or the call fails, ask the user which projects are already
+used rather than guessing.
+
+Put the real count in the question:
 
 > Analytics for this app? We can have 6 PostHog projects in total.
 > `<n>` are already used (`<project>`, ...), so `<6 - n>` slots are left.
