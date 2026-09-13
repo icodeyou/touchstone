@@ -59,18 +59,41 @@ at least:
 - **Authentication** — whether there are user accounts, and how users sign in.
 - **Local / offline** — whether the app is local-first, must work offline, and
   how data syncs if it does.
+- **Analytics** — whether the app gets PostHog from the first ticket. This
+  one has a cost the user must know before answering, so state it in the
+  question itself (see below).
 
 The answers shape the cutting (a synced, authenticated app orders and sizes
 tickets differently than a purely local one), so don't move on until they're
 settled.
+
+### Asking about analytics
+
+The PostHog plan caps the organization at **6 projects**, and each app that
+gets analytics spends one of them permanently. Never ask "do you want
+analytics?" on its own: the honest question is whether this app is worth one
+of the remaining slots.
+
+So before asking, list the projects already taken, either from the
+organization's project list or by asking the user, and put the real count in
+the question:
+
+> Analytics for this app? We can have 6 PostHog projects in total.
+> `<n>` are already used (`<project>`, ...), so `<6 - n>` slots are left.
+> Adding analytics here spends one of them.
+
+If no slot is left, say so and don't offer the choice. The answer decides
+whether ticket 0 carries analytics; record it, because nothing later in this
+skill re-asks.
 
 ## Step 4 — Propose the cutting, wait for confirmation
 
 Present a numbered table: feature name, what it contains, one line on why it
 sits at that position. Order by dependency, not by prominence:
 
-0. The app shell first — navigation, theming, global feedback (toasts etc.).
-   Everything else plugs into it.
+0. The app shell first — navigation, theming, global feedback (toasts etc.),
+   plus analytics when Step 3 asked for them (see below). Everything else
+   plugs into it.
 1. The core entity's basic lifecycle next (create/view/edit/delete) — most
    later features decorate it.
 2. Then features layered so each ticket only depends on lower numbers.
@@ -84,6 +107,30 @@ too fine and specs repeat each other's context.
 
 **Do not create anything yet.** The user will rename, merge, split and reorder.
 Iterate on the table until they explicitly confirm the cutting and the order.
+
+### Analytics belong to ticket 0, when the user said yes
+
+If Step 3 settled on analytics, the shell ticket owns the setup, so add to
+its `SCOPE.md`:
+
+- **PostHog configured at startup**, and disabled in debug mode
+  (`kDebugMode`): no event, user property, super property or feature flag
+  evaluation leaves a debug build.
+- **`identify` wired to the app's user**, as soon as the session starts and
+  again on sign-in and sign-up.
+- **`ANALYTICS.md` written at the app root**, seeded from
+  `.blueprint/ANALYTICS.md`: same sections (debug mode, feature flags,
+  identify and user properties, super properties, events), with the
+  blueprint's todo content replaced by this app's. It is the single source of
+  truth for analytics, so every later ticket updates it instead of inventing
+  its own events.
+
+Ticket 0 sets up the pipe and the document, nothing more. The events
+themselves belong to the tickets that own the screens firing them, so don't
+list them here.
+
+If the user said no, none of this appears in any ticket and `ANALYTICS.md` is
+never created.
 
 ### The last ticket is always Sentry
 
