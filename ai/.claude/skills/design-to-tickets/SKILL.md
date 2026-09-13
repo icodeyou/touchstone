@@ -89,7 +89,7 @@ Iterate on the table until they explicitly confirm the cutting and the order.
 
 Whatever the design contains, the final ticket wires the app to Sentry. It is
 the only ticket not cut from `DESIGN.html`, and the only one built
-differently: it holds a `README.md` instead of a `scope.md`, because there is
+differently: it holds a `README.md` instead of a `SCOPE.md`, because there is
 nothing to scope. The `sentry` skill already defines the whole job.
 
 Create it as `<N>_sentry/README.md`, `<N>` being the last number, containing:
@@ -116,23 +116,23 @@ After confirmation only, create at the app root:
 tickets/
 ├── README.md
 ├── 0_<feature_name>/
-│   └── scope.md
+│   └── SCOPE.md
 ├── 1_<other_feature>/
-│   └── scope.md
+│   └── SCOPE.md
 ├── ...
 └── <N>_sentry/
     └── README.md
 ```
 
 Folder names are `<N>_<snake_case_feature>`; each contains a single
-`scope.md`, except the last one, which holds the `README.md` described above.
+`SCOPE.md`, except the last one, which holds the `README.md` described above.
 `README.md` holds the confirmed order table plus anything true of the whole
 prototype rather than one feature (vocabulary, frozen-time note, where the
 design tokens live).
 
 ## Scope contents
 
-`scope.md` is **not a specification** — the spec is written later, by a
+`SCOPE.md` is **not a specification** — the spec is written later, by a
 separate step, from this scope. Its job is to delimit the feature so the
 spec writer knows exactly what territory to cover and nothing gets specced
 twice or not at all. Keep it short:
