@@ -69,8 +69,8 @@ settled.
 Present a numbered table: feature name, what it contains, one line on why it
 sits at that position. Order by dependency, not by prominence:
 
-0. The app shell first — navigation, theming, global feedback (toasts etc.).
-   Everything else plugs into it.
+0. The app shell first — navigation, theming, global feedback (toasts etc.),
+   error reporting (see below). Everything else plugs into it.
 1. The core entity's basic lifecycle next (create/view/edit/delete) — most
    later features decorate it.
 2. Then features layered so each ticket only depends on lower numbers.
@@ -83,6 +83,26 @@ too fine and specs repeat each other's context.
 
 **Do not create anything yet.** The user will rename, merge, split and reorder.
 Iterate on the table until they explicitly confirm the cutting and the order.
+
+### Error reporting always belongs to ticket 0
+
+The prototype never shows it, but the shell ticket owns error reporting, so
+put it in that ticket's scope even though nothing in `DESIGN.html` asks for
+it. The scope covers:
+
+- **Sentry configured at startup** — wiring done with the `sentry` skill,
+  which holds the reference implementation and provisions the project.
+- **An event on every error log** — `logError` reports to Sentry, so no error
+  reaches the console without also reaching the dashboard. Info and warning
+  logs stay breadcrumbs.
+- **An event on every crash and uncaught exception**, Flutter framework
+  errors and zone errors included.
+- **The Riverpod error observer** (`providerDidFail` in `RiverpodObserver`)
+  routed through that same reporting, so a failing provider becomes an event
+  like any other error.
+
+Name those four points in the scope and stop there: the wiring detail lives
+in the `sentry` skill, not in the ticket.
 
 ## Step 5 — Materialize `tickets/`
 
@@ -118,4 +138,5 @@ twice or not at all. Keep it short:
 - **Depends on** — which lower-numbered tickets it builds on, one line each.
 
 Draw the boundaries from what the source actually does, not from what a
-typical app would do — the prototype is the source of truth.
+typical app would do — the prototype is the source of truth. The single
+exception is ticket 0's error reporting, which no prototype ever shows.
