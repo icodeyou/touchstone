@@ -80,13 +80,13 @@ never write it into a file:
 
 ```bash
 curl -s -H "Authorization: Bearer $POSTHOG_PERSONAL_API_KEY" \
-  https://us.posthog.com/api/organizations/@current/projects/ \
+  https://eu.posthog.com/api/organizations/@current/projects/ \
   | python3 -c 'import json,sys; print([p["name"] for p in json.load(sys.stdin)["results"]])'
 ```
 
-Use `eu.posthog.com` instead if the organization is on the EU cloud. If the
-key is missing or the call fails, ask the user which projects are already
-used rather than guessing.
+The organization is on the EU cloud, so the host is always `eu.posthog.com`.
+If the key is missing or the call fails, ask the user which projects are
+already used rather than guessing.
 
 Put the real count in the question:
 
