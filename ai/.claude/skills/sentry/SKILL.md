@@ -52,11 +52,57 @@ The blueprint contains no Sentry wiring; this skill is the reference. Add:
   }
   ```
 
+- in `lib/core/riverpod/riverpod_observers.dart`, make `providerDidFail` pass
+  the error and the stack trace as arguments instead of folding them into the
+  message:
+
+  ```dart
+  @override
+  void providerDidFail(
+    ProviderObserverContext context,
+    Object error,
+    StackTrace stackTrace,
+  ) {
+    logger.e(
+      '⛔ ERROR IN PROVIDER : ${context.provider}',
+      error: error,
+      stackTrace: stackTrace,
+    );
+  }
+  ```
+
+  Without this, a provider failure still reaches Sentry, but as a plain
+  message: no exception type, no stack trace, and every failure grouped into
+  one issue.
+
 - an `AppConstants.sentryDsn` constant in
   `lib/shared/constants/app_constants.dart`, filled by the provisioning
   steps below
 
 Only the DSN value is app-specific; everything else must match this skill.
+
+## What must reach Sentry
+
+Once the wiring above is in place, four paths produce events. Check each one
+rather than assuming the wiring covers it:
+
+- **Every error log.** `.logError(...)` and `.logFatal(...)` go through
+  `_log`, which calls `SentryReporter.report`, which captures an event. An
+  error that only reaches the console is a wiring bug.
+- **Every crash and uncaught exception.** `SentryFlutter.init` with an
+  `appRunner` installs the `FlutterError.onError` and `PlatformDispatcher`
+  handlers and runs the app in a guarded zone, so framework errors, async
+  errors and native crashes are captured on their own.
+- **Every provider failure.** `providerDidFail` logs at error level, so the
+  Riverpod observer feeds the same path, with the real exception and stack
+  trace once patched as above.
+- **Everything else, as context.** Info, warning and debug logs become
+  breadcrumbs, not events. They are attached to the next event, which is what
+  makes an error readable in the dashboard.
+
+Errors must be logged in the first place for any of this to fire. The app's
+`CLAUDE.md` states the logging rule; if the code swallows failures silently,
+fix that before blaming the Sentry wiring.
 
 ## Project provisioning
 

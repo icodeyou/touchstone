@@ -60,6 +60,12 @@ This respects the conventional commit from [conventionalcommits.org](https://con
 @<type>(<scope>): the commit message
 ```
 
+## Shortcuts
+
+`prm` — ship the current work and end the session: commit, push, open the
+pull request, merge it, then say the conversation can be closed. Defined by
+the `prm` skill.
+
 ## Comments
 
 Don't comment code unless it's make it easier for the developer to understand (e.g. cases that are not explicitly detailed by reading the code).

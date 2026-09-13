@@ -42,9 +42,15 @@ If `.blueprint/` cannot be created (touchstone is unavailable or the tag is miss
 
 Add `.blueprint/` to this project's `.gitignore`; it is a regenerable cache.
 
-#### Sentry
+### Logs
 
-The app is created **without Sentry**, and the blueprint contains no Sentry wiring. Sentry is added only when the app goes to production, via the `sentry` skill.
+Log as much as the app can bear. A failure that was never logged is a bug you will have to debug blind.
+
+Every failure is logged, without exception: a caught exception, a failed request, a rolled-back optimistic update, a provider that fails. Never swallow an error silently, even one the app recovers from. Log the meaningful successes too (startup completed, an entity created or updated, a user action that went through), always with the identifiers in the message.
+
+The only thing not worth logging is happy-path UI noise: taps, rebuilds, navigation.
+
+Use the string extensions from `lib/core/log/log.dart` (`.logInfo`, `.logWarning(...)`, `.logError(...)`) and never `print`. Always pass the caught `error` and `stackTrace` rather than folding them into the message string. Levels and when to use each are defined in `.ai/CLAUDE.md`.
 
 ## Custom instructions
 

@@ -59,23 +59,59 @@ at least:
 - **Authentication** — whether there are user accounts, and how users sign in.
 - **Local / offline** — whether the app is local-first, must work offline, and
   how data syncs if it does.
+- **Analytics** — whether the app gets PostHog from the first ticket. This
+  one has a cost the user must know before answering, so state it in the
+  question itself (see below).
 
 The answers shape the cutting (a synced, authenticated app orders and sizes
 tickets differently than a purely local one), so don't move on until they're
 settled.
+
+### Asking about analytics
+
+The PostHog plan caps the organization at **6 projects**, and each app that
+gets analytics spends one of them permanently. Never ask "do you want
+analytics?" on its own: the honest question is whether this app is worth one
+of the remaining slots.
+
+So before asking, list the projects already taken. The PostHog personal API
+key is in the environment as `POSTHOG_PERSONAL_API_KEY`; never print it and
+never write it into a file:
+
+```bash
+curl -s -H "Authorization: Bearer $POSTHOG_PERSONAL_API_KEY" \
+  https://eu.posthog.com/api/organizations/@current/projects/ \
+  | python3 -c 'import json,sys; print([p["name"] for p in json.load(sys.stdin)["results"]])'
+```
+
+The organization is on the EU cloud, so the host is always `eu.posthog.com`.
+If the key is missing or the call fails, ask the user which projects are
+already used rather than guessing.
+
+Put the real count in the question:
+
+> Analytics for this app? We can have 6 PostHog projects in total.
+> `<n>` are already used (`<project>`, ...), so `<6 - n>` slots are left.
+> Adding analytics here spends one of them.
+
+If no slot is left, say so and don't offer the choice. The answer decides
+whether ticket 0 carries analytics; record it, because nothing later in this
+skill re-asks.
 
 ## Step 4 — Propose the cutting, wait for confirmation
 
 Present a numbered table: feature name, what it contains, one line on why it
 sits at that position. Order by dependency, not by prominence:
 
-0. The app shell first — navigation, theming, global feedback (toasts etc.).
-   Everything else plugs into it.
+0. The app shell first — navigation, theming, global feedback (toasts etc.),
+   plus analytics when Step 3 asked for them (see below). Everything else
+   plugs into it.
 1. The core entity's basic lifecycle next (create/view/edit/delete) — most
    later features decorate it.
 2. Then features layered so each ticket only depends on lower numbers.
-3. Cross-cutting polish last — settings assembly, premium locks, first-run
+3. Cross-cutting polish next — settings assembly, premium locks, first-run
    empty states — because they touch every earlier feature.
+4. Error reporting closes the list, always (see below).
 
 Aim for tickets of comparable, shippable size: each one should leave the app
 runnable and demonstrably better. Too coarse and a ticket becomes a project;
@@ -83,6 +119,53 @@ too fine and specs repeat each other's context.
 
 **Do not create anything yet.** The user will rename, merge, split and reorder.
 Iterate on the table until they explicitly confirm the cutting and the order.
+
+### Analytics belong to ticket 0, when the user said yes
+
+If Step 3 settled on analytics, the shell ticket owns the setup, so add to
+its `SCOPE.md`:
+
+- **PostHog configured at startup**, and disabled in debug mode
+  (`kDebugMode`): no event, user property, super property or feature flag
+  evaluation leaves a debug build.
+- **`identify` wired to the app's user**, as soon as the session starts and
+  again on sign-in and sign-up.
+- **`ANALYTICS.md` written at the app root**, seeded from
+  `.blueprint/ANALYTICS.md`: same sections (debug mode, feature flags,
+  identify and user properties, super properties, events), with the
+  blueprint's todo content replaced by this app's. It is the single source of
+  truth for analytics, so every later ticket updates it instead of inventing
+  its own events.
+
+Ticket 0 sets up the pipe and the document, nothing more. The events
+themselves belong to the tickets that own the screens firing them, so don't
+list them here.
+
+If the user said no, none of this appears in any ticket and `ANALYTICS.md` is
+never created.
+
+### The last ticket is always Sentry
+
+Whatever the design contains, the final ticket wires the app to Sentry. It is
+the only ticket not cut from `DESIGN.html`, and the only one built
+differently: it holds a `README.md` instead of a `SCOPE.md`, because there is
+nothing to scope. The `sentry` skill already defines the whole job.
+
+Create it as `<N>_sentry/README.md`, `<N>` being the last number, containing:
+
+```markdown
+# Sentry
+
+This ticket wires the app to its own Sentry project. Nothing here comes from
+`DESIGN.html`: it touches no screen, adds no model and has no UI state.
+
+**For `ticket-to-plan`:** skip the design exploration, the screenshots,
+`SPECS.md` and `ARCHITECTURE.md`. Run the `sentry` skill and write `PLAN.md`
+straight from it. That skill is the entire specification.
+```
+
+List it in the confirmed order table and in `tickets/README.md` like any
+other ticket.
 
 ## Step 5 — Materialize `tickets/`
 
@@ -94,18 +177,21 @@ tickets/
 ├── 0_<feature_name>/
 │   └── SCOPE.md
 ├── 1_<other_feature>/
-│   └── scope.md
-└── ...
+│   └── SCOPE.md
+├── ...
+└── <N>_sentry/
+    └── README.md
 ```
 
-Folder names are `<N>_<snake_case_feature>`; each contains a single `scope.md`.
+Folder names are `<N>_<snake_case_feature>`; each contains a single
+`SCOPE.md`, except the last one, which holds the `README.md` described above.
 `README.md` holds the confirmed order table plus anything true of the whole
 prototype rather than one feature (vocabulary, frozen-time note, where the
 design tokens live).
 
 ## Scope contents
 
-`scope.md` is **not a specification** — the spec is written later, by a
+`SCOPE.md` is **not a specification** — the spec is written later, by a
 separate step, from this scope. Its job is to delimit the feature so the
 spec writer knows exactly what territory to cover and nothing gets specced
 twice or not at all. Keep it short:
