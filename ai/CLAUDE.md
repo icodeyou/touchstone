@@ -1,6 +1,6 @@
 # Pixelita — Default Instructions
 
-Always start your response with "Yo.".
+Always start your response with "Yop.".
 
 ## Plans and specs
 
