@@ -66,6 +66,15 @@ This respects the conventional commit from [conventionalcommits.org](https://con
 pull request, merge it, then say the conversation can be closed. Defined by
 the `prm` skill.
 
+## Microsite
+
+When a website is coded in `microsite/`, remind the user to deploy it after
+each edit to that folder, with this exact line at the end of the response:
+
+```txt
+Deploy with `! vercel --prod --yes`
+```
+
 ## Comments
 
 Don't comment code unless it's make it easier for the developer to understand (e.g. cases that are not explicitly detailed by reading the code).
