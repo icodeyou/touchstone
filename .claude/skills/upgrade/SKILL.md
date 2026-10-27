@@ -138,7 +138,7 @@ the user rather than rebasing or forcing on your own.
 Report the result to the user: old version → new version, the file rename if there was one,
 the commit, the tag, and the push.
 
-### 10. Warn the user to upgrade the stones
+### 10. Ask which stones to upgrade
 
 The apps in `stones/` are still pinned to the old version. Find them all — every
 directory in `stones/` is an app:
@@ -147,8 +147,26 @@ directory in `stones/` is an app:
 ls -d stones/*/
 ```
 
-End your report with a warning that names each app found and the new version, telling the
-user to upgrade every one of them by running the `upgrade-touchstone` skill inside that app:
+Then ask the user which of them to upgrade, with `AskUserQuestion` and `multiSelect: true`,
+one checkbox per app. Every app is selected by default: say so in the question, and treat an
+answer with nothing ticked as "all of them".
 
-> ⚠️ Touchstone is now 2.0. Upgrade each stone to 2.0 by running the `upgrade-touchstone`
-> skill inside it: todoapp, chess, weather.
+> Touchstone is now 2.0. Which stones do you want to upgrade to 2.0? All of them are
+> selected by default, untick the ones to leave on 1.1.
+
+The tool takes at most 4 options per question, so with more than 4 apps split them across
+several questions in the same call (apps in alphabetical order, 4 per question, at most 4
+questions). With more than 16 apps, ask in successive calls.
+
+### 11. Hand over the upgrade of the selected stones
+
+The stones are gitignored folders of the touchstone and are never edited from here. For each
+selected app, end your report with the command that runs the `upgrade-touchstone` skill
+inside it, one line per app, in the order the user ticked them:
+
+```bash
+cd stones/todoapp && claude "/upgrade-touchstone"
+cd stones/chess && claude "/upgrade-touchstone"
+```
+
+Name the apps left out, if any, in one line: `Left on 1.1: weather.`
