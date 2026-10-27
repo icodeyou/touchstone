@@ -1,5 +1,5 @@
 ---
-name: magicpath-microsite
+name: microsite
 description: Use when the user wants a marketing microsite, demo site, landing page or "motion design website" for an app whose design lives in MagicPath, hosted on Vercel. Triggers on "demo website", "site that plays the app like a video", "ghost finger", "buy button that sends a PostHog event", "deploy it on Vercel at <domain>", or any ask to turn a MagicPath canvas into a public web page.
 ---
 
